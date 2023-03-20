@@ -27,7 +27,6 @@ public class Member extends BaseEntity {
     @Email(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "유효한 이메일 주소를 입력하세요.")
     private String email;
 
-
     @Column(nullable = false)
     @JsonIgnore
     private String password;
