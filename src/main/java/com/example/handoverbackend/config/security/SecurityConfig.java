@@ -69,8 +69,9 @@ public class SecurityConfig {
                 .requestMatchers("/swagger-ui/**", "/v3/**").permitAll() // swagger
                 .requestMatchers("/api/auth/join", "/api/auth/login", "/api/auth/reissue").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/members").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/members/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/member/{username}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/members").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/members").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/member/search").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
 
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
