@@ -84,14 +84,9 @@ public class AuthService {
     }
 
     private Member createSignupFormOfUser(SignUpRequestDto req) {
-        Member member = Member.builder()
-                .username(req.getUsername())
-                .password(passwordEncoder.encode(req.getPassword()))
-                .name(req.getName())
-                .authority(Authority.ROLE_USER)
-                .email(req.getEmail())
-                .nickname(req.getNickname())
-                .build();
+        Member member = Member.createMember(req.getUsername(), passwordEncoder.encode(req.getPassword()),
+                req.getName(), req.getEmail(), req.getNickname(), Authority.ROLE_USER);
+
         return member;
     }
 

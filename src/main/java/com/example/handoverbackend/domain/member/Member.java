@@ -48,7 +48,7 @@ public class Member extends BaseEntity {
     private Authority authority;
 
 
-    @Builder
+
     public Member(String username, String password, String name, String email, String nickname, Authority authority) {
         this.username = username;
         this.password = password;
@@ -57,6 +57,11 @@ public class Member extends BaseEntity {
         this.email = email;
         this.authority = authority;
     }
+
+    public static Member createMember(String username, String password, String name, String email, String nickname, Authority authority) {
+        return new Member(username, password, name, nickname , email, authority);
+    }
+
 
     public void editMember(MemberEditRequestDto req) {
         username = req.getUsername();
