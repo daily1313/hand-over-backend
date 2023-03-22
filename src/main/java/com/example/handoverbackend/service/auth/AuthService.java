@@ -41,9 +41,8 @@ public class AuthService {
 
     @Transactional
     public TokenResponseDto login(LoginRequestDto req) {
-        Member member = memberRepository.findByUsername(req.getUsername()).orElseThrow(() -> {
-            throw new LoginFailureException();
-        });
+        Member member = memberRepository.findByUsername(req.getUsername())
+                .orElseThrow(LoginFailureException::new);
 
         validatePassword(req, member);
         Authentication authentication = getUserAuthentication(req);
