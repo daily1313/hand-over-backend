@@ -2,7 +2,6 @@ package com.example.handoverbackend.domain.member;
 
 import com.example.handoverbackend.domain.common.BaseEntity;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
-import com.example.handoverbackend.dto.member.MemberFindRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
