@@ -1,6 +1,8 @@
 package com.example.handoverbackend.advice;
 
 import com.example.handoverbackend.exception.EmailAlreadyExistException;
+import com.example.handoverbackend.exception.EmailAuthNotEqualsException;
+import com.example.handoverbackend.exception.EmailAuthNotFoundException;
 import com.example.handoverbackend.exception.LoginFailureException;
 import com.example.handoverbackend.exception.MemberNotFoundException;
 
@@ -24,6 +26,11 @@ public class ExceptionAdvice {
         return Response.failure(404,"회원을 찾을 수 없습니다.");
     }
 
+    //404 이메일 인증 정보 없음
+    @ExceptionHandler(EmailAuthNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response emailNotFoundException() { return Response.failure(404, "이메일 인증 정보를 찾을 수 없습니다.");}
+
     // 401 응답
     // 아이디 혹은 비밀번호 오류시 발생
     @ExceptionHandler(LoginFailureException.class)
@@ -32,6 +39,13 @@ public class ExceptionAdvice {
         return Response.failure(401, "로그인에 실패하였습니다.");
     }
 
+    // 401 응답
+    // 이메일 인증 정보 가 일치하지 않음
+    @ExceptionHandler(EmailAuthNotEqualsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Response emailAuthNotEqualsException() {
+        return Response.failure(401, "메일 인증 정보가 일치하지 않습니다.");
+    }
 
     // 409 응답
     // username 중복(아이디 중복)
@@ -56,6 +70,8 @@ public class ExceptionAdvice {
     public Response memberEmailAlreadyExistsException(EmailAlreadyExistException e) {
         return Response.failure(409, e.getMessage() + "은 중복된 이메일 입니다.");
     }
+
+
 
 
 
