@@ -1,6 +1,7 @@
 package com.example.handoverbackend.service.auth;
 
 import com.example.handoverbackend.config.jwt.TokenProvider;
+import com.example.handoverbackend.domain.member.EmailAuth;
 import com.example.handoverbackend.domain.member.Authority;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.member.RefreshToken;
@@ -10,9 +11,12 @@ import com.example.handoverbackend.dto.jwt.TokenDto;
 import com.example.handoverbackend.dto.jwt.TokenRequestDto;
 import com.example.handoverbackend.dto.jwt.TokenResponseDto;
 import com.example.handoverbackend.exception.EmailAlreadyExistException;
+import com.example.handoverbackend.exception.EmailAuthNotEqualsException;
+import com.example.handoverbackend.exception.EmailAuthNotFoundException;
 import com.example.handoverbackend.exception.LoginFailureException;
 import com.example.handoverbackend.exception.NicknameAlreadyExistException;
 import com.example.handoverbackend.exception.UsernameAlreadyExistException;
+import com.example.handoverbackend.repository.EmailAuthRepository;
 import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +35,37 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final EmailAuthRepository emailAuthRepository;
 
+    /**
+     * 회원가입 순서
+     * 1. email 기반 인증번호 입력
+     * 2. email + 인증번호를 EmailAuth 테이블에 저장
+     * 3. signUp 메서드에서 회원가입시 EmailAuth 가져와서 비교
+     */
     @Transactional
     public void join(SignUpRequestDto req) {
         validateSignUpInfo(req);
         Member member = createSignupFormOfUser(req);
-        memberRepository.save(member);
+        EmailAuth emailAuth = emailAuthRepository.findEmailAuthByEmail(req.getEmail()).orElseThrow(
+                EmailAuthNotFoundException::new);
+        if (emailAuth.getKey().equals(req.getEmailAuthKey())) {
+            memberRepository.save(member);
+            emailAuthRepository.delete(emailAuth);
+        } else {
+            throw new EmailAuthNotEqualsException(); // 이메일 인증 정보가 일치하지 않음
+        }
     }
+
+    @Transactional(readOnly = true)
+    public String confirmEmailCertificationCode(String code) {
+        if(emailAuthRepository.existsByKey(code)) {
+            return "인증번호가 확인되었습니다.";
+        } else {
+            throw new EmailAuthNotEqualsException();
+        }
+    }
+
 
     @Transactional
     public TokenResponseDto login(LoginRequestDto req) {
