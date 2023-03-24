@@ -2,7 +2,6 @@ package com.example.handoverbackend.controller.member;
 
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
-import com.example.handoverbackend.dto.member.MemberFindRequestDto;
 import com.example.handoverbackend.dto.member.MemberSearchCondition;
 import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.repository.MemberRepository;
@@ -32,7 +31,6 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
-    private final String SUCCESS_DELETE_MESSAGE = "회원탈퇴에 성공하였습니다.";
 
     @ApiOperation(value = "전체 회원 조회", notes = "전체 회원을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
@@ -62,8 +60,7 @@ public class MemberController {
     @DeleteMapping("/members")
     public Response deleteMember() {
         Member memberInfo = getPrincipal();
-        memberService.deleteMember(memberInfo);
-        return Response.success(SUCCESS_DELETE_MESSAGE);
+        return Response.success(memberService.deleteMember(memberInfo));
     }
 
 

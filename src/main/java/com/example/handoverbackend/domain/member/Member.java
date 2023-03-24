@@ -36,7 +36,7 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false, unique = true)
@@ -44,8 +44,6 @@ public class Member extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
-
-
 
     public Member(String username, String password, String name, String email, String nickname, Authority authority) {
         this.username = username;
@@ -59,7 +57,6 @@ public class Member extends BaseEntity {
     public static Member createMember(String username, String password, String name, String email, String nickname, Authority authority) {
         return new Member(username, password, name, nickname , email, authority);
     }
-
 
     public void editMember(MemberEditRequestDto req) {
         username = req.getUsername();

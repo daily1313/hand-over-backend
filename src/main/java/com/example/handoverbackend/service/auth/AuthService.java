@@ -1,6 +1,7 @@
 package com.example.handoverbackend.service.auth;
 
 import com.example.handoverbackend.config.jwt.TokenProvider;
+import com.example.handoverbackend.domain.member.EmailAuth;
 import com.example.handoverbackend.domain.member.Authority;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.member.RefreshToken;
@@ -10,9 +11,12 @@ import com.example.handoverbackend.dto.jwt.TokenDto;
 import com.example.handoverbackend.dto.jwt.TokenRequestDto;
 import com.example.handoverbackend.dto.jwt.TokenResponseDto;
 import com.example.handoverbackend.exception.EmailAlreadyExistException;
+import com.example.handoverbackend.exception.EmailAuthNotEqualsException;
+import com.example.handoverbackend.exception.EmailAuthNotFoundException;
 import com.example.handoverbackend.exception.LoginFailureException;
 import com.example.handoverbackend.exception.NicknameAlreadyExistException;
 import com.example.handoverbackend.exception.UsernameAlreadyExistException;
+import com.example.handoverbackend.repository.EmailAuthRepository;
 import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,17 +30,42 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
+    private static final String JOIN_SUCCESS_MESSAGE = "회원가입이 완료되었습니다.";
+    private static final String CERTIFICATION_NUMBER_SUCCESS_MESSAGE = "인증 번호가 확인되었습니다.";
+    private static final String REFRESH_TOKEN_INVALID_MESSAGE = "Refresh Token 이 유효하지 않습니다.";
+    private static final String USER_INFORMATION_OF_TOKEN_NOT_MATCH_MESSAGE = "토큰의 유저 정보가 일치하지 않습니다.";
+    private static final String LOGOUT_USER_MESSAGE = "로그아웃 된 사용자입니다.";
+
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
-
+    private final EmailAuthRepository emailAuthRepository;
+    /**
+     * 회원가입 순서 1. email 기반 인증번호 입력 2. email + 인증번호를 EmailAuth 테이블에 저장 3. signUp 메서드에서 회원가입시 EmailAuth 가져와서 비교
+     */
     @Transactional
-    public void join(SignUpRequestDto req) {
+    public String join(SignUpRequestDto req) {
         validateSignUpInfo(req);
         Member member = createSignupFormOfUser(req);
-        memberRepository.save(member);
+        EmailAuth emailAuth = emailAuthRepository.findEmailAuthByEmail(req.getEmail()).orElseThrow(
+                EmailAuthNotFoundException::new);
+        if (emailAuth.getKey().equals(req.getEmailAuthKey())) {
+            memberRepository.save(member);
+            emailAuthRepository.delete(emailAuth);
+            return JOIN_SUCCESS_MESSAGE;
+        }
+        throw new EmailAuthNotEqualsException();
+    }
+
+    @Transactional(readOnly = true)
+    public String confirmEmailCertificationCode(String code) {
+        if (emailAuthRepository.existsByKey(code)) {
+            return CERTIFICATION_NUMBER_SUCCESS_MESSAGE;
+        }
+        throw new EmailAuthNotEqualsException();
     }
 
     @Transactional
@@ -72,7 +101,7 @@ public class AuthService {
 
         Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
         RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+                .orElseThrow(() -> new RuntimeException(LOGOUT_USER_MESSAGE));
         validateRefreshTokenOwner(refreshToken, tokenRequestDto);
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
@@ -90,7 +119,6 @@ public class AuthService {
         return member;
     }
 
-
     private void validateSignUpInfo(SignUpRequestDto signUpRequestDto) {
 
         if (memberRepository.existsByUsername(signUpRequestDto.getUsername())) {
@@ -101,7 +129,7 @@ public class AuthService {
             throw new NicknameAlreadyExistException(signUpRequestDto.getNickname());
         }
 
-        if(memberRepository.existsByEmail(signUpRequestDto.getEmail())) {
+        if (memberRepository.existsByEmail(signUpRequestDto.getEmail())) {
             throw new EmailAlreadyExistException(signUpRequestDto.getEmail());
         }
     }
@@ -114,13 +142,13 @@ public class AuthService {
 
     private void validateRefreshToken(TokenRequestDto tokenRequestDto) {
         if (!tokenProvider.validateToken(tokenRequestDto.getRefreshToken())) {
-            throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
+            throw new RuntimeException(REFRESH_TOKEN_INVALID_MESSAGE);
         }
     }
 
     private void validateRefreshTokenOwner(RefreshToken refreshToken, TokenRequestDto tokenRequestDto) {
         if (!refreshToken.getValue().equals(tokenRequestDto.getRefreshToken())) {
-            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
+            throw new RuntimeException(USER_INFORMATION_OF_TOKEN_NOT_MATCH_MESSAGE);
         }
     }
 }

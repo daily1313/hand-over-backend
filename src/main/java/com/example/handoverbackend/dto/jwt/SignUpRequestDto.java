@@ -40,4 +40,8 @@ public class SignUpRequestDto {
     @Size(min = 2, message = "사용자 별명이 너무 짧습니다.")
     private String nickname;
 
+    @ApiModelProperty(value = "이메일 인증 코드", notes = "이메일 인증코드를 입력해주세요", required = true, example = "321ADS3A")
+    @NotBlank(message = "유효한 이메일 인증 코드를 입력해주세요.")
+    private String emailAuthKey;
+
 }
