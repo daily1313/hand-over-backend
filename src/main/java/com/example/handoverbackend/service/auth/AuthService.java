@@ -36,6 +36,7 @@ public class AuthService {
     private static final String REFRESH_TOKEN_INVALID_MESSAGE = "Refresh Token 이 유효하지 않습니다.";
     private static final String USER_INFORMATION_OF_TOKEN_NOT_MATCH_MESSAGE = "토큰의 유저 정보가 일치하지 않습니다.";
     private static final String LOGOUT_USER_MESSAGE = "로그아웃 된 사용자입니다.";
+
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;

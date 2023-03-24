@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private static final String SUCCESS_DELETE_MESSAGE = "회원탈퇴에 성공하였습니다.";
+
     private final MemberRepository memberRepository;
 
     // 회원 전체 조회

@@ -25,6 +25,7 @@ public class EmailService {
     private static final int ASCII_OFFSET_LOWER_A = 97;
     private static final int ASCII_OFFSET_UPPER_A = 65;
     private static final int NUM_DIGITS = 10;
+
     private String ePw = createKey();
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender emailSender;
