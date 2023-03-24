@@ -7,7 +7,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @NoArgsConstructor
 @Table(name = "email_auth")
