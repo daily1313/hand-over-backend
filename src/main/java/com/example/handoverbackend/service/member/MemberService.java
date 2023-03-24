@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final String SUCCESS_DELETE_MESSAGE = "회원탈퇴에 성공하였습니다.";
 
     // 회원 전체 조회
     @Transactional(readOnly = true)
@@ -43,7 +44,8 @@ public class MemberService {
 
     // 회원 탈퇴
     @Transactional
-    public void deleteMember(Member member) {
+    public String deleteMember(Member member) {
         memberRepository.delete(member);
+        return SUCCESS_DELETE_MESSAGE;
     }
 }

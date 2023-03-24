@@ -32,7 +32,6 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
-    private final String SUCCESS_DELETE_MESSAGE = "회원탈퇴에 성공하였습니다.";
 
     @ApiOperation(value = "전체 회원 조회", notes = "전체 회원을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
@@ -62,8 +61,7 @@ public class MemberController {
     @DeleteMapping("/members")
     public Response deleteMember() {
         Member memberInfo = getPrincipal();
-        memberService.deleteMember(memberInfo);
-        return Response.success(SUCCESS_DELETE_MESSAGE);
+        return Response.success(memberService.deleteMember(memberInfo));
     }
 
 

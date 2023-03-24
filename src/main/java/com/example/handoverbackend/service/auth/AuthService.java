@@ -37,6 +37,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final EmailAuthRepository emailAuthRepository;
+    private final String JOIN_SUCCESS_MESSAGE = "회원가입이 완료되었습니다.";
     private final String CERTIFICATION_NUMBER_SUCCESS_MESSAGE = "인증 번호가 확인되었습니다.";
     private final String REFRESH_TOKEN_INVALID_MESSAGE = "Refresh Token 이 유효하지 않습니다.";
     private final String USER_INFORMATION_OF_TOKEN_NOT_MATCH_MESSAGE = "토큰의 유저 정보가 일치하지 않습니다.";
@@ -46,7 +47,7 @@ public class AuthService {
      * 회원가입 순서 1. email 기반 인증번호 입력 2. email + 인증번호를 EmailAuth 테이블에 저장 3. signUp 메서드에서 회원가입시 EmailAuth 가져와서 비교
      */
     @Transactional
-    public void join(SignUpRequestDto req) {
+    public String join(SignUpRequestDto req) {
         validateSignUpInfo(req);
         Member member = createSignupFormOfUser(req);
         EmailAuth emailAuth = emailAuthRepository.findEmailAuthByEmail(req.getEmail()).orElseThrow(
@@ -54,7 +55,7 @@ public class AuthService {
         if (emailAuth.getKey().equals(req.getEmailAuthKey())) {
             memberRepository.save(member);
             emailAuthRepository.delete(emailAuth);
-            return;
+            return JOIN_SUCCESS_MESSAGE;
         }
 
         throw new EmailAuthNotEqualsException(); // 이메일 인증 정보가 일치하지 않음

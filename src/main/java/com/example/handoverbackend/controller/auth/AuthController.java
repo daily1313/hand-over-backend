@@ -24,17 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     private final AuthService authService;
     private final EmailService emailService;
-    private final String JOIN_SUCCESS_MESSAGE = "회원 가입에 성공하였습니다.";
-
 
     @ApiOperation(value = "회원가입", notes = "회원가입 진행")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/join")
     public Response register(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
-        authService.join(signUpRequestDto);
-        return Response.success(JOIN_SUCCESS_MESSAGE);
+        return Response.success(authService.join(signUpRequestDto));
     }
 
     @ApiOperation(value = "로그인", notes = "회원가입 후 로그인")
@@ -57,7 +55,6 @@ public class AuthController {
     public Response confirmEmailCertificationCode(@RequestParam("code") String code) {
         return Response.success(authService.confirmEmailCertificationCode(code));
     }
-
 
     @ApiOperation(value = "토큰 재발급", notes = "토큰 재발급 요청")
     @ResponseStatus(HttpStatus.OK)
