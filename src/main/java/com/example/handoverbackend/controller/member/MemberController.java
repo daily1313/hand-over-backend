@@ -2,7 +2,6 @@ package com.example.handoverbackend.controller.member;
 
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
-import com.example.handoverbackend.dto.member.MemberFindRequestDto;
 import com.example.handoverbackend.dto.member.MemberSearchCondition;
 import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.repository.MemberRepository;
