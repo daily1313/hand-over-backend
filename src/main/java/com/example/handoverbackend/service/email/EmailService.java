@@ -19,15 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class EmailService {
 
+    private static final int CERTIFICATION_NUMBER_LENGTH = 8;
+    private static final int CERTIFICATION_NUMBER_OPTION = 3;
+    private static final int NUM_LETTERS_ALPHABET = 26;
+    private static final int ASCII_OFFSET_LOWER_A = 97;
+    private static final int ASCII_OFFSET_UPPER_A = 65;
+    private static final int NUM_DIGITS = 10;
+    private String ePw = createKey();
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender emailSender;
-    private String ePw = createKey();
-    private final int CERTIFICATION_NUMBER_LENGTH = 8;
-    private final int CERTIFICATION_NUMBER_OPTION = 3;
-    private final int NUM_LETTERS_ALPHABET = 26;
-    private final int ASCII_OFFSET_LOWER_A = 97;
-    private final int ASCII_OFFSET_UPPER_A = 65;
-    private final int NUM_DIGITS = 10;
+
+
 
     public MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException {
 
