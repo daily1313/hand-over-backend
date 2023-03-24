@@ -22,6 +22,12 @@ public class EmailService {
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender emailSender;
     private String ePw = createKey();
+    private final int CERTIFICATION_NUMBER_LENGTH = 8;
+    private final int CERTIFICATION_NUMBER_OPTION = 3;
+    private final int NUM_LETTERS_ALPHABET = 26;
+    private final int ASCII_OFFSET_LOWER_A = 97;
+    private final int ASCII_OFFSET_UPPER_A = 65;
+    private final int NUM_DIGITS = 10;
 
     public MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException {
 
@@ -56,23 +62,24 @@ public class EmailService {
     }
 
     public String createKey() {
+
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
 
-        for (int i = 0; i < 8; i++) { // 인증코드 8자리
-            int index = rnd.nextInt(3); // 0~2 까지 랜덤, rnd 값에 따라서 아래 switch 문이 실행됨
+        for (int i = 0; i < CERTIFICATION_NUMBER_LENGTH; i++) { // 인증코드 8자리
+            int index = rnd.nextInt(CERTIFICATION_NUMBER_OPTION); // 0~2 까지 랜덤, rnd 값에 따라서 아래 switch 문이 실행됨
 
             switch (index) {
                 case 0:
-                    key.append((char) ((int) (rnd.nextInt(26)) + 97)); // 영어 소문자
+                    key.append((char) ((int) (rnd.nextInt(NUM_LETTERS_ALPHABET)) + ASCII_OFFSET_LOWER_A)); // 영어 소문자
                     // a~z (ex. 1+97=98 => (char)98 = 'b')
                     break;
                 case 1:
-                    key.append((char) ((int) (rnd.nextInt(26)) + 65)); // 영어 대문자
+                    key.append((char) ((int) (rnd.nextInt(NUM_LETTERS_ALPHABET)) + ASCII_OFFSET_UPPER_A)); // 영어 대문자
                     // A~Z
                     break;
                 case 2:
-                    key.append((rnd.nextInt(10))); // 숫자
+                    key.append((rnd.nextInt(NUM_DIGITS))); // 숫자
                     // 0~9
                     break;
             }
