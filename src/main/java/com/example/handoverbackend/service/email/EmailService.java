@@ -65,22 +65,22 @@ public class EmailService {
     public String createKey() {
 
         StringBuffer key = new StringBuffer();
-        Random rnd = new Random();
+        Random random = new Random();
 
         for (int i = 0; i < CERTIFICATION_NUMBER_LENGTH; i++) { // 인증코드 8자리
-            int index = rnd.nextInt(CERTIFICATION_NUMBER_OPTION); // 0~2 까지 랜덤, rnd 값에 따라서 아래 switch 문이 실행됨
+            int index = random.nextInt(CERTIFICATION_NUMBER_OPTION); // 0~2 까지 랜덤, rnd 값에 따라서 아래 switch 문이 실행됨
 
             switch (index) {
                 case 0:
-                    key.append((char) ((int) (rnd.nextInt(NUM_LETTERS_ALPHABET)) + ASCII_OFFSET_LOWER_A)); // 영어 소문자
+                    key.append((char) ((int) (random.nextInt(NUM_LETTERS_ALPHABET)) + ASCII_OFFSET_LOWER_A)); // 영어 소문자
                     // a~z (ex. 1+97=98 => (char)98 = 'b')
                     break;
                 case 1:
-                    key.append((char) ((int) (rnd.nextInt(NUM_LETTERS_ALPHABET)) + ASCII_OFFSET_UPPER_A)); // 영어 대문자
+                    key.append((char) ((int) (random.nextInt(NUM_LETTERS_ALPHABET)) + ASCII_OFFSET_UPPER_A)); // 영어 대문자
                     // A~Z
                     break;
                 case 2:
-                    key.append((rnd.nextInt(NUM_DIGITS))); // 숫자
+                    key.append((random.nextInt(NUM_DIGITS))); // 숫자
                     // 0~9
                     break;
             }
@@ -103,8 +103,8 @@ public class EmailService {
             // 한 사람이 인증코드 여러 번 날릴 시에 인증코드 갱신
 
             emailSender.send(message); // 메일 발송
-        } catch (MailException es) {
-            es.printStackTrace(); // 에러의 발생근원지를 찾아서 에러 출력
+        } catch (MailException errorMessage) {
+            errorMessage.printStackTrace(); // 에러의 발생근원지를 찾아서 에러 출력
             throw new IllegalArgumentException();
         }
 
