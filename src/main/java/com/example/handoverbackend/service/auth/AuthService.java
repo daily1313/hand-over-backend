@@ -57,9 +57,7 @@ public class AuthService {
             emailAuthRepository.delete(emailAuth);
             return JOIN_SUCCESS_MESSAGE;
         }
-
-        throw new EmailAuthNotEqualsException(); // 이메일 인증 정보가 일치하지 않음
-
+        throw new EmailAuthNotEqualsException();
     }
 
     @Transactional(readOnly = true)
