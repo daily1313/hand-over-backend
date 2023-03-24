@@ -30,18 +30,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final EmailAuthRepository emailAuthRepository;
+    private final String CERTIFICATION_NUMBER_SUCCESS_MESSAGE = "인증 번호가 확인되었습니다.";
+    private final String REFRESH_TOKEN_INVALID_MESSAGE = "Refresh Token 이 유효하지 않습니다.";
+    private final String USER_INFORMATION_OF_TOKEN_NOT_MATCH_MESSAGE = "토큰의 유저 정보가 일치하지 않습니다.";
+    private final String LOGOUT_USER_MESSAGE = "로그아웃 된 사용자입니다.";
 
     /**
-     * 회원가입 순서
-     * 1. email 기반 인증번호 입력
-     * 2. email + 인증번호를 EmailAuth 테이블에 저장
-     * 3. signUp 메서드에서 회원가입시 EmailAuth 가져와서 비교
+     * 회원가입 순서 1. email 기반 인증번호 입력 2. email + 인증번호를 EmailAuth 테이블에 저장 3. signUp 메서드에서 회원가입시 EmailAuth 가져와서 비교
      */
     @Transactional
     public void join(SignUpRequestDto req) {
@@ -52,20 +54,20 @@ public class AuthService {
         if (emailAuth.getKey().equals(req.getEmailAuthKey())) {
             memberRepository.save(member);
             emailAuthRepository.delete(emailAuth);
-        } else {
-            throw new EmailAuthNotEqualsException(); // 이메일 인증 정보가 일치하지 않음
+            return;
         }
+
+        throw new EmailAuthNotEqualsException(); // 이메일 인증 정보가 일치하지 않음
+
     }
 
     @Transactional(readOnly = true)
     public String confirmEmailCertificationCode(String code) {
-        if(emailAuthRepository.existsByKey(code)) {
-            return "인증번호가 확인되었습니다.";
-        } else {
-            throw new EmailAuthNotEqualsException();
+        if (emailAuthRepository.existsByKey(code)) {
+            return CERTIFICATION_NUMBER_SUCCESS_MESSAGE;
         }
+        throw new EmailAuthNotEqualsException();
     }
-
 
     @Transactional
     public TokenResponseDto login(LoginRequestDto req) {
@@ -100,7 +102,7 @@ public class AuthService {
 
         Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
         RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
-                .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+                .orElseThrow(() -> new RuntimeException(LOGOUT_USER_MESSAGE));
         validateRefreshTokenOwner(refreshToken, tokenRequestDto);
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
@@ -118,7 +120,6 @@ public class AuthService {
         return member;
     }
 
-
     private void validateSignUpInfo(SignUpRequestDto signUpRequestDto) {
 
         if (memberRepository.existsByUsername(signUpRequestDto.getUsername())) {
@@ -129,7 +130,7 @@ public class AuthService {
             throw new NicknameAlreadyExistException(signUpRequestDto.getNickname());
         }
 
-        if(memberRepository.existsByEmail(signUpRequestDto.getEmail())) {
+        if (memberRepository.existsByEmail(signUpRequestDto.getEmail())) {
             throw new EmailAlreadyExistException(signUpRequestDto.getEmail());
         }
     }
@@ -142,13 +143,13 @@ public class AuthService {
 
     private void validateRefreshToken(TokenRequestDto tokenRequestDto) {
         if (!tokenProvider.validateToken(tokenRequestDto.getRefreshToken())) {
-            throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
+            throw new RuntimeException(REFRESH_TOKEN_INVALID_MESSAGE);
         }
     }
 
     private void validateRefreshTokenOwner(RefreshToken refreshToken, TokenRequestDto tokenRequestDto) {
         if (!refreshToken.getValue().equals(tokenRequestDto.getRefreshToken())) {
-            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
+            throw new RuntimeException(USER_INFORMATION_OF_TOKEN_NOT_MATCH_MESSAGE);
         }
     }
 }
