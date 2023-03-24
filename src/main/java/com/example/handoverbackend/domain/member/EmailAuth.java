@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class EmailAuth {
 
-
     @Id
     @Column(name = "email_key", nullable = false)
     private String key;
@@ -26,6 +25,4 @@ public class EmailAuth {
         this.key = key;
         this.email = email;
     }
-
-
 }
