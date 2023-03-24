@@ -29,8 +29,6 @@ public class EmailService {
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender emailSender;
 
-
-
     public MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException {
 
         MimeMessage message = emailSender.createMimeMessage();
