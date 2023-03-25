@@ -49,8 +49,7 @@ public class BoardService {
 
     @Transactional
     public String createBoard(BoardCreateRequestDto requestDto, Member member, Long categoryId) {
-        List<Image> images = requestDto.getImages()
-            .stream()
+        List<Image> images = requestDto.getImages().stream()
             .map(image -> new Image(image.getOriginalFilename()))
             .toList();
         Category category = getCategory(categoryId);
@@ -115,10 +114,10 @@ public class BoardService {
             .orElseThrow(BoardNotFoundException::new);
         if (hasFavoriteBoard(board, member)) {
             deleteFavoriteBoard(board, member);
-            return SUCCESS_CREATE_FAVORITE;
+            return SUCCESS_DELETE_FAVORITE;
         }
         createFavoriteBoard(board, member);
-        return SUCCESS_DELETE_FAVORITE;
+        return SUCCESS_CREATE_FAVORITE;
     }
 
     @Transactional(readOnly = true)
