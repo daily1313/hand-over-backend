@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class BoardController {
 
+    private static final String DEFAULT_PAGE = "0";
+
     private final MemberRepository memberRepository;
     private final BoardService boardService;
 
@@ -38,14 +40,14 @@ public class BoardController {
     @GetMapping("/boards/all{categoryId}")
     @ResponseStatus(HttpStatus.OK)
     public Response findAllBoardsWithCategory(@ApiParam(value = "카테고리 id", required = true) @PathVariable Long categoryId,
-                                              @RequestParam(defaultValue = "0") Integer page) {
+                                              @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(boardService.findAllBoardsWithCategory(page, categoryId));
     }
 
     @ApiOperation(value = "게시글 전체 조회", notes = "게시글 전체를 조회합니다.")
     @GetMapping("/boards")
     @ResponseStatus(HttpStatus.OK)
-    public Response findAllBoards(@RequestParam(defaultValue = "0") Integer page) {
+    public Response findAllBoards(@RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(boardService.findAllBoards(page));
     }
 
@@ -81,14 +83,14 @@ public class BoardController {
     @ApiOperation(value = "즐겨찾기 게시판을 조회", notes = "즐겨찾기로 등록한 게시판을 조회합니다.")
     @GetMapping("/boards/favorite")
     @ResponseStatus(HttpStatus.OK)
-    public Response findFavoriteBoards(@RequestParam(defaultValue = "0")Integer page){
+    public Response findFavoriteBoards(@RequestParam(defaultValue = DEFAULT_PAGE)Integer page){
         return Response.success(boardService.findFavoriteBoards(page, getPrincipal()));
     }
 
     @ApiOperation(value = "개시글 검색", notes = "게시글을 검색합니다.")
     @GetMapping("/boards/search/{keyword}")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchBoard(@PathVariable String keyword, @RequestParam(defaultValue = "0") Integer page){
+    public Response searchBoard(@PathVariable String keyword, @RequestParam(defaultValue = DEFAULT_PAGE) Integer page){
         return Response.success(boardService.searchBoard(keyword, page));
     }
 
