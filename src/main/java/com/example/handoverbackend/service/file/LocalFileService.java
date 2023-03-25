@@ -28,8 +28,8 @@ public class LocalFileService implements FileService{
     public void upload(MultipartFile file, String filename) {
         try {
             file.transferTo(new File(location + filename));
-        }catch (IOException e){
-            throw new FileUploadFailureException(e);
+        } catch (IOException exception){
+            throw new FileUploadFailureException(exception);
         }
     }
 

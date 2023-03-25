@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class BoardFindAllWithPagingResponseDto {
+
     private List<BoardFindAllResponseDto> boards;
     private PageInfoDto pageInfoDto;
 

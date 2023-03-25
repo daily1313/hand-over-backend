@@ -75,13 +75,13 @@ public class Board extends BaseEntity {
 
     private void addImages(List<Image> added) {
         added.forEach(image -> {
-            images.add(image);
+            this.images.add(image);
             image.initBoard(this);
         });
     }
 
-    private void deleteImages(List<Image> deleted) {
-        deleted.forEach(deleteId -> this.images.remove(deleteId));
+    private void deleteImages(List<Image> deletedImages) {
+        deletedImages.forEach(deleteImageId -> this.images.remove(deleteImageId));
     }
 
     private ImageUpdatedResult findImageUpdatedResult(List<MultipartFile> addedImageFiles, List<Long> deletedImageIds) {
@@ -99,11 +99,15 @@ public class Board extends BaseEntity {
     }
 
     private Optional<Image> convertImageIdToImage(Long id) {
-        return this.images.stream().filter(image -> Objects.equals(image.getId(), id)).findAny();
+        return this.images.stream()
+            .filter(image -> Objects.equals(image.getId(), id))
+            .findAny();
     }
 
     private List<Image> convertImageFilesToImages(List<MultipartFile> imageFiles) {
-        return imageFiles.stream().map(imageFile -> new Image(imageFile.getOriginalFilename())).collect(toList());
+        return imageFiles.stream()
+            .map(imageFile -> new Image(imageFile.getOriginalFilename()))
+            .collect(toList());
     }
 
     public boolean isOwnBoard(Member member) {

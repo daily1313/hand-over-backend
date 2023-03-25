@@ -22,8 +22,10 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public List<CategoryResponseDto> findAllCategory(){
-        return categoryRepository.findAll().stream()
-            .map(CategoryResponseDto::toDto).toList();
+        return categoryRepository.findAll()
+            .stream()
+            .map(CategoryResponseDto::toDto)
+            .toList();
     }
 
     @Transactional
@@ -35,7 +37,8 @@ public class CategoryService {
 
     @Transactional
     public String deleteCategory(Long id) {
-        Category category = categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
+        Category category = categoryRepository.findById(id)
+            .orElseThrow(CategoryNotFoundException::new);
         categoryRepository.delete(category);
         return SUCCESS_DELETE_CATEGORY;
     }

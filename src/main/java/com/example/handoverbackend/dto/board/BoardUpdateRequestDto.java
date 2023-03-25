@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardUpdateRequestDto {
+
     @ApiModelProperty(value = "게시글 제목", notes = "게시글 제목을 입력해주세요.")
     @NotBlank(message = "게시글 제목을 입력해주세요.")
     private String title;
