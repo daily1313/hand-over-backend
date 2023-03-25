@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,7 +33,7 @@ public class Image extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Board board;
 
-    private final static String[] supportedExtension = {"jpg", "jpeg", "gif", "bmp", "png"};
+    private final static List<String> supportedExtension = List.of("jpg", "jpeg", "gif", "bmp", "png");
 
     public Image(String originName) {
         this.originName = originName;
@@ -61,8 +61,7 @@ public class Image extends BaseEntity {
         }
         throw new UnsupportedImageFormatException();
     }
-
-    private boolean isSupportedFormat(String ext) {
-        return Arrays.stream(supportedExtension).anyMatch(e -> e.equalsIgnoreCase(ext));
+    private boolean isSupportedFormat(String extension) {
+        return supportedExtension.contains(extension);
     }
 }
