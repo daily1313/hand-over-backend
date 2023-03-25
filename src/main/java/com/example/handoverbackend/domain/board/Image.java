@@ -29,7 +29,7 @@ public class Image extends BaseEntity {
     private String originName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id",nullable = false)
+    @JoinColumn(name = "board_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Board board;
 
@@ -41,26 +41,23 @@ public class Image extends BaseEntity {
     }
 
     public void initBoard(Board board) {
-        if(this.board == null) {
+        if (this.board == null) {
             this.board = board;
         }
     }
 
     private String generateUniqueName(String extension) {
-        return UUID.randomUUID()+ "." + extension;
+        return UUID.randomUUID() + "." + extension;
     }
 
     private String extractExtension(String originName) {
-        try {
-            String extension = originName.substring(originName.lastIndexOf(".") + 1);
-            if(isSupportedFormat(extension)) {
-                return extension;
-            }
-        } catch (StringIndexOutOfBoundsException ignored) {
-
+        String extension = originName.substring(originName.lastIndexOf(".") + 1);
+        if (isSupportedFormat(extension)) {
+            return extension;
         }
         throw new UnsupportedImageFormatException();
     }
+
     private boolean isSupportedFormat(String extension) {
         return supportedExtension.contains(extension);
     }
