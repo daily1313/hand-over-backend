@@ -81,7 +81,7 @@ public class BoardController {
     }
 
     @ApiOperation(value = "즐겨찾기 게시판을 조회", notes = "즐겨찾기로 등록한 게시판을 조회합니다.")
-    @GetMapping("/boards/favorite")
+    @GetMapping("/boards/favorites")
     @ResponseStatus(HttpStatus.OK)
     public Response findFavoriteBoards(@RequestParam(defaultValue = DEFAULT_PAGE)Integer page){
         return Response.success(boardService.findFavoriteBoards(page, getPrincipal()));
