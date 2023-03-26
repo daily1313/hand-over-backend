@@ -3,6 +3,7 @@ package com.example.handoverbackend.service.category;
 import com.example.handoverbackend.domain.category.Category;
 import com.example.handoverbackend.dto.category.CategoryCreateRequestDto;
 import com.example.handoverbackend.dto.category.CategoryResponseDto;
+import com.example.handoverbackend.exception.CategoryAlreadyExistException;
 import com.example.handoverbackend.exception.CategoryNotFoundException;
 import com.example.handoverbackend.repository.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,9 @@ public class CategoryService {
 
     @Transactional
     public String createCategory(CategoryCreateRequestDto requestDto){
+        if (validationCategoryName(requestDto.getName())){
+            throw new CategoryAlreadyExistException(requestDto.getName());
+        }
         Category category = Category.createCategory(requestDto.getName());
         categoryRepository.save(category);
         return SUCCESS_CREATE_CATEGORY;
@@ -40,5 +44,9 @@ public class CategoryService {
             .orElseThrow(CategoryNotFoundException::new);
         categoryRepository.delete(category);
         return SUCCESS_DELETE_CATEGORY;
+    }
+
+    private boolean validationCategoryName(String name){
+        return categoryRepository.findByName(name).isPresent();
     }
 }
