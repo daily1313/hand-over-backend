@@ -37,7 +37,7 @@ public class CategoryServiceTest {
     public void findAllCategory() {
         // given
         List<Category> categories = new ArrayList<>();
-        categories.add(Category.createCategory("category"));
+        categories.add(new Category("category"));
         given(categoryRepository.findAll()).willReturn(categories);
 
         // when
@@ -64,7 +64,7 @@ public class CategoryServiceTest {
     @DisplayName("카테고리 삭제")
     public void deleteCategory() {
         // given
-        Category category = Category.createCategory("name");
+        Category category = new Category("name");
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
@@ -79,9 +79,8 @@ public class CategoryServiceTest {
     public void createCategoryException() {
         // given
         String categoryName = "name";
-        Category category = Category.createCategory(categoryName);
         CategoryCreateRequestDto req = new CategoryCreateRequestDto(categoryName);
-        given(categoryRepository.findByName(categoryName)).willReturn(Optional.of(category));
+        given(categoryRepository.existsByName(categoryName)).willReturn(true);
 
         // when, then
         assertThatThrownBy(() -> categoryService.createCategory(req))
@@ -90,7 +89,7 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("존재하지 않는 카테고리를 삭제하려하면 예외 발생")
-    public void deleteCategoryException(){
+    public void deleteCategoryException() {
         // given
         Long id = 1L;
         given(categoryRepository.findById(anyLong())).willReturn(Optional.empty());
