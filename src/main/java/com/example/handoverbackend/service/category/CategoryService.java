@@ -22,18 +22,16 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public List<CategoryResponseDto> findAllCategory(){
+    public List<CategoryResponseDto> findAllCategory() {
         return categoryRepository.findAll().stream()
             .map(CategoryResponseDto::toDto)
             .toList();
     }
 
     @Transactional
-    public String createCategory(CategoryCreateRequestDto requestDto){
-        if (validationCategoryName(requestDto.getName())){
-            throw new CategoryAlreadyExistException(requestDto.getName());
-        }
-        Category category = Category.createCategory(requestDto.getName());
+    public String createCategory(CategoryCreateRequestDto requestDto) {
+        validationCategoryName(requestDto.getName());
+        Category category = new Category(requestDto.getName());
         categoryRepository.save(category);
         return SUCCESS_CREATE_CATEGORY;
     }
@@ -46,7 +44,9 @@ public class CategoryService {
         return SUCCESS_DELETE_CATEGORY;
     }
 
-    private boolean validationCategoryName(String name){
-        return categoryRepository.findByName(name).isPresent();
+    private void validationCategoryName(String name) {
+        if (categoryRepository.existsByName(name)) {
+            throw new CategoryAlreadyExistException(name);
+        }
     }
 }
