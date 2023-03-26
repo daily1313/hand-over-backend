@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 class BoardControllerTest {
+
     @InjectMocks
     BoardController boardController;
     @Mock
