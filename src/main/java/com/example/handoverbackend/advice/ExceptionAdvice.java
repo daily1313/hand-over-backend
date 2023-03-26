@@ -110,6 +110,14 @@ public class ExceptionAdvice {
     }
 
     // 409 응답
+    // 카테고리 중복
+    @ExceptionHandler(CategoryAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response CategoryAlreadyExistsException(CategoryAlreadyExistException e) {
+        return Response.failure(409, e.getMessage() + "은 중복된 카테고리 입니다.");
+    }
+
+    // 409 응답
     // email 중복(이메일 중복)
     @ExceptionHandler(EmailAlreadyExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
