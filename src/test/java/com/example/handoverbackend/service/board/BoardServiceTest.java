@@ -8,6 +8,7 @@ import com.example.handoverbackend.dto.board.BoardCreateRequestDto;
 import com.example.handoverbackend.dto.board.BoardFindAllWithPagingResponseDto;
 import com.example.handoverbackend.dto.board.BoardFindResponseDto;
 import com.example.handoverbackend.dto.board.BoardUpdateRequestDto;
+import com.example.handoverbackend.exception.*;
 import com.example.handoverbackend.factory.BoardMaker;
 import com.example.handoverbackend.repository.board.BoardRepository;
 import com.example.handoverbackend.repository.board.FavoriteRepository;
@@ -24,6 +25,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +37,18 @@ import static com.example.handoverbackend.domain.board.Favorite.*;
 import static com.example.handoverbackend.domain.category.Category.*;
 import static com.example.handoverbackend.factory.ImageMaker.createImage;
 import static com.example.handoverbackend.factory.ImageMaker.createImages;
+import static com.example.handoverbackend.factory.MemberMaker.*;
 import static com.example.handoverbackend.factory.MemberMaker.createMember;
+import static com.example.handoverbackend.factory.MemberMaker.createMember2;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class BoardServiceTest {
+
     @InjectMocks
     BoardService boardService;
     @Mock
@@ -234,5 +242,74 @@ class BoardServiceTest {
 
         //then
         assertThat(result.getBoards().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("다른 사람의 게시물을 수정하려하면 예외 발생")
+    void editBoardException() {
+        //given
+        Long id = 1l;
+        BoardUpdateRequestDto req = new BoardUpdateRequestDto("title", "content", createImages(), List.of());
+        Member member1 = createMember();
+        Member member2 = createMember2();
+        Board board = Board.createBoard("title2", "content2", member1, null, List.of(createImage()));
+        given(boardRepository.findById(id)).willReturn(Optional.of(board));
+
+        //when, then
+        assertThatThrownBy(() -> boardService.editBoard(id, req, member2))
+            .isInstanceOf(MemberNotEqualsException.class);
+    }
+
+    @Test
+    @DisplayName("다른 사람의 게시물을 삭제하려하면 예외 발생")
+    void deleteBoardException() {
+        //given
+        Long id = 1l;
+        Board board = BoardMaker.createBoard();
+        Member member2 = createMember2();
+        given(boardRepository.findById(id)).willReturn(Optional.of(board));
+
+        //when, then
+        assertThatThrownBy(() -> boardService.deleteBoard(id, member2))
+            .isInstanceOf(MemberNotEqualsException.class);
+    }
+
+    @Test
+    @DisplayName("카테고리가 없을 경우 예외 발생")
+    void createBoardException() {
+        //given
+        BoardCreateRequestDto req = new BoardCreateRequestDto("title", "content", createImages());
+        Member member = createMember();
+        given(categoryRepository.findById(0L)).willReturn(Optional.empty());
+
+        //when, then
+        assertThatThrownBy(() -> boardService.createBoard(req, member, 0L))
+            .isInstanceOf(CategoryNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("게시판이 존재하지 않을 경우 예외 발생")
+    void findBoardException() {
+        //given
+        Long id = 1L;
+        given(boardRepository.findById(id)).willReturn(Optional.empty());
+
+        //when, then
+        assertThatThrownBy(() -> boardService.findBoard(id))
+            .isInstanceOf(BoardNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("잘못된 이미지를 올릴시 예외 발생")
+    void uploadImageException() {
+        //given
+        List<MultipartFile> images = new ArrayList<>();
+        images.add(new MockMultipartFile("test1", "test1.error", MediaType.IMAGE_PNG_VALUE, "test1".getBytes()));
+        BoardCreateRequestDto req = new BoardCreateRequestDto("title", "content", images);
+        Member member = createMember();
+
+        //when, then
+        assertThatThrownBy(() -> boardService.createBoard(req, member, 0L))
+            .isInstanceOf(UnsupportedImageFormatException.class);
     }
 }
