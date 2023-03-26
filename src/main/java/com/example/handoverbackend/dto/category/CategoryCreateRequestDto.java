@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoryCreateRequestDto {
 
-    @ApiModelProperty(value = "카테고리 명", notes = "카테고리 명을 입력하세요.",required = true, example = "카테고리 이름")
+    @ApiModelProperty(value = "카테고리 명", notes = "카테고리 명을 입력하세요.", required = true, example = "카테고리 이름")
     @NotBlank(message = "카테고리 명을 입력하세요.")
     private String name;
 }

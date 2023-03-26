@@ -13,9 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryResponseDto {
+
     private String name;
 
-    public static CategoryResponseDto toDto(Category category){
+    public static CategoryResponseDto toDto(Category category) {
         return new CategoryResponseDto(category.getName());
     }
 }

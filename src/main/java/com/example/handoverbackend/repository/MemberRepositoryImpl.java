@@ -10,7 +10,9 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,21 +22,20 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
-
     private final JPAQueryFactory queryFactory;
 
     @Override
     public Page<MemberResponseDto> searchMember(MemberSearchCondition condition, Pageable pageable) {
 
         QueryResults<MemberResponseDto> result = queryFactory
-                .select(new QMemberResponseDto(
-                        member.name,
-                        member.username,
-                        member.nickname,
-                        member.authority))
-                .from(member)
-                .where(containsNameAndNickname(condition.getName(), condition.getNickname()))
-                .fetchResults();
+            .select(new QMemberResponseDto(
+                member.name,
+                member.username,
+                member.nickname,
+                member.authority))
+            .from(member)
+            .where(containsNameAndNickname(condition.getName(), condition.getNickname()))
+            .fetchResults();
 
         List<MemberResponseDto> content = result.getResults();
 

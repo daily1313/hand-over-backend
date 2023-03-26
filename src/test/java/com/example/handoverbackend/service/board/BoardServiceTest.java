@@ -62,7 +62,7 @@ class BoardServiceTest {
 
     @BeforeEach
     public void beforeEach() {
-        Category category = createCategory("category");
+        Category category = new Category("category");
     }
 
     @Test
@@ -71,7 +71,7 @@ class BoardServiceTest {
         //given
         BoardCreateRequestDto req = new BoardCreateRequestDto("title", "content", createImages());
         Member member = createMember();
-        Category category = createCategory("category");
+        Category category = new Category("category");
         given(categoryRepository.findById(0L)).willReturn(Optional.of(category));
 
         //when

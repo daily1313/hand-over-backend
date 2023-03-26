@@ -1,4 +1,4 @@
 package com.example.handoverbackend.exception;
 
-public class CategoryNotFoundException extends RuntimeException{
+public class CategoryNotFoundException extends RuntimeException {
 }

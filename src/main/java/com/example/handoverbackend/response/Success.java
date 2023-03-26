@@ -8,6 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
-public class Success<T> implements Result{
+public class Success<T> implements Result {
+
     private T data;
 }

@@ -47,14 +47,14 @@ public class Board extends BaseEntity {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Category category;
 
-    @OneToMany(mappedBy = "board",fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Image> images;
 
-    public static Board createBoard(String title, String content, Member member,Category category, List<Image> images) {
+    public static Board createBoard(String title, String content, Member member, Category category, List<Image> images) {
         return new Board(title, content, member, category, images);
     }
 
-    private Board(String title, String content, Member member,Category category, List<Image> images) {
+    private Board(String title, String content, Member member, Category category, List<Image> images) {
         this.title = title;
         this.content = content;
         this.member = member;

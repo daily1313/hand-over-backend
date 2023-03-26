@@ -13,7 +13,7 @@ import static com.example.handoverbackend.factory.MemberMaker.*;
 
 public class BoardMaker {
 
-    public static Board createBoard(){
-        return Board.createBoard("title", "content", createMember(), Category.createCategory("name"), List.of(createImage()));
+    public static Board createBoard() {
+        return Board.createBoard("title", "content", createMember(), new Category("name"), List.of(createImage()));
     }
 }

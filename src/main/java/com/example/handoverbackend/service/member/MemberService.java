@@ -24,10 +24,11 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Page<MemberResponseDto> findAllMembers(Pageable pageable) {
         Page<Member> members = memberRepository.findAll(pageable);
-        Page<MemberResponseDto>  allMembers = members.map(MemberResponseDto::toDto);
+        Page<MemberResponseDto> allMembers = members.map(MemberResponseDto::toDto);
 
         return allMembers;
     }
+
     // 회원 검색 조회(이름, 닉네임)
     @Transactional(readOnly = true)
     public Page<MemberResponseDto> searchMembers(MemberSearchCondition condition, Pageable pageable) {

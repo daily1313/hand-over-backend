@@ -35,7 +35,7 @@ public class MemberController {
     @ApiOperation(value = "전체 회원 조회", notes = "전체 회원을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/members")
-    public Response findAllMembers(@PageableDefault(size= 10, sort="name",direction = Sort.Direction.ASC) Pageable pageable) {
+    public Response findAllMembers(@PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         return Response.success(memberService.findAllMembers(pageable));
     }
 
@@ -43,7 +43,7 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/members/search")
     public Response searchMembers(@RequestBody MemberSearchCondition condition,
-                                  @PageableDefault(size= 10, sort="name",direction = Sort.Direction.ASC) Pageable pageable) {
+                                  @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         return Response.success(memberService.searchMembers(condition, pageable));
     }
 
@@ -68,7 +68,7 @@ public class MemberController {
     private Member getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = memberRepository.findByUsername(authentication.getName())
-                .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(MemberNotFoundException::new);
         return member;
     }
 }

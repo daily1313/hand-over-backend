@@ -17,7 +17,7 @@ public class BoardFindAllResponseDto {
     private String nickname;
     private LocalDateTime createAt;
 
-    public static BoardFindAllResponseDto toDto(Board board){
+    public static BoardFindAllResponseDto toDto(Board board) {
         return new BoardFindAllResponseDto(board.getId(), board.getTitle(), board.getMember().getNickname(), board.getCreatedAt());
     }
 }

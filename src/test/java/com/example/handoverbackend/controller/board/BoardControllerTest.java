@@ -134,9 +134,9 @@ class BoardControllerTest {
     @DisplayName("게시판 수정")
     void editBoard() throws Exception {
         //given
-        Long boardId =1L;
+        Long boardId = 1L;
         List<MultipartFile> addImages = createImages();
-        addImages.add(new MockMultipartFile("test1","test1.jpg",MediaType.IMAGE_PNG_VALUE,"test1".getBytes()));
+        addImages.add(new MockMultipartFile("test1", "test1.jpg", MediaType.IMAGE_PNG_VALUE, "test1".getBytes()));
         List<Long> deletedImages = List.of(1L);
         BoardUpdateRequestDto req = new BoardUpdateRequestDto("title", "content", addImages, deletedImages);
         Member member = createMember();
@@ -175,14 +175,14 @@ class BoardControllerTest {
         ).andExpect(status().isOk());
 
         //then
-        verify(boardService).deleteBoard(boardId,member);
+        verify(boardService).deleteBoard(boardId, member);
     }
 
     @Test
     @DisplayName("게시판 즐겨찾기")
     void favoriteBoard() throws Exception {
         //given
-        Long boardId =1L;
+        Long boardId = 1L;
         Member member = createMember();
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), "", Collections.emptyList());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -201,7 +201,7 @@ class BoardControllerTest {
     @DisplayName("게시판 즐겨찾기 목록 조회")
     void findFavoriteBoards() throws Exception {
         //given
-        Integer page =0;
+        Integer page = 0;
         Member member = createMember();
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), "", Collections.emptyList());
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -213,7 +213,7 @@ class BoardControllerTest {
         ).andExpect(status().isOk());
 
         //then
-        verify(boardService).findFavoriteBoards(page,member);
+        verify(boardService).findFavoriteBoards(page, member);
     }
 
     @Test

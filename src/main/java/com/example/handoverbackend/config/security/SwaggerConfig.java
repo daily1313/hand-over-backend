@@ -12,24 +12,25 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfig {
+
     //http://localhost:8080/swagger-ui/index.html
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
-                .useDefaultResponseMessages(false)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.handoverbackend.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
+            .useDefaultResponseMessages(false)
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("com.example.handoverbackend.controller"))
+            .paths(PathSelectors.any())
+            .build()
+            .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Swagger Test")
-                .description("SwaggerConfig")
-                .version("3.0")
-                .build();
+            .title("Swagger Test")
+            .description("SwaggerConfig")
+            .version("3.0")
+            .build();
     }
 
 }

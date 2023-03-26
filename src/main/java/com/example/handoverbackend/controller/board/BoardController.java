@@ -76,21 +76,21 @@ public class BoardController {
     @ApiOperation(value = "게시글 즐겨찾기", notes = "사용자가 게시글 즐겨찾기를 누릅니다.")
     @PostMapping("/boards/{id}/favorites")
     @ResponseStatus(HttpStatus.OK)
-    public Response favoriteBoard(@ApiParam(value = "게시글 id", required = true) @PathVariable Long id){
+    public Response favoriteBoard(@ApiParam(value = "게시글 id", required = true) @PathVariable Long id) {
         return Response.success(boardService.updateFavoriteBoard(id, getPrincipal()));
     }
 
     @ApiOperation(value = "즐겨찾기 게시판을 조회", notes = "즐겨찾기로 등록한 게시판을 조회합니다.")
     @GetMapping("/boards/favorites")
     @ResponseStatus(HttpStatus.OK)
-    public Response findFavoriteBoards(@RequestParam(defaultValue = DEFAULT_PAGE)Integer page){
+    public Response findFavoriteBoards(@RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(boardService.findFavoriteBoards(page, getPrincipal()));
     }
 
     @ApiOperation(value = "개시글 검색", notes = "게시글을 검색합니다.")
     @GetMapping("/boards/search/{keyword}")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchBoard(@PathVariable String keyword, @RequestParam(defaultValue = DEFAULT_PAGE) Integer page){
+    public Response searchBoard(@PathVariable String keyword, @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(boardService.searchBoard(keyword, page));
     }
 
