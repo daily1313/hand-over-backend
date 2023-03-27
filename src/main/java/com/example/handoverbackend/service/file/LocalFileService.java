@@ -12,14 +12,15 @@ import java.io.IOException;
 
 @Service
 @PropertySource("classpath:application.yml")
-public class LocalFileService implements FileService{
+public class LocalFileService implements FileService {
+
     @Value("${upload.image.location}")
     private String location;
 
     @PostConstruct
-    void postConstruct(){
+    void postConstruct() {
         File directory = new File(location);
-        if (!directory.exists()){
+        if (!directory.exists()) {
             directory.mkdir();
         }
     }
@@ -28,7 +29,7 @@ public class LocalFileService implements FileService{
     public void upload(MultipartFile file, String filename) {
         try {
             file.transferTo(new File(location + filename));
-        } catch (IOException exception){
+        } catch (IOException exception) {
             throw new FileUploadFailureException(exception);
         }
     }

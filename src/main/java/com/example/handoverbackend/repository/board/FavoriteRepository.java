@@ -9,7 +9,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface FavoriteRepository extends JpaRepository<Favorite,Long> {
+public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
+
     Optional<Favorite> findByBoardAndMember(Board board, Member member);
+
     Page<Favorite> findAllByMember(Member member, Pageable pageable);
+
+    boolean existsByBoardAndMember(Board board, Member member);
 }

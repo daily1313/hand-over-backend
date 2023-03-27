@@ -43,6 +43,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final EmailAuthRepository emailAuthRepository;
+
     /**
      * 회원가입 순서 1. email 기반 인증번호 입력 2. email + 인증번호를 EmailAuth 테이블에 저장 3. signUp 메서드에서 회원가입시 EmailAuth 가져와서 비교
      */
@@ -51,7 +52,7 @@ public class AuthService {
         validateSignUpInfo(req);
         Member member = createSignupFormOfUser(req);
         EmailAuth emailAuth = emailAuthRepository.findEmailAuthByEmail(req.getEmail()).orElseThrow(
-                EmailAuthNotFoundException::new);
+            EmailAuthNotFoundException::new);
         if (emailAuth.getKey().equals(req.getEmailAuthKey())) {
             memberRepository.save(member);
             emailAuthRepository.delete(emailAuth);
@@ -71,7 +72,7 @@ public class AuthService {
     @Transactional
     public TokenResponseDto login(LoginRequestDto req) {
         Member member = memberRepository.findByUsername(req.getUsername())
-                .orElseThrow(LoginFailureException::new);
+            .orElseThrow(LoginFailureException::new);
 
         validatePassword(req, member);
         Authentication authentication = getUserAuthentication(req);
@@ -83,9 +84,9 @@ public class AuthService {
 
     private RefreshToken buildRefreshToken(Authentication authentication, TokenDto tokenDto) {
         return RefreshToken.builder()
-                .key(authentication.getName())
-                .value(tokenDto.getRefreshToken())
-                .build();
+            .key(authentication.getName())
+            .value(tokenDto.getRefreshToken())
+            .build();
     }
 
     private Authentication getUserAuthentication(LoginRequestDto req) {
@@ -101,7 +102,7 @@ public class AuthService {
 
         Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
         RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
-                .orElseThrow(() -> new RuntimeException(LOGOUT_USER_MESSAGE));
+            .orElseThrow(() -> new RuntimeException(LOGOUT_USER_MESSAGE));
         validateRefreshTokenOwner(refreshToken, tokenRequestDto);
 
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
@@ -114,7 +115,7 @@ public class AuthService {
 
     private Member createSignupFormOfUser(SignUpRequestDto req) {
         Member member = Member.createMember(req.getUsername(), passwordEncoder.encode(req.getPassword()),
-                req.getName(), req.getEmail(), req.getNickname(), Authority.ROLE_USER);
+            req.getName(), req.getEmail(), req.getNickname(), Authority.ROLE_USER);
 
         return member;
     }

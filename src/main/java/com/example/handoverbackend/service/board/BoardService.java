@@ -153,7 +153,7 @@ public class BoardService {
     }
 
     private boolean hasFavoriteBoard(Board board, Member member) {
-        return favoriteRepository.findByBoardAndMember(board, member).isPresent();
+        return favoriteRepository.existsByBoardAndMember(board, member);
     }
 
     private void validateBoardWriter(Board board, Member member) {

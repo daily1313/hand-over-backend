@@ -7,8 +7,10 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMessage.RecipientType;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -96,7 +98,7 @@ public class EmailService {
 
         try {// 예외처리
 
-            if(emailAuthRepository.findEmailAuthByEmail(to) != null) {
+            if (emailAuthRepository.findEmailAuthByEmail(to) != null) {
                 ePw = createKey();
                 emailAuthRepository.deleteEmailAuthByEmail(to);
             }

@@ -4,14 +4,12 @@ import com.example.handoverbackend.domain.common.BaseEntity;
 import com.example.handoverbackend.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Getter
 @Entity
 public class Favorite extends BaseEntity {
@@ -31,7 +29,7 @@ public class Favorite extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    public static Favorite createFavorite(Board board, Member member){
+    public static Favorite createFavorite(Board board, Member member) {
         return new Favorite(board, member);
     }
 

@@ -3,6 +3,7 @@ package com.example.handoverbackend.service.category;
 import com.example.handoverbackend.domain.category.Category;
 import com.example.handoverbackend.dto.category.CategoryCreateRequestDto;
 import com.example.handoverbackend.dto.category.CategoryResponseDto;
+import com.example.handoverbackend.exception.CategoryAlreadyExistException;
 import com.example.handoverbackend.exception.CategoryNotFoundException;
 import com.example.handoverbackend.repository.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +22,16 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public List<CategoryResponseDto> findAllCategory(){
+    public List<CategoryResponseDto> findAllCategory() {
         return categoryRepository.findAll().stream()
             .map(CategoryResponseDto::toDto)
             .toList();
     }
 
     @Transactional
-    public String createCategory(CategoryCreateRequestDto requestDto){
-        Category category = Category.createCategory(requestDto.getName());
+    public String createCategory(CategoryCreateRequestDto requestDto) {
+        validationCategoryName(requestDto.getName());
+        Category category = new Category(requestDto.getName());
         categoryRepository.save(category);
         return SUCCESS_CREATE_CATEGORY;
     }
@@ -40,5 +42,11 @@ public class CategoryService {
             .orElseThrow(CategoryNotFoundException::new);
         categoryRepository.delete(category);
         return SUCCESS_DELETE_CATEGORY;
+    }
+
+    private void validationCategoryName(String name) {
+        if (categoryRepository.existsByName(name)) {
+            throw new CategoryAlreadyExistException(name);
+        }
     }
 }

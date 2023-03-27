@@ -1,6 +1,7 @@
 package com.example.handoverbackend.exception;
 
-public class EmailAlreadyExistException extends RuntimeException{
+public class EmailAlreadyExistException extends RuntimeException {
+
     public EmailAlreadyExistException(String message) {
         super(message);
     }

@@ -9,18 +9,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    public static Category createCategory(String name){
-        return new Category(name);
-    }
-
-    private Category(String name) {
+    public Category(String name) {
         this.name = name;
     }
 }
