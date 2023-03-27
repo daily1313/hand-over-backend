@@ -50,6 +50,9 @@ public class Board extends BaseEntity {
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Image> images;
 
+    @Column(nullable = false)
+    private boolean reportedStatus;
+
     public static Board createBoard(String title, String content, Member member, Category category, List<Image> images) {
         return new Board(title, content, member, category, images);
     }
@@ -61,6 +64,7 @@ public class Board extends BaseEntity {
         this.category = category;
         this.images = new ArrayList<>();
         addImages(images);
+        reportedStatus = false;
     }
 
     public ImageUpdatedResult update(BoardUpdateRequestDto req) {
@@ -112,6 +116,14 @@ public class Board extends BaseEntity {
 
     public boolean isOwnBoard(Member member) {
         return this.member.equals(member);
+    }
+
+    public void suspend() {
+        reportedStatus = true;
+    }
+
+    public void unLockSuspend() {
+        reportedStatus = false;
     }
 
     @Getter

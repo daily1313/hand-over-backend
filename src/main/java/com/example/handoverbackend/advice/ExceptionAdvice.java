@@ -1,7 +1,6 @@
 package com.example.handoverbackend.advice;
 
 import com.example.handoverbackend.exception.*;
-
 import com.example.handoverbackend.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -66,6 +65,22 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Response favoriteNotFoundException() {
         return Response.failure(404, "요청한 즐겨찾기를 찾을 수 없습니다.");
+    }
+
+    // 404 응답
+    // 자기 자신을 신고할 수 없다.
+    @ExceptionHandler(NotSelfReportException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response notSelfReportException() {
+        return Response.failure(404, "자기 자신은 신고할 수 없습니다.");
+    }
+
+    // 404 응답
+    // 이미 신고 기록이 있어서 신고 실패
+    @ExceptionHandler(AlreadyReportException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response alreadyReportException() {
+        return Response.failure(404, "이미 신고를 했습니다.");
     }
 
     // 401 응답
