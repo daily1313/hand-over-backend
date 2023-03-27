@@ -14,4 +14,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     Optional<Favorite> findByBoardAndMember(Board board, Member member);
 
     Page<Favorite> findAllByMember(Member member, Pageable pageable);
+
+    boolean existsByBoardAndMember(Board board, Member member);
 }
