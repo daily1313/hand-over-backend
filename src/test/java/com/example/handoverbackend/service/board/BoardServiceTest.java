@@ -173,7 +173,7 @@ class BoardServiceTest {
         Board board = BoardMaker.createBoard();
 
         given(boardRepository.findById(id)).willReturn(Optional.of(board));
-        given(favoriteRepository.findByBoardAndMember(board, member)).willReturn(Optional.empty());
+        given(favoriteRepository.existsByBoardAndMember(board, member)).willReturn(false);
 
         //when
         String result = boardService.updateFavoriteBoard(id, member);
@@ -195,6 +195,7 @@ class BoardServiceTest {
         Favorite favorite = createFavorite(board, member);
 
         given(boardRepository.findById(id)).willReturn(Optional.of(board));
+        given(favoriteRepository.existsByBoardAndMember(board, member)).willReturn(true);
         given(favoriteRepository.findByBoardAndMember(board, member)).willReturn(Optional.of(favorite));
 
         //when
@@ -213,7 +214,7 @@ class BoardServiceTest {
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         Member member = createMember();
         List<Favorite> favorites = new ArrayList<>();
-        favorites.add(new Favorite(1L, BoardMaker.createBoard(), member));
+        favorites.add(createFavorite(BoardMaker.createBoard(), member));
         Page<Favorite> favoritesWithPaging = new PageImpl<>(favorites);
         given(favoriteRepository.findAllByMember(member, pageRequest)).willReturn(favoritesWithPaging);
 
