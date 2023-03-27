@@ -39,12 +39,10 @@ public class ReportController {
         return Response.success(reportService.reportBoard(requestDto, getPrincipal()));
     }
 
-
     private Member getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = memberRepository.findByUsername(authentication.getName())
             .orElseThrow(MemberNotFoundException::new);
         return member;
     }
-
 }
