@@ -19,6 +19,7 @@ import com.example.handoverbackend.exception.UsernameAlreadyExistException;
 import com.example.handoverbackend.repository.EmailAuthRepository;
 import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.repository.RefreshTokenRepository;
+import com.example.handoverbackend.service.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -74,7 +75,7 @@ public class AuthService {
         Member member = memberRepository.findByUsername(req.getUsername())
             .orElseThrow(LoginFailureException::new);
 
-        validatePassword(req, member);
+        validateUsernameAndPassword(req, member);
         Authentication authentication = getUserAuthentication(req);
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
         RefreshToken refreshToken = buildRefreshToken(authentication, tokenDto);
@@ -135,8 +136,8 @@ public class AuthService {
         }
     }
 
-    private void validatePassword(LoginRequestDto loginRequestDto, Member member) {
-        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword())) {
+    private void validateUsernameAndPassword(LoginRequestDto loginRequestDto, Member member) {
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword()) || member.getUsername().equals(loginRequestDto.getUsername())) {
             throw new LoginFailureException();
         }
     }
@@ -152,4 +153,6 @@ public class AuthService {
             throw new RuntimeException(USER_INFORMATION_OF_TOKEN_NOT_MATCH_MESSAGE);
         }
     }
+
+
 }
