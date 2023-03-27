@@ -137,7 +137,7 @@ public class AuthService {
     }
 
     private void validateUsernameAndPassword(LoginRequestDto loginRequestDto, Member member) {
-        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword()) || member.getUsername().equals(loginRequestDto.getUsername())) {
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword()) || !member.getUsername().equals(loginRequestDto.getUsername())) {
             throw new LoginFailureException();
         }
     }
