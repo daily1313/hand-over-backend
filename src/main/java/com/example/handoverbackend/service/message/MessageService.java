@@ -78,8 +78,8 @@ public class MessageService {
 
         message.deletedByReceiver();
 
-        if(isDeletedBySenderAndReceiver(id)) {
-            messageRepository.deleteById(id);
+        if(isDeletedBySenderAndReceiver(message)) {
+            messageRepository.delete(message);
             return DELETE_SUCCESS_RECEIVED_MESSAGE;
         }
 
@@ -98,15 +98,15 @@ public class MessageService {
 
         message.deletedBySender();
 
-        if(isDeletedBySenderAndReceiver(id)) {
-            messageRepository.deleteById(id);
+        if(isDeletedBySenderAndReceiver(message)) {
+            messageRepository.delete(message);
             return DELETE_SUCCESS_SENT_MESSAGE;
         }
         return DELETE_SUCCESS_SENT_MESSAGE;
     }
 
-    private boolean isDeletedBySenderAndReceiver(Long id) {
-        Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
+
+    private boolean isDeletedBySenderAndReceiver(Message message) {
         if(message.isDeletable()) {
             return true;
         }
