@@ -11,16 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDateTime;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-/**
- *  발신자 -> 수신자
- *  쪽지 (제목, 내용)
- *  쪽지 작성, 삭제(수신자, 발신자)
- *  ..
- */
 @Entity
 public class Message extends BaseEntity {
 
