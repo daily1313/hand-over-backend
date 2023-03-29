@@ -30,7 +30,6 @@ public class MessageService {
     private final MessageRepository messageRepository;
     private final MemberRepository memberRepository;
 
-
     @Transactional
     public MessageResponseDto writeMessage(Member sender, MessageCreateRequestDto req) {
         Member receiver = memberRepository.findByUsername(req.getReceiverUsername())
@@ -68,43 +67,33 @@ public class MessageService {
 
     @Transactional
     public String deleteMessageByReceiver(Long id, Member receiver) {
-
         Message message = messageRepository.findByIdWithReceiver(id, receiver.getUsername()).orElseThrow(
                 MessageNotFoundException::new);
-
         if(!message.getReceiver().equals(receiver)) {
             throw new MemberNotEqualsException();
         }
-
         message.deletedByReceiver();
-
         if(isDeletedBySenderAndReceiver(message)) {
             messageRepository.delete(message);
             return DELETE_SUCCESS_RECEIVED_MESSAGE;
         }
-
         return DELETE_SUCCESS_RECEIVED_MESSAGE;
     }
 
     @Transactional
     public String deleteMessageBySender(Long id, Member sender) {
-
         Message message = messageRepository.findByIdWithSender(id, sender.getUsername()).orElseThrow(
                 MessageNotFoundException::new);
-
         if(!message.getSender().equals(sender)) {
             throw new MemberNotEqualsException();
         }
-
         message.deletedBySender();
-
         if(isDeletedBySenderAndReceiver(message)) {
             messageRepository.delete(message);
             return DELETE_SUCCESS_SENT_MESSAGE;
         }
         return DELETE_SUCCESS_SENT_MESSAGE;
     }
-
 
     private boolean isDeletedBySenderAndReceiver(Message message) {
         if(message.isDeletable()) {
