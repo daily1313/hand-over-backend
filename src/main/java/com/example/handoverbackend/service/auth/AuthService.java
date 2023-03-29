@@ -74,7 +74,6 @@ public class AuthService {
     public TokenResponseDto login(LoginRequestDto req) {
         Member member = memberRepository.findByUsername(req.getUsername())
             .orElseThrow(LoginFailureException::new);
-
         validatePassword(req, member);
         validateUsername(req, member);
         Authentication authentication = getUserAuthentication(req);
@@ -101,16 +100,13 @@ public class AuthService {
     @Transactional
     public TokenResponseDto reissue(TokenRequestDto tokenRequestDto) {
         validateRefreshToken(tokenRequestDto);
-
         Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
         RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
             .orElseThrow(() -> new RuntimeException(LOGOUT_USER_MESSAGE));
         validateRefreshTokenOwner(refreshToken, tokenRequestDto);
-
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
         RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
         refreshTokenRepository.save(newRefreshToken);
-
         TokenResponseDto tokenResponseDto = new TokenResponseDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
         return tokenResponseDto;
     }
@@ -123,7 +119,6 @@ public class AuthService {
     }
 
     private void validateSignUpInfo(SignUpRequestDto signUpRequestDto) {
-
         if (memberRepository.existsByUsername(signUpRequestDto.getUsername())) {
             throw new UsernameAlreadyExistException(signUpRequestDto.getUsername());
         }
