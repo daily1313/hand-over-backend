@@ -55,20 +55,22 @@ public class MessageService {
 
     @Transactional(readOnly = true)
     public MessageResponseDto findSentMessage(Long sentMessageId, Member sender) {
-        Message message = messageRepository.findByIdWithSender(sentMessageId, sender.getUsername()).orElseThrow(MessageNotFoundException::new);
+        Message message = messageRepository.findByIdWithSender(sentMessageId, sender.getUsername())
+                .orElseThrow(MessageNotFoundException::new);
         return MessageResponseDto.toDto(message);
     }
 
     @Transactional(readOnly = true)
     public MessageResponseDto findReceivedMessage(Long receivedMessageId, Member receiver) {
-        Message message = messageRepository.findByIdWithReceiver(receivedMessageId, receiver.getUsername()).orElseThrow(MessageNotFoundException::new);
+        Message message = messageRepository.findByIdWithReceiver(receivedMessageId, receiver.getUsername())
+                .orElseThrow(MessageNotFoundException::new);
         return MessageResponseDto.toDto(message);
     }
 
     @Transactional
     public String deleteMessageByReceiver(Long id, Member receiver) {
-        Message message = messageRepository.findByIdWithReceiver(id, receiver.getUsername()).orElseThrow(
-                MessageNotFoundException::new);
+        Message message = messageRepository.findByIdWithReceiver(id, receiver.getUsername())
+                .orElseThrow(MessageNotFoundException::new);
         if(!message.getReceiver().equals(receiver)) {
             throw new MemberNotEqualsException();
         }
@@ -82,8 +84,8 @@ public class MessageService {
 
     @Transactional
     public String deleteMessageBySender(Long id, Member sender) {
-        Message message = messageRepository.findByIdWithSender(id, sender.getUsername()).orElseThrow(
-                MessageNotFoundException::new);
+        Message message = messageRepository.findByIdWithSender(id, sender.getUsername())
+                .orElseThrow(MessageNotFoundException::new);
         if(!message.getSender().equals(sender)) {
             throw new MemberNotEqualsException();
         }
