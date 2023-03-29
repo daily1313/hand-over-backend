@@ -75,7 +75,8 @@ public class AuthService {
         Member member = memberRepository.findByUsername(req.getUsername())
             .orElseThrow(LoginFailureException::new);
 
-        validateUsernameAndPassword(req, member);
+        validatePassword(req, member);
+        validateUsername(req, member);
         Authentication authentication = getUserAuthentication(req);
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
         RefreshToken refreshToken = buildRefreshToken(authentication, tokenDto);
@@ -136,8 +137,14 @@ public class AuthService {
         }
     }
 
-    private void validateUsernameAndPassword(LoginRequestDto loginRequestDto, Member member) {
-        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword()) || !member.getUsername().equals(loginRequestDto.getUsername())) {
+    private void validatePassword(LoginRequestDto loginRequestDto, Member member) {
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword())) {
+            throw new LoginFailureException();
+        }
+    }
+
+    private void validateUsername(LoginRequestDto loginRequestDto, Member member) {
+        if (!member.getUsername().equals(loginRequestDto.getUsername())) {
             throw new LoginFailureException();
         }
     }
@@ -153,6 +160,4 @@ public class AuthService {
             throw new RuntimeException(USER_INFORMATION_OF_TOKEN_NOT_MATCH_MESSAGE);
         }
     }
-
-
 }
