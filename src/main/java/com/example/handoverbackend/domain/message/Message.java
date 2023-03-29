@@ -28,7 +28,6 @@ public class Message extends BaseEntity {
     @Lob
     private String content;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
