@@ -80,19 +80,19 @@ public class Ticket {
         this.isOnSale = true;
     }
 
-    public static void validateSeller(Member loginUser, Member seller) {
-        if(!loginUser.equals(seller)) {
+    public void validateSeller(Member findMember) {
+        if(!this.seller.equals(findMember)) {
             throw new MemberNotEqualsException();
         }
     }
 
-    public static void validateIsSoldOut(Ticket ticket) {
+    public void validateIsSoldOut(Ticket ticket) {
         if(!ticket.isOnSale()) {
             throw new AlreadySoldOutException();
         }
     }
 
-    public static void validateIsOnSale(Ticket ticket) {
+    public void validateIsOnSale(Ticket ticket) {
         if(ticket.isOnSale()) {
             throw new AlreadyOnSaleException();
         }

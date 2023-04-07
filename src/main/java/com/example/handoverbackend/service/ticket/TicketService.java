@@ -1,8 +1,5 @@
 package com.example.handoverbackend.service.ticket;
 
-import static com.example.handoverbackend.domain.ticket.Ticket.validateIsOnSale;
-import static com.example.handoverbackend.domain.ticket.Ticket.validateIsSoldOut;
-import static com.example.handoverbackend.domain.ticket.Ticket.validateSeller;
 
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.ticket.Ticket;
@@ -11,7 +8,6 @@ import com.example.handoverbackend.dto.ticket.TicketCreateRequestDto;
 import com.example.handoverbackend.dto.ticket.TicketEditRequestDto;
 import com.example.handoverbackend.dto.ticket.TicketFindAllWithPagingResponseDto;
 import com.example.handoverbackend.dto.ticket.TicketResponseDto;
-import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.exception.TicketNotFoundException;
 import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.repository.ticket.TicketRepository;
@@ -20,7 +16,6 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,14 +31,11 @@ public class TicketService {
     private static final String PRICE_PAGE_SORT = "price";
 
     private final TicketRepository ticketRepository;
-    private final MemberRepository memberRepository;
 
     @Transactional
     public TicketResponseDto writeTicketPost(Member seller, TicketCreateRequestDto req) {
-        Member findMember = memberRepository.findByUsername(seller.getUsername())
-                .orElseThrow(MemberNotFoundException::new);
         Ticket ticket = Ticket.builder()
-                .seller(findMember)
+                .seller(seller)
                 .category(req.getCategory())
                 .ticketName(req.getTicketName())
                 .address(req.getAddress())
@@ -59,11 +51,9 @@ public class TicketService {
 
     @Transactional
     public String changeTicketSoldOutStatus(Member seller, Long id) {
-        Member findMember = memberRepository.findByUsername(seller.getUsername())
-                .orElseThrow(MemberNotFoundException::new);
-        validateSeller(findMember, seller);
         Ticket ticket = ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
-        validateIsSoldOut(ticket);
+        ticket.validateSeller(seller);
+        ticket.validateIsSoldOut(ticket);
         ticket.changeSoldOutTicketStatus();
         ticketRepository.save(ticket);
         return CHANGE_TICKET_SOLD_OUT_STATUS_SUCCESS_MESSAGE;
@@ -71,11 +61,9 @@ public class TicketService {
 
     @Transactional
     public String changeTicketOnSaleStatus(Member seller, Long id) {
-        Member findMember = memberRepository.findByUsername(seller.getUsername())
-                .orElseThrow(MemberNotFoundException::new);
-        validateSeller(findMember, seller);
         Ticket ticket = ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
-        validateIsOnSale(ticket);
+        ticket.validateSeller(seller);
+        ticket.validateIsOnSale(ticket);
         ticket.changeOnSaleTicketStatus();
         ticketRepository.save(ticket);
         return CHANGE_TICKET_ON_SALE_STATUS_SUCCESS_MESSAGE;
@@ -83,10 +71,8 @@ public class TicketService {
 
     @Transactional
     public TicketResponseDto editTicketPost(Member seller, TicketEditRequestDto req, Long id) {
-        Member findMember = memberRepository.findByUsername(seller.getUsername())
-                .orElseThrow(MemberNotFoundException::new);
-        validateSeller(findMember, seller);
         Ticket ticket = ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
+        ticket.validateSeller(seller);
         ticket.editTicketInfo(req);
         return TicketResponseDto.toDto(ticket);
     }
