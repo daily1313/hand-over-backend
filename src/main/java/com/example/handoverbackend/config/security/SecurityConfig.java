@@ -101,6 +101,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/tickets/{id}/edit/soldOut").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/tickets/{id}/edit/onSale").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/tickets").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/tickets/low-price").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/tickets/high-price").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/tickets/search/{ticketName}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/tickets/search/{address}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/api/tickets/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
