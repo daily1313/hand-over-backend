@@ -1,5 +1,6 @@
-package com.example.handoverbackend.domain.board;
+package com.example.handoverbackend.domain.favorite;
 
+import com.example.handoverbackend.domain.board.Board;
 import com.example.handoverbackend.domain.common.BaseEntity;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.ticket.Ticket;

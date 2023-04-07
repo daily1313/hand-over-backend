@@ -1,7 +1,7 @@
 package com.example.handoverbackend.repository.board;
 
 import com.example.handoverbackend.domain.board.Board;
-import com.example.handoverbackend.domain.board.Favorite;
+import com.example.handoverbackend.domain.favorite.Favorite;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.ticket.Ticket;
 import org.springframework.data.domain.Page;

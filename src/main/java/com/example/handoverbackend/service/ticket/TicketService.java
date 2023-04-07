@@ -1,12 +1,9 @@
 package com.example.handoverbackend.service.ticket;
 
 
-import com.example.handoverbackend.domain.board.Board;
-import com.example.handoverbackend.domain.board.Favorite;
+import com.example.handoverbackend.domain.favorite.Favorite;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.ticket.Ticket;
-import com.example.handoverbackend.dto.board.BoardFindAllResponseDto;
-import com.example.handoverbackend.dto.board.BoardFindAllWithPagingResponseDto;
 import com.example.handoverbackend.dto.page.PageInfoDto;
 import com.example.handoverbackend.dto.ticket.TicketCreateRequestDto;
 import com.example.handoverbackend.dto.ticket.TicketEditRequestDto;

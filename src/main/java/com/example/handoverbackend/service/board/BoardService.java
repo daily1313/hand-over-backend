@@ -1,7 +1,7 @@
 package com.example.handoverbackend.service.board;
 
 import com.example.handoverbackend.domain.board.Board;
-import com.example.handoverbackend.domain.board.Favorite;
+import com.example.handoverbackend.domain.favorite.Favorite;
 import com.example.handoverbackend.domain.board.Image;
 import com.example.handoverbackend.domain.category.Category;
 import com.example.handoverbackend.domain.member.Member;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import static com.example.handoverbackend.domain.board.Board.*;
-import static com.example.handoverbackend.domain.board.Favorite.*;
+import static com.example.handoverbackend.domain.favorite.Favorite.*;
 
 @Service
 @RequiredArgsConstructor
