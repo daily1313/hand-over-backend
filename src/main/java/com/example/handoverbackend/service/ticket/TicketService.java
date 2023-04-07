@@ -211,5 +211,4 @@ public class TicketService {
             throw new AlreadyOnSaleException();
         }
     }
-
 }
