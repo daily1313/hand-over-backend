@@ -60,6 +60,14 @@ public class ExceptionAdvice {
     }
 
     // 404 응답
+    // 판매 티켓 찾기 실패
+    @ExceptionHandler(TicketNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response ticketNotFoundException() {
+        return Response.failure(404, "티켓을 찾을 수 없습니다.");
+    }
+
+    // 404 응답
     // 요청한 Favorite 찾을 수 없음
     @ExceptionHandler(FavoriteNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -67,20 +75,36 @@ public class ExceptionAdvice {
         return Response.failure(404, "요청한 즐겨찾기를 찾을 수 없습니다.");
     }
 
-    // 404 응답
+    // 400 응답
     // 자기 자신을 신고할 수 없다.
     @ExceptionHandler(NotSelfReportException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response notSelfReportException() {
-        return Response.failure(404, "자기 자신은 신고할 수 없습니다.");
+        return Response.failure(400, "자기 자신은 신고할 수 없습니다.");
     }
 
-    // 404 응답
+    // 409 응답
+    // 이미 판매완료 처리된 티켓에 대한 예외
+    @ExceptionHandler(AlreadySoldOutException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response alreadySoldOutException() {
+        return Response.failure(400, "이미 판매완료 처리된 티켓입니다.");
+    }
+
+    // 409 응답
+    // 이미 판매중인 티켓에 대한 예외
+    @ExceptionHandler(AlreadySoldOutException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Response alreadyOnSaleException() {
+        return Response.failure(400, "이미 판매중인 티켓입니다.");
+    }
+
+    // 409 응답
     // 이미 신고 기록이 있어서 신고 실패
     @ExceptionHandler(AlreadyReportException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public Response alreadyReportException() {
-        return Response.failure(404, "이미 신고를 했습니다.");
+        return Response.failure(409, "이미 신고를 했습니다.");
     }
 
     // 401 응답
@@ -139,4 +163,6 @@ public class ExceptionAdvice {
     public Response memberEmailAlreadyExistsException(EmailAlreadyExistException e) {
         return Response.failure(409, e.getMessage() + "은 중복된 이메일 입니다.");
     }
+
+
 }
