@@ -173,8 +173,7 @@ public class TicketService {
     }
 
     private void createFavoriteTicketPost(Ticket ticket, Member member) {
-        Favorite favorite = favoriteRepository.findByTicketAndMember(ticket, member)
-                .orElseThrow(FavoriteNotFoundException::new);
+        Favorite favorite = new Favorite(ticket, member);
         favoriteRepository.save(favorite);
     }
 
