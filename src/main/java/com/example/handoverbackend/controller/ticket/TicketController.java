@@ -52,7 +52,7 @@ public class TicketController {
 
     @ApiOperation(value = "티켓 판매 상태 변경(판매 완료료 변경)", notes = "티켓 판매 상태를 판매 완료로 변경합니다.")
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/tickets/{id}/edit")
+    @PatchMapping("/tickets/{id}/edit/soldOut")
     public Response changeTicketSoldOutStatus(@PathVariable Long id) {
         Member seller = getPrincipal();
         return Response.success(ticketService.changeTicketSoldOutStatus(seller, id));
@@ -60,7 +60,7 @@ public class TicketController {
 
     @ApiOperation(value = "티켓 판매 상태 변경(판매중으로 변경)", notes = "티켓 판매 상태를 판매중으로 변경합니다.")
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/tickets/{id}/edit")
+    @PatchMapping("/tickets/{id}/edit/onSale")
     public Response changeTicketOnSaleStatus(@PathVariable Long id) {
         Member seller = getPrincipal();
         return Response.success(ticketService.changeTicketOnSaleStatus(seller, id));
@@ -83,14 +83,14 @@ public class TicketController {
 
     @ApiOperation(value = "티켓 판매글 전체 조회(가격 낮은 순)", notes = "티켓 판매글을 전체 조회합니다(가격 낮은 순 조회)")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/tickets")
+    @GetMapping("/tickets/low-price")
     public Response getAllTicketPostWithPagingOrderByPriceAsc(@RequestParam(name = "page", defaultValue = "price:asc") Integer page) {
         return Response.success(ticketService.getAllTicketPostWithPagingOrderByPriceAsc(page));
     }
 
     @ApiOperation(value = "티켓 판매글 전체 조회(가격 높은 순)", notes = "티켓 판매글을 전체 조회합니다(가격 높은 순 조회)")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/tickets")
+    @GetMapping("/tickets/high-price")
     public Response getAllTicketPostWithPagingOrderByPriceDesc(@RequestParam(name = "page", defaultValue = "price:desc") Integer page) {
         return Response.success(ticketService.getAllTicketPostWithPagingOrderByPriceDesc(page));
     }
