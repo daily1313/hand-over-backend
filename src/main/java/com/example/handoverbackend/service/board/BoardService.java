@@ -1,7 +1,7 @@
 package com.example.handoverbackend.service.board;
 
 import com.example.handoverbackend.domain.board.Board;
-import com.example.handoverbackend.domain.board.Favorite;
+import com.example.handoverbackend.domain.favorite.Favorite;
 import com.example.handoverbackend.domain.board.Image;
 import com.example.handoverbackend.domain.category.Category;
 import com.example.handoverbackend.domain.member.Member;
@@ -26,8 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static com.example.handoverbackend.domain.board.Board.ImageUpdatedResult;
-import static com.example.handoverbackend.domain.board.Favorite.createFavorite;
+import static com.example.handoverbackend.domain.board.Board.*;
+import static com.example.handoverbackend.domain.favorite.Favorite.*;
+
 
 @Service
 @RequiredArgsConstructor

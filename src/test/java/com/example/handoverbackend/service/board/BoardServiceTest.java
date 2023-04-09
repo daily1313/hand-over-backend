@@ -1,7 +1,7 @@
 package com.example.handoverbackend.service.board;
 
 import com.example.handoverbackend.domain.board.Board;
-import com.example.handoverbackend.domain.board.Favorite;
+import com.example.handoverbackend.domain.favorite.Favorite;
 import com.example.handoverbackend.domain.category.Category;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.board.BoardCreateRequestDto;
@@ -33,11 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.handoverbackend.domain.board.Favorite.*;
-import static com.example.handoverbackend.domain.category.Category.*;
+import static com.example.handoverbackend.domain.favorite.Favorite.*;
 import static com.example.handoverbackend.factory.ImageMaker.createImage;
 import static com.example.handoverbackend.factory.ImageMaker.createImages;
-import static com.example.handoverbackend.factory.MemberMaker.*;
 import static com.example.handoverbackend.factory.MemberMaker.createMember;
 import static com.example.handoverbackend.factory.MemberMaker.createMember2;
 import static org.assertj.core.api.Assertions.assertThat;
