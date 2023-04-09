@@ -7,6 +7,9 @@ import com.example.handoverbackend.dto.comment.CommentCreateRequestDto;
 import com.example.handoverbackend.dto.comment.CommentEditRequestDto;
 import com.example.handoverbackend.dto.comment.CommentFindAllWithPagingResponseDto;
 import com.example.handoverbackend.dto.comment.CommentWithBoardNumber;
+import com.example.handoverbackend.exception.BoardNotFoundException;
+import com.example.handoverbackend.exception.CommentNotFoundException;
+import com.example.handoverbackend.exception.MemberNotEqualsException;
 import com.example.handoverbackend.factory.CommentMaker;
 import com.example.handoverbackend.repository.board.BoardRepository;
 import com.example.handoverbackend.repository.comment.CommentRepository;
@@ -26,7 +29,9 @@ import java.util.Optional;
 
 import static com.example.handoverbackend.factory.BoardMaker.createBoard;
 import static com.example.handoverbackend.factory.MemberMaker.createMember;
+import static com.example.handoverbackend.factory.MemberMaker.createMember2;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -113,5 +118,50 @@ public class CommentServiceTest {
 
         //then
         assertThat(result).isEqualTo(SUCCESS_DELETE_COMMENT);
+    }
+
+    @DisplayName("본인의 댓글이 아닌 다른 댓글을 수정하려할시 예외발생")
+    @Test
+    void memberNotEqualsException() {
+        //given
+        CommentEditRequestDto requestDto = new CommentEditRequestDto("change");
+        Board board = createBoard();
+        Member member = createMember();
+        Member member2 = createMember2();
+        Long commentId = 1L;
+        Comment comment = CommentMaker.createComment(board, member2);
+        given(commentRepository.findById(commentId)).willReturn(Optional.of(comment));
+
+        //when, then
+        assertThatThrownBy(() -> commentService.editComment(requestDto, member, commentId))
+            .isInstanceOf(MemberNotEqualsException.class);
+    }
+
+    @DisplayName("게시판이 존재하지 않을 경우 예외발생")
+    @Test
+    void boardNotExistException() {
+        //given
+        CommentCreateRequestDto requestDto = new CommentCreateRequestDto(1L, "content");
+        Member member = createMember();
+        given(boardRepository.findById(1L)).willReturn(Optional.empty());
+
+        //when, then
+        assertThatThrownBy(() -> commentService.createComment(requestDto, member))
+            .isInstanceOf(BoardNotFoundException.class);
+    }
+
+    @DisplayName("댓글이 존재하지 않을경우 예외발생")
+    @Test
+    void commentNotExistException() {
+        //given
+        Board board = createBoard();
+        Member member = createMember();
+        Long commentId = 1L;
+        Comment comment = CommentMaker.createComment(board, member);
+        given(commentRepository.findById(commentId)).willReturn(Optional.empty());
+
+        //when, then
+        assertThatThrownBy(() -> commentService.deleteComment(member, commentId))
+            .isInstanceOf(CommentNotFoundException.class);
     }
 }
