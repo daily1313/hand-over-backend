@@ -101,7 +101,7 @@ public class ExceptionAdvice {
 
     // 409 응답
     // 이미 판매중인 티켓에 대한 예외
-    @ExceptionHandler(AlreadySoldOutException.class)
+    @ExceptionHandler(AlreadyOnSaleException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Response alreadyOnSaleException() {
         return Response.failure(400, "이미 판매중인 티켓입니다.");

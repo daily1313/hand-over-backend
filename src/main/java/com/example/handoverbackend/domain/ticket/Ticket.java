@@ -34,6 +34,7 @@ public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ticket_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -80,22 +81,16 @@ public class Ticket {
         this.isOnSale = true;
     }
 
-    public void validateSeller(Member findMember) {
-        if(!this.seller.equals(findMember)) {
-            throw new MemberNotEqualsException();
-        }
+    public boolean isSeller(Member findMember) {
+        return this.seller.equals(findMember);
     }
 
-    public void validateIsSoldOut(Ticket ticket) {
-        if(!ticket.isOnSale()) {
-            throw new AlreadySoldOutException();
-        }
+    public boolean isSoldOut() {
+        return !this.isOnSale;
     }
 
-    public void validateIsOnSale(Ticket ticket) {
-        if(ticket.isOnSale()) {
-            throw new AlreadyOnSaleException();
-        }
+    public boolean isOnSale() {
+        return this.isOnSale;
     }
 
     public void changeSoldOutTicketStatus() {
