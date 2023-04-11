@@ -65,5 +65,3 @@ public class CommentController {
             .orElseThrow(MemberNotEqualsException::new);
     }
 }
-
-

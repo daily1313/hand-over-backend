@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @ApiOperation(value = "댓글 생성 요청")
 @Getter
 @AllArgsConstructor
