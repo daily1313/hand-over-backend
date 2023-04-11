@@ -3,11 +3,12 @@ package com.example.handoverbackend.dto.ticket;
 import com.example.handoverbackend.domain.ticket.Category;
 import io.swagger.annotations.ApiModelProperty;
 import jakarta.validation.constraints.NotBlank;
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
@@ -27,12 +28,12 @@ public class TicketCreateRequestDto {
     private String address;
 
     @ApiModelProperty(value = "시작 날짜 입력", notes = "시작 날짜를 입력", required = true)
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotBlank(message = "시작 날짜를 입력해주세요.(시작 날짜)")
     private LocalDate startDate;
 
     @ApiModelProperty(value = "마지막 날짜 입력", notes = "마지막 날짜를 입력", required = true)
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotBlank(message = "마지막 날짜를 입력해주세요.(마지막 날짜)")
     private LocalDate endDate;
 

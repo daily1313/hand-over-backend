@@ -27,9 +27,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.handoverbackend.factory.AuthenticationMaker.*;
-import static com.example.handoverbackend.factory.ImageMaker.*;
-import static com.example.handoverbackend.factory.MemberMaker.*;
+import static com.example.handoverbackend.factory.AuthenticationMaker.createAuthentication;
+import static com.example.handoverbackend.factory.ImageMaker.createImages;
+import static com.example.handoverbackend.factory.MemberMaker.createMember;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -91,7 +91,7 @@ class BoardControllerTest {
 
         //when
         mockMvc.perform(
-                get("/api/boards/all{categoryId}", categoryId))
+                get("/api/boards/all/{categoryId}", categoryId))
             .andExpect(status().isOk());
 
         //then

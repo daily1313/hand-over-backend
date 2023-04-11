@@ -37,7 +37,7 @@ public class BoardController {
     }
 
     @ApiOperation(value = "게시글 목록 조회", notes = "게시글 목록을 조회합니다.")
-    @GetMapping("/boards/all{categoryId}")
+    @GetMapping("/boards/all/{categoryId}")
     @ResponseStatus(HttpStatus.OK)
     public Response findAllBoardsWithCategory(@ApiParam(value = "카테고리 id", required = true) @PathVariable Long categoryId,
                                               @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {

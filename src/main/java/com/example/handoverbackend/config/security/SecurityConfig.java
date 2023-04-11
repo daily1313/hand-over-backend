@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -96,6 +95,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/messages/sender/{sentMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/messages/receiver/{receivedMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
 
+
+                .requestMatchers(HttpMethod.GET, "/api/comments").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/comments").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/comments/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/comments/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+
+
                 .requestMatchers(HttpMethod.POST, "/api/tickets").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/tickets/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/tickets/{id}/edit/soldOut").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
@@ -108,6 +114,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PATCH, "/api/tickets/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/tickets/{id}/favorites").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/tickets/favorites").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용

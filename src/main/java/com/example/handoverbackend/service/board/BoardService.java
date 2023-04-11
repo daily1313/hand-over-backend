@@ -29,6 +29,7 @@ import java.util.stream.IntStream;
 import static com.example.handoverbackend.domain.board.Board.*;
 import static com.example.handoverbackend.domain.favorite.Favorite.*;
 
+
 @Service
 @RequiredArgsConstructor
 public class BoardService {
@@ -40,7 +41,6 @@ public class BoardService {
     private static final String SUCCESS_DELETE_FAVORITE = "즐겨찾기가 해제되었습니다.";
     private static final int DEFAULT_PAGE_SIZE = 10;
     private static final String DEFAULT_PAGE_SORT = "id";
-
 
     private final BoardRepository boardRepository;
     private final FavoriteRepository favoriteRepository;
