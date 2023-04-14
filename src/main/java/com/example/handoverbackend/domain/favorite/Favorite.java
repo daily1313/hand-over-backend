@@ -3,7 +3,6 @@ package com.example.handoverbackend.domain.favorite;
 import com.example.handoverbackend.domain.board.Board;
 import com.example.handoverbackend.domain.common.BaseEntity;
 import com.example.handoverbackend.domain.member.Member;
-import com.example.handoverbackend.domain.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,11 +26,6 @@ public class Favorite extends BaseEntity {
     private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Ticket ticket;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
@@ -45,8 +39,4 @@ public class Favorite extends BaseEntity {
         this.member = member;
     }
 
-    public Favorite(Ticket ticket, Member member) {
-        this.ticket = ticket;
-        this.member = member;
-    }
 }
