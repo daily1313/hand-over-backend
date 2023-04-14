@@ -18,7 +18,4 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
     boolean existsByBoardAndMember(Board board, Member member);
 
-    Optional<Favorite> findByTicketAndMember(Ticket ticket, Member member);
-
-    boolean existsByTicketAndMember(Ticket ticket, Member member);
 }
