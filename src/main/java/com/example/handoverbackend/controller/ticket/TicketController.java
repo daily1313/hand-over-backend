@@ -9,9 +9,7 @@ import com.example.handoverbackend.response.Response;
 import com.example.handoverbackend.service.ticket.TicketService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
-import lombok.Builder.Default;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -75,7 +73,7 @@ public class TicketController {
 
     @ApiOperation(value = "티켓 판매글 검색 조회(티켓이름으로 검색)", notes = "티켓 판매글을 전체 조회합니다(티켓이름으로 검색)")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/tickets/search/{ticketName}")
+    @GetMapping("/tickets/search/ticketName/{ticketName}")
     public Response getAllTicketPostWithPagingBySearchingTicketName(@PathVariable String ticketName,
                                                                     @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(ticketService.getAllTicketPostWithPagingBySearchingTicketName(ticketName, page));
@@ -84,20 +82,20 @@ public class TicketController {
     @ApiOperation(value = "티켓 판매글 전체 조회(가격 낮은 순)", notes = "티켓 판매글을 전체 조회합니다(가격 낮은 순 조회)")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tickets/low-price")
-    public Response getAllTicketPostWithPagingOrderByPriceAsc(@RequestParam(name = "page", defaultValue = "price:asc") Integer page) {
+    public Response getAllTicketPostWithPagingOrderByPriceAsc(@RequestParam(name = "page", defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(ticketService.getAllTicketPostWithPagingOrderByPriceAsc(page));
     }
 
     @ApiOperation(value = "티켓 판매글 전체 조회(가격 높은 순)", notes = "티켓 판매글을 전체 조회합니다(가격 높은 순 조회)")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/tickets/high-price")
-    public Response getAllTicketPostWithPagingOrderByPriceDesc(@RequestParam(name = "page", defaultValue = "price:desc") Integer page) {
+    public Response getAllTicketPostWithPagingOrderByPriceDesc(@RequestParam(name = "page", defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(ticketService.getAllTicketPostWithPagingOrderByPriceDesc(page));
     }
 
     @ApiOperation(value = "티켓 판매글 검색 조회(주소로 검색)", notes = "티켓 판매글을 전체 조회합니다(주소로 검색)")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/tickets/search/{address}")
+    @GetMapping("/tickets/search/address/{address}")
     public Response getAllTicketPostWithPagingBySearchingAddress(@PathVariable String address,
                                                                     @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(ticketService.getAllTicketPostWithPagingBySearchingAddress(address, page));
@@ -105,7 +103,7 @@ public class TicketController {
 
     @ApiOperation(value = "티켓 정보 수정", notes = "티켓 정보를 수정합니다.")
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/ticket/{id}")
+    @PatchMapping("/tickets/{id}")
     public Response editTicketPost(@Valid @RequestBody TicketEditRequestDto req, @PathVariable Long id) {
         Member seller = getPrincipal();
         return Response.success(ticketService.editTicketPost(seller, req, id));

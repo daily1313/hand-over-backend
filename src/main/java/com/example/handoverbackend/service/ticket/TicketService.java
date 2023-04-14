@@ -1,7 +1,10 @@
 package com.example.handoverbackend.service.ticket;
 
 
+import static com.example.handoverbackend.domain.favorite.TicketFavorite.createFavorite;
+
 import com.example.handoverbackend.domain.favorite.Favorite;
+import com.example.handoverbackend.domain.favorite.TicketFavorite;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.ticket.Ticket;
 import com.example.handoverbackend.dto.page.PageInfoDto;
@@ -14,7 +17,7 @@ import com.example.handoverbackend.exception.AlreadySoldOutException;
 import com.example.handoverbackend.exception.FavoriteNotFoundException;
 import com.example.handoverbackend.exception.MemberNotEqualsException;
 import com.example.handoverbackend.exception.TicketNotFoundException;
-import com.example.handoverbackend.repository.board.FavoriteRepository;
+import com.example.handoverbackend.repository.ticket.TicketFavoriteRepository;
 import com.example.handoverbackend.repository.ticket.TicketRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,14 +34,14 @@ public class TicketService {
 
     private static final String CHANGE_TICKET_SOLD_OUT_STATUS_SUCCESS_MESSAGE = "판매완료 처리되었습니다.";
     private static final String CHANGE_TICKET_ON_SALE_STATUS_SUCCESS_MESSAGE = "판매중 상태로 처리되었습니다.";
-    private static final String SUCCESS_CREATE_FAVORITE = "즐겨찾기를 하었습니다.";
+    private static final String SUCCESS_CREATE_FAVORITE = "즐겨찾기를 하였습니다.";
     private static final String SUCCESS_DELETE_FAVORITE = "즐겨찾기가 해제되었습니다.";
     private static final int DEFAULT_PAGE_SIZE = 10;
     private static final String DEFAULT_PAGE_SORT = "id";
     private static final String PRICE_PAGE_SORT = "price";
 
     private final TicketRepository ticketRepository;
-    private final FavoriteRepository favoriteRepository;
+    private final TicketFavoriteRepository ticketFavoriteRepository;
 
     @Transactional
     public TicketResponseDto writeTicketPost(Member seller, TicketCreateRequestDto req) {
@@ -82,6 +85,7 @@ public class TicketService {
         Ticket ticket = ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
         validateSeller(ticket, seller);
         ticket.editTicketInfo(req);
+        ticketRepository.save(ticket);
         return TicketResponseDto.toDto(ticket);
     }
 
@@ -155,27 +159,27 @@ public class TicketService {
     @Transactional(readOnly = true)
     public TicketFindAllWithPagingResponseDto findFavoriteTicketPosts(Integer page, Member member) {
         PageRequest pageRequest = getPageRequest(page);
-        Page<Favorite> favorites = favoriteRepository.findAllByMember(member, pageRequest);
+        Page<TicketFavorite> favorites = ticketFavoriteRepository.findAllByMember(member, pageRequest);
         List<TicketResponseDto> allTickets = favorites.stream()
-                .map(Favorite::getTicket)
+                .map(TicketFavorite::getTicket)
                 .map(TicketResponseDto::toDto)
                 .toList();
         return TicketFindAllWithPagingResponseDto.toDto(allTickets, new PageInfoDto(favorites));
     }
 
     private void deleteFavoriteTicketPost(Ticket ticket, Member member) {
-        Favorite favorite = favoriteRepository.findByTicketAndMember(ticket, member)
+        TicketFavorite ticketFavorite = ticketFavoriteRepository.findByTicketAndMember(ticket, member)
                 .orElseThrow(FavoriteNotFoundException::new);
-        favoriteRepository.delete(favorite);
+        ticketFavoriteRepository.delete(ticketFavorite);
     }
 
     private void createFavoriteTicketPost(Ticket ticket, Member member) {
-        Favorite favorite = new Favorite(ticket, member);
-        favoriteRepository.save(favorite);
+        TicketFavorite ticketFavorite = createFavorite(ticket, member);
+        ticketFavoriteRepository.save(ticketFavorite);
     }
 
     private boolean hasFavoriteTicketPost(Ticket ticket, Member member) {
-        return favoriteRepository.existsByTicketAndMember(ticket, member);
+        return ticketFavoriteRepository.existsByTicketAndMember(ticket, member);
     }
 
     private PageRequest getPageRequest(Integer page) {
