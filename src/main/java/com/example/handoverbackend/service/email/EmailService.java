@@ -57,7 +57,7 @@ public class EmailService {
         msgg += ePw + "</strong><div><br/> "; // 인증번호 넣기
         msgg += "</div>";
         message.setText(msgg, "utf-8", "html");// 내용, charset 타입, subtype
-        message.setFrom(new InternetAddress("handoverplatform@naver.com", "핸드오버 관리자"));
+        message.setFrom(new InternetAddress("handover1@naver.com", "핸드오버 관리자"));
 
         return message;
     }
