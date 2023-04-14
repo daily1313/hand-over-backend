@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class TicketResponseDto {
 
     private Category category;
+    private String ticketName;
     private String sellerNickname;
     private String address;
     private LocalDate startDate;
@@ -23,6 +24,7 @@ public class TicketResponseDto {
     public static TicketResponseDto toDto(Ticket ticket) {
         return new TicketResponseDto(
                 ticket.getCategory(),
+                ticket.getTicketName(),
                 ticket.getSeller().getNickname(),
                 ticket.getAddress(),
                 ticket.getStartDate(),
@@ -31,6 +33,4 @@ public class TicketResponseDto {
                 ticket.getPrice()
         );
     }
-
-
 }
