@@ -1,9 +1,12 @@
 package com.example.handoverbackend.domain.member;
 
 import com.example.handoverbackend.domain.common.BaseEntity;
+import com.example.handoverbackend.domain.ticket.Ticket;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,14 +49,14 @@ public class Member extends BaseEntity {
         this.username = username;
         this.password = password;
         this.name = name;
-        this.nickname = nickname;
         this.email = email;
+        this.nickname = nickname;
         this.authority = authority;
         reportedStatus = false;
     }
 
     public static Member createMember(String username, String password, String name, String email, String nickname, Authority authority) {
-        return new Member(username, password, name, nickname, email, authority);
+        return new Member(username, password, name, email, nickname, authority);
     }
 
     public void editMember(MemberEditRequestDto req) {
@@ -70,5 +73,9 @@ public class Member extends BaseEntity {
     public void unLockSuspend() {
         reportedStatus = false;
         authority = Authority.ROLE_USER;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }
