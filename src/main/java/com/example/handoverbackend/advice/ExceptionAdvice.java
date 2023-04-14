@@ -96,7 +96,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(AlreadySoldOutException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Response alreadySoldOutException() {
-        return Response.failure(400, "이미 판매완료 처리된 티켓입니다.");
+        return Response.failure(409, "이미 판매완료 처리된 티켓입니다.");
     }
 
     // 409 응답
@@ -104,7 +104,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(AlreadyOnSaleException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Response alreadyOnSaleException() {
-        return Response.failure(400, "이미 판매중인 티켓입니다.");
+        return Response.failure(409, "이미 판매중인 티켓입니다.");
     }
 
     // 409 응답
