@@ -2,8 +2,8 @@ package com.example.handoverbackend.domain.favorite;
 
 
 import com.example.handoverbackend.domain.common.BaseEntity;
+import com.example.handoverbackend.domain.match.Match;
 import com.example.handoverbackend.domain.member.Member;
-import com.example.handoverbackend.domain.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,29 +14,29 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class TicketFavorite extends BaseEntity {
+public class MatchFavorite extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ticket_Favorite_id")
+    @Column(name = "match_favorite_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket_id")
+    @JoinColumn(name = "match_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Ticket ticket;
+    private Match match;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "member_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    public static TicketFavorite createFavorite(Ticket ticket, Member member) {
-        return new TicketFavorite(ticket, member);
+    public static MatchFavorite createFavorite(Match match, Member member) {
+        return new MatchFavorite(match, member);
     }
 
-    private TicketFavorite(Ticket ticket, Member member) {
-        this.ticket = ticket;
+    private MatchFavorite(Match match, Member member) {
+        this.match = match;
         this.member = member;
     }
 }

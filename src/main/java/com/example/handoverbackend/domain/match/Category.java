@@ -1,9 +1,10 @@
-package com.example.handoverbackend.domain.ticket;
+package com.example.handoverbackend.domain.match;
 
 public enum Category {
-    숙소("숙소"),
-    캠핑("캠핑"),
-    공연("공연"),
+
+    노인돌봄("노인돌봄"),
+    아이돌봄("아이돌봄"),
+    반려동물("반려동물"),
     기타("기타");
 
     private final String value;

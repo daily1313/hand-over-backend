@@ -1,11 +1,7 @@
-package com.example.handoverbackend.domain.ticket;
+package com.example.handoverbackend.domain.match;
 
 import com.example.handoverbackend.domain.member.Member;
-import com.example.handoverbackend.dto.ticket.TicketEditRequestDto;
-import com.example.handoverbackend.dto.ticket.TicketResponseDto;
-import com.example.handoverbackend.exception.AlreadyOnSaleException;
-import com.example.handoverbackend.exception.AlreadySoldOutException;
-import com.example.handoverbackend.exception.MemberNotEqualsException;
+import com.example.handoverbackend.dto.match.MatchEditRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,7 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,11 +28,12 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class Ticket {
+@Table(name = "match_table")
+public class Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ticket_id")
+    @Column(name = "match_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,16 +45,16 @@ public class Ticket {
     private Category category;
 
     @Column(nullable = false)
-    private String ticketName;
+    private String matchName;
 
     @Column(nullable = false)
     private String address;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Column(nullable = false)
     @Lob
@@ -65,49 +64,51 @@ public class Ticket {
     private int price;
 
     @Column(nullable = false)
-    private boolean isOnSale;
+    @Lob
+    private String precaution;
+
+    @Column(nullable = false)
+    private boolean isMatched;
 
     @Builder
-    public Ticket(Member seller, Category category, String ticketName, String address, LocalDate startDate, LocalDate endDate,
-                  String detailsContent, int price, boolean isOnSale) {
-        this.ticketName = ticketName;
+    public Match(Member seller, Category category, String matchName, String address, LocalDateTime startDate, LocalDateTime endDate,
+                 String detailsContent, int price, String precaution, boolean isMatched) {
         this.seller = seller;
         this.category = category;
+        this.matchName = matchName;
         this.address = address;
         this.startDate = startDate;
         this.endDate = endDate;
         this.detailsContent = detailsContent;
         this.price = price;
-        this.isOnSale = true;
+        this.precaution = precaution;
+        this.isMatched = false;
     }
 
     public boolean isSeller(Member findMember) {
         return this.seller.equals(findMember);
     }
 
-    public boolean isSoldOut() {
-        return !this.isOnSale;
+    public void changeStatus() {
+        if(!isMatched) {
+            isMatched = true;
+            return;
+        }
+        isMatched = false;
     }
 
-    public boolean isOnSale() {
-        return this.isOnSale;
-    }
-
-    public void changeSoldOutTicketStatus() {
-        isOnSale = false;
-    }
-
-    public void changeOnSaleTicketStatus() {
-        isOnSale = true;
-    }
-
-    public void editTicketInfo(TicketEditRequestDto req) {
+    public void editMatchInfo(MatchEditRequestDto req) {
         category = req.getCategory();
-        ticketName = req.getTicketName();
+        matchName = req.getMatchName();
         address = req.getAddress();
         startDate = req.getStartDate();
         endDate = req.getEndDate();
         detailsContent = req.getDetailsContent();
         price = req.getPrice();
+        precaution = req.getPrecaution();
+    }
+
+    public boolean isMatched() {
+        return isMatched;
     }
 }
