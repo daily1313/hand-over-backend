@@ -38,5 +38,4 @@ public class Favorite extends BaseEntity {
         this.board = board;
         this.member = member;
     }
-
 }

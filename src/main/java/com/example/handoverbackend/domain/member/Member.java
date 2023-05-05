@@ -1,12 +1,9 @@
 package com.example.handoverbackend.domain.member;
 
 import com.example.handoverbackend.domain.common.BaseEntity;
-import com.example.handoverbackend.domain.ticket.Ticket;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

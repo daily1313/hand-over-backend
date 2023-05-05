@@ -68,11 +68,11 @@ public class ExceptionAdvice {
     }
 
     // 404 응답
-    // 판매 티켓 찾기 실패
-    @ExceptionHandler(TicketNotFoundException.class)
+    // 매칭글 찾기 실패
+    @ExceptionHandler(MatchNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Response ticketNotFoundException() {
-        return Response.failure(404, "티켓을 찾을 수 없습니다.");
+    public Response matchNotFoundException() {
+        return Response.failure(404, "매칭글을 찾을 수 없습니다.");
     }
 
     // 404 응답
@@ -92,19 +92,19 @@ public class ExceptionAdvice {
     }
 
     // 409 응답
-    // 이미 판매완료 처리된 티켓에 대한 예외
-    @ExceptionHandler(AlreadySoldOutException.class)
+    // 이미 매칭완료 처리된 매칭글에 대한 예외
+    @ExceptionHandler(AlreadyMatchedException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Response alreadySoldOutException() {
-        return Response.failure(409, "이미 판매완료 처리된 티켓입니다.");
+    public Response alreadyMatchedException() {
+        return Response.failure(409, "이미 매칭완료 처리된 매칭글입니다.");
     }
 
     // 409 응답
-    // 이미 판매중인 티켓에 대한 예외
-    @ExceptionHandler(AlreadyOnSaleException.class)
+    // 이미 매칭중인 매칭글에 대한 예외
+    @ExceptionHandler(AlreadyMatchingException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Response alreadyOnSaleException() {
-        return Response.failure(409, "이미 판매중인 티켓입니다.");
+    public Response alreadyMatchingException() {
+        return Response.failure(409, "이미 매칭중인 매칭글입니다.");
     }
 
     // 409 응답
