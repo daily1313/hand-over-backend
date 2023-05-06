@@ -2,6 +2,7 @@ package com.example.handoverbackend.controller.report;
 
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.report.BoardReportRequestDto;
+import com.example.handoverbackend.dto.report.MatchReportRequestDto;
 import com.example.handoverbackend.dto.report.MemberReportRequestDto;
 import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.repository.MemberRepository;
@@ -39,10 +40,16 @@ public class ReportController {
         return Response.success(reportService.reportBoard(requestDto, getPrincipal()));
     }
 
+    @ApiOperation(value = "매칭 신고", notes = "매칭을 신고합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/reports/matches")
+    public Response reportMatch(@Valid @RequestBody MatchReportRequestDto requestDto) {
+        return Response.success(reportService.reportMatch(requestDto, getPrincipal()));
+    }
+
     private Member getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = memberRepository.findByUsername(authentication.getName())
+        return memberRepository.findByUsername(authentication.getName())
             .orElseThrow(MemberNotFoundException::new);
-        return member;
     }
 }
