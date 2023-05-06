@@ -12,4 +12,6 @@ public interface BoardReportRepository extends JpaRepository<BoardReport, Long> 
     boolean existsByReporterAndReported(Member reporter, Board reported);
 
     List<BoardReport> findAllByReported(Board reported);
+
+    void deleteAllByReported(Board board);
 }
