@@ -70,6 +70,9 @@ public class Match {
     @Column(nullable = false)
     private boolean isMatched;
 
+    @Column(nullable = false)
+    private boolean reportedStatus;
+
     @Builder
     public Match(Member seller, Category category, String matchName, String address, LocalDateTime startDate, LocalDateTime endDate,
                  String detailsContent, int price, String precaution, boolean isMatched) {
@@ -83,6 +86,7 @@ public class Match {
         this.price = price;
         this.precaution = precaution;
         this.isMatched = false;
+        this.reportedStatus = false;
     }
 
     public boolean isSeller(Member findMember) {
@@ -110,5 +114,13 @@ public class Match {
 
     public boolean isMatched() {
         return isMatched;
+    }
+
+    public void suspend() {
+        this.reportedStatus = true;
+    }
+
+    public void unLockSuspend() {
+        this.reportedStatus = false;
     }
 }

@@ -1,18 +1,20 @@
 package com.example.handoverbackend.service.report;
 
 import com.example.handoverbackend.domain.board.Board;
+import com.example.handoverbackend.domain.match.Match;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.report.BoardReport;
+import com.example.handoverbackend.domain.report.MatchReport;
 import com.example.handoverbackend.domain.report.MemberReport;
 import com.example.handoverbackend.dto.report.BoardReportRequestDto;
+import com.example.handoverbackend.dto.report.MatchReportRequestDto;
 import com.example.handoverbackend.dto.report.MemberReportRequestDto;
-import com.example.handoverbackend.exception.AlreadyReportException;
-import com.example.handoverbackend.exception.BoardNotFoundException;
-import com.example.handoverbackend.exception.MemberNotFoundException;
-import com.example.handoverbackend.exception.NotSelfReportException;
+import com.example.handoverbackend.exception.*;
 import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.repository.board.BoardRepository;
+import com.example.handoverbackend.repository.match.MatchRepository;
 import com.example.handoverbackend.repository.report.BoardReportRepository;
+import com.example.handoverbackend.repository.report.MatchReportRepository;
 import com.example.handoverbackend.repository.report.MemberReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,8 +28,10 @@ public class ReportService {
 
     private final BoardReportRepository boardReportRepository;
     private final MemberReportRepository memberReportRepository;
+    private final MatchReportRepository matchReportRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final MatchRepository matchRepository;
 
     @Transactional
     public String reportMember(MemberReportRequestDto requestDto, Member reporter) {
@@ -51,6 +55,17 @@ public class ReportService {
         return SUCCESS_REPORT;
     }
 
+    @Transactional
+    public String reportMatch(MatchReportRequestDto requestDto, Member reporter) {
+        Match reportedMatch = findReportMatch(requestDto.getReportedMatchId());
+        validationSelf(reportedMatch.getSeller(), reporter);
+        checkMatchHistory(reportedMatch, reporter);
+        MatchReport matchReport = new MatchReport(reporter, reportedMatch, requestDto.getContent());
+        matchReportRepository.save(matchReport);
+        checkCumulativeReport(reportedMatch);
+        return SUCCESS_REPORT;
+    }
+
     private Member findReportMember(Long id) {
         return memberRepository.findById(id)
             .orElseThrow(MemberNotFoundException::new);
@@ -59,6 +74,11 @@ public class ReportService {
     private Board findReportBoard(Long id) {
         return boardRepository.findById(id)
             .orElseThrow(BoardNotFoundException::new);
+    }
+
+    private Match findReportMatch(Long id) {
+        return matchRepository.findById(id)
+            .orElseThrow(MatchNotFoundException::new);
     }
 
     private void validationSelf(Member reportedMember, Member reporter) {
@@ -79,6 +99,12 @@ public class ReportService {
         }
     }
 
+    private void checkMatchHistory(Match reportedMatch, Member reporter) {
+        if (matchReportRepository.existsByReporterAndReported(reporter, reportedMatch)) {
+            throw new AlreadyReportException();
+        }
+    }
+
     private void checkCumulativeReport(Member reportedMember) {
         if (memberReportRepository.findAllByReported(reportedMember).size() >= 5) {
             reportedMember.suspend();
@@ -88,6 +114,12 @@ public class ReportService {
     private void checkCumulativeReport(Board reportedBoard) {
         if (boardReportRepository.findAllByReported(reportedBoard).size() >= 5) {
             reportedBoard.suspend();
+        }
+    }
+
+    private void checkCumulativeReport(Match reportedMatch) {
+        if (matchReportRepository.findAllByReported(reportedMatch).size() >= 5) {
+            reportedMatch.suspend();
         }
     }
 }
