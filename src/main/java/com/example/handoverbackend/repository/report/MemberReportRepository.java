@@ -11,4 +11,6 @@ public interface MemberReportRepository extends JpaRepository<MemberReport, Long
     boolean existsByReporterAndReported(Member reporter, Member reported);
 
     List<MemberReport> findAllByReported(Member reported);
+
+    void deleteAllByReported(Member member);
 }

@@ -12,4 +12,6 @@ public interface MatchReportRepository extends JpaRepository<MatchReport, Long> 
     boolean existsByReporterAndReported(Member reporter, Match reported);
 
     List<MatchReport> findAllByReported(Match reported);
+
+    void deleteAllByReported(Match match);
 }

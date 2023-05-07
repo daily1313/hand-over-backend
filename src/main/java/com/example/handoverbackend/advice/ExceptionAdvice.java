@@ -83,6 +83,14 @@ public class ExceptionAdvice {
         return Response.failure(404, "요청한 즐겨찾기를 찾을 수 없습니다.");
     }
 
+    // 404 응답
+    // 요청한 신고기록를 찾을 수 없음
+    @ExceptionHandler(NotReportedException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response notReportedException() {
+        return Response.failure(404, "요청한 신고기록을 찾을 수 없습니다.");
+    }
+
     // 400 응답
     // 자기 자신을 신고할 수 없다.
     @ExceptionHandler(NotSelfReportException.class)
