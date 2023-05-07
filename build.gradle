@@ -33,6 +33,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // WebSocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:3.0.4'
+    implementation 'org.webjars:webjars-locator-core:0.52'
+    implementation 'org.webjars:sockjs-client:1.5.1'
+    implementation 'org.webjars:stomp-websocket:2.3.4'
+
     // JUnit5
     testImplementation("org.junit.platform:junit-platform-launcher:1.5.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
@@ -44,6 +50,12 @@ dependencies {
     // Swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-common:2.0.4'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.8'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.8'
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+
     // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -51,6 +63,9 @@ dependencies {
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     //email
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // Java 17 날짜/시간 유형을 직렬화 및 역직렬화
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2'

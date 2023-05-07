@@ -14,7 +14,5 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
     Page<Match> findAllByOrderByPrice(Pageable pageable);
 
-    Page<Match> findAllByMatchNameContaining(String keyword, Pageable pageable);
-
-    Page<Match> findAllByAddressContaining(String keyword, Pageable pageable);
+    Page<Match> findAllByMatchNameContainingOrAddressContaining(String matchName, String address, Pageable pageable);
 }

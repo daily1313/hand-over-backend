@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,19 +82,9 @@ public class MatchService {
     }
 
     @Transactional(readOnly = true)
-    public MatchFindAllWithPagingResponseDto getAllMatchesPostWithPagingBySearchingMatchName(String ticketName, int page) {
-        PageRequest pageRequest = getPageRequest(page);
-        Page<Match> matches = matchRepository.findAllByMatchNameContaining(ticketName, pageRequest);
-        List<MatchResponseDto> allMatches = matches.stream()
-                .map(MatchResponseDto::toDto)
-                .collect(Collectors.toList());
-        return MatchFindAllWithPagingResponseDto.toDto(allMatches, new PageInfoDto(matches));
-    }
-
-    @Transactional(readOnly = true)
-    public MatchFindAllWithPagingResponseDto getAllMatchesPostWithPagingBySearchingAddress(String address, int page) {
-        PageRequest pageRequest = getPageRequest(page);
-        Page<Match> matches = matchRepository.findAllByAddressContaining(address, pageRequest);
+    public MatchFindAllWithPagingResponseDto getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(String keyword, int page) {
+        Pageable pageRequest = getPageRequest(page);
+        Page<Match> matches = matchRepository.findAllByMatchNameContainingOrAddressContaining(keyword, keyword, pageRequest);
         List<MatchResponseDto> allMatches = matches.stream()
                 .map(MatchResponseDto::toDto)
                 .collect(Collectors.toList());
