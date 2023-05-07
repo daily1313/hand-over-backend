@@ -60,7 +60,7 @@ public class AdminController {
 
     @ApiOperation(value = "게시판 정지", notes = "게시판을 정지시킵니다.")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/boards//report/{id}")
+    @PostMapping("/boards/report/{id}")
     public Response lockBoard(@PathVariable Long id) {
         return Response.success(adminService.lockBoard(id));
     }
@@ -88,14 +88,14 @@ public class AdminController {
 
     @ApiOperation(value = "매칭 정지", notes = "매칭을 정지시킵니다.")
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/matches//report/{id}")
+    @PostMapping("/matches/report/{id}")
     public Response lockMatch(@PathVariable Long id) {
         return Response.success(adminService.lockMatch(id));
     }
 
     @ApiOperation(value = "매칭 삭제", notes = "매칭을 삭제 시킵니다.")
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/boards/{id}")
+    @DeleteMapping("/matches/{id}")
     public Response deleteReportedMatch(@PathVariable Long id) {
         return Response.success(adminService.deleteReportedMatch(id));
     }
