@@ -56,20 +56,12 @@ public class MatchController {
         return Response.success(matchService.getAllMatchesPostsByCategoryWithPaging(category, page));
     }
 
-    @ApiOperation(value = "매칭글 검색 조회(매칭 제목으로 검색)", notes = "매칭글을 전체 조회합니다(매칭글 제목으로 검색)")
+    @ApiOperation(value = "매칭글 검색 조회(매칭글 제목 및 주소로 검색)", notes = "매칭글을 전체 조회합니다(매칭글 제목 및 주소로 검색)")
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/matches/search/matchName")
-    public Response getAllMatchesPostsWithPagingBySearchingMatchName(@RequestParam String matchName,
+    @GetMapping("/matches/search")
+    public Response getAllMatchesPostsWithPagingBySearchingMatchName(@RequestParam String keyword,
                                                                   @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
-        return Response.success(matchService.getAllMatchesPostWithPagingBySearchingMatchName(matchName, page));
-    }
-
-    @ApiOperation(value = "매칭글 검색 조회(주소로 검색)", notes = "매칭글을 전체 조회합니다(주소로 검색)")
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/matches/search/address")
-    public Response getAllMatchesPostsWithPagingBySearchingAddress(@RequestParam String address,
-                                                                @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
-        return Response.success(matchService.getAllMatchesPostWithPagingBySearchingAddress(address, page));
+        return Response.success(matchService.getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(keyword, page));
     }
 
     @ApiOperation(value = "매칭글 전체 조회(가격 낮은 순)", notes = "매칭글을 전체 조회합니다(가격 낮은 순 조회)")
