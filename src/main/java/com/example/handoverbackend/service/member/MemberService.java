@@ -4,7 +4,9 @@ import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
 import com.example.handoverbackend.dto.member.MemberResponseDto;
 import com.example.handoverbackend.dto.member.MemberSearchCondition;
+import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.repository.MemberRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,13 @@ public class MemberService {
         Page<MemberResponseDto> allMembers = members.map(MemberResponseDto::toDto);
 
         return allMembers;
+    }
+
+    // 회원 단건 조회
+    @Transactional(readOnly = true)
+    public MemberResponseDto findMember(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(MemberNotFoundException::new);
+        return MemberResponseDto.toDto(member);
     }
 
     // 회원 검색 조회(이름, 닉네임)

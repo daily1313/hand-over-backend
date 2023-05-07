@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -37,6 +38,13 @@ public class MemberController {
     @GetMapping("/members")
     public Response findAllMembers(@PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         return Response.success(memberService.findAllMembers(pageable));
+    }
+
+    @ApiOperation(value = "회원 단건 조회", notes = "회원 한 명을 조회합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/members/{id}")
+    public Response findMember(@PathVariable Long id) {
+        return Response.success(memberService.findMember(id));
     }
 
     @ApiOperation(value = "전체 회원 조회(검색)", notes = "검색한 전체 회원을 조회합니다.")
