@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -129,6 +128,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/admin/matches/{id}").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/admin/matches/report/{id}").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/matches/{id}").hasAnyAuthority("ROLE_ADMIN")
+
+                .requestMatchers(HttpMethod.POST, "/api/reports/members").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/matches/matches").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/matches/boards").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
