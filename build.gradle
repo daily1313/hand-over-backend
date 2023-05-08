@@ -80,6 +80,9 @@ dependencies {
 
     // Java 17 날짜/시간 유형을 직렬화 및 역직렬화
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2'
+
+    // war 패키징 추가
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 
 tasks.named('test') {
