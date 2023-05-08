@@ -1,10 +1,12 @@
 package com.example.handoverbackend.service.report;
 
 import com.example.handoverbackend.domain.board.Board;
+import com.example.handoverbackend.domain.match.Match;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.report.BoardReport;
 import com.example.handoverbackend.domain.report.MemberReport;
 import com.example.handoverbackend.dto.report.BoardReportRequestDto;
+import com.example.handoverbackend.dto.report.MatchReportRequestDto;
 import com.example.handoverbackend.dto.report.MemberReportRequestDto;
 import com.example.handoverbackend.exception.AlreadyReportException;
 import com.example.handoverbackend.exception.BoardNotFoundException;
@@ -13,7 +15,9 @@ import com.example.handoverbackend.exception.NotSelfReportException;
 import com.example.handoverbackend.factory.BoardMaker;
 import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.repository.board.BoardRepository;
+import com.example.handoverbackend.repository.match.MatchRepository;
 import com.example.handoverbackend.repository.report.BoardReportRepository;
+import com.example.handoverbackend.repository.report.MatchReportRepository;
 import com.example.handoverbackend.repository.report.MemberReportRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.handoverbackend.factory.BoardMaker.createBoard;
+import static com.example.handoverbackend.factory.MatchMaker.createMatch;
 import static com.example.handoverbackend.factory.MemberMaker.createMember;
 import static com.example.handoverbackend.factory.MemberMaker.createMember2;
 import static com.example.handoverbackend.factory.ReportMaker.createBoardReports;
@@ -47,6 +52,10 @@ public class ReportServiceTest {
     MemberRepository memberRepository;
     @Mock
     BoardRepository boardRepository;
+    @Mock
+    MatchRepository matchRepository;
+    @Mock
+    MatchReportRepository matchReportRepository;
 
     private static final String SUCCESS_REPORT = "신고를 하였습니다.";
 
@@ -81,6 +90,24 @@ public class ReportServiceTest {
 
         //when
         String result = reportService.reportBoard(requestDto, reporter);
+
+        //then
+        assertThat(result).isEqualTo(SUCCESS_REPORT);
+    }
+
+    @Test
+    @DisplayName("매칭 신고")
+    void reportMatch() {
+        //given
+        Member reporter = createMember();
+        Match reported = createMatch();
+        MatchReportRequestDto requestDto = new MatchReportRequestDto(1L, "내용");
+        given(matchRepository.findById(1L)).willReturn(Optional.of(reported));
+        given(matchReportRepository.existsByReporterAndReported(reporter, reported)).willReturn(false);
+        given(matchReportRepository.findAllByReported(reported)).willReturn(List.of());
+
+        //when
+        String result = reportService.reportMatch(requestDto, reporter);
 
         //then
         assertThat(result).isEqualTo(SUCCESS_REPORT);
