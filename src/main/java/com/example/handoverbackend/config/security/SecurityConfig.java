@@ -130,8 +130,15 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/matches/{id}").hasAnyAuthority("ROLE_ADMIN")
 
                 .requestMatchers(HttpMethod.POST, "/api/reports/members").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/matches/matches").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/matches/boards").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/reports/matches").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/reports/boards").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/api/match/comments").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
+
 
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
