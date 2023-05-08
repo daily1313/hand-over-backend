@@ -113,39 +113,20 @@ class MatchServiceTest {
         assertThat(result.getMatches().get(0).getPrice()).isEqualTo(50000);
     }
 
-    @DisplayName("매칭글 검색 조회 테스트(티켓이름으로 검색)")
-    @Test
-    void getAllMatchesPostWithPagingBySearchingMatchNameTest() {
-        String matchName = "러시안";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        Match match1 = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter), LocalDateTime.parse("2023-04-15 10:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id").descending());
-        List<Match> matches = List.of(match1);
-        given(matchRepository.findAllByMatchNameContainingOrAddressContaining(matchName, "", pageRequest)).willReturn(new PageImpl<>(
-            matches));
-
-        //when
-        MatchFindAllWithPagingResponseDto result = matchService.getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(matchName, 0);
-
-        //then
-        assertThat(result.getMatches().size()).isEqualTo(1);
-        assertThat(result.getMatches().get(0).getTicketName()).isEqualTo(match1.getMatchName());
-    }
-
-    @DisplayName("매칭글 검색 조회 테스트(주소로 검색)")
+    @DisplayName("매칭글 검색 조회 테스트(주소 및 매칭글 제목으로 검색)")
     @Test
     void getAllMatchesPostWithPagingBySearchingAddressTest() {
-        String address = "시흥";
+        String keyword = "시흥";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         Match match1 = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter), LocalDateTime.parse("2023-04-15 10:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
         Match match2 = new Match(createMember(), Category.노인돌봄, "노인 책 읽어주기", "제주도", LocalDateTime.parse("2023-05-04 10:00", formatter), LocalDateTime.parse("2023-05-04 11:00", formatter), "노인 돌보미", 150000, "거동이 불편합니다", false);
         List<Match> matches = List.of(match1);
 
-        given(matchRepository.findAllByMatchNameContainingOrAddressContaining("", address, PageRequest.of(0, 10, Sort.by("id").descending()))).willReturn(new PageImpl<>(
+        given(matchRepository.findAllByMatchNameContainingOrAddressContaining(keyword, keyword, PageRequest.of(0, 10, Sort.by("id").descending()))).willReturn(new PageImpl<>(
             matches));
 
         //when
-        MatchFindAllWithPagingResponseDto result = matchService.getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(address, 0);
+        MatchFindAllWithPagingResponseDto result = matchService.getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(keyword, 0);
 
         //then
         assertThat(result.getMatches().size()).isEqualTo(1);

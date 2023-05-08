@@ -196,37 +196,20 @@ public class MatchControllerTest {
         verify(matchService).findFavoriteMatchesPosts(page, member);
     }
 
-    @DisplayName("매칭글 검색 테스트(주소)")
+    @DisplayName("매칭글 검색 테스트(주소 및 티켓이름으로 검색)")
     @Test
     void getAllMatchesPostWithPagingBySearchingAddressTest() throws Exception {
         //given
-        String address = "용인";
+        String keyword = "용인";
         Integer page = 0;
 
         //when
         mockMvc.perform(
-                get("/api/matches/search/address")
-                        .param("address", address)
+                get("/api/matches/search")
+                        .param("keyword", keyword)
         ).andExpect(status().isOk());
 
         //then
-        verify(matchService).getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(address, page);
-    }
-
-    @DisplayName("매칭글 검색 테스트(이름)")
-    @Test
-    void getAllMatchesPostWithPagingBySearchingMatchNameTest() throws Exception {
-        //given
-        String matchName = "노인 배웅";
-        Integer page = 0;
-
-        //when
-        mockMvc.perform(
-                get("/api/matches/search/matchName")
-                        .param("matchName", matchName)
-        ).andExpect(status().isOk());
-
-        //then
-        verify(matchService).getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(matchName, page);
+        verify(matchService).getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(keyword, page);
     }
 }
