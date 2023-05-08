@@ -1,33 +1,14 @@
 package com.example.handoverbackend.controller.match;
 
-import static com.example.handoverbackend.factory.AuthenticationMaker.createAuthentication;
-import static com.example.handoverbackend.factory.MatchMaker.createMatch;
-import static com.example.handoverbackend.factory.MemberMaker.createMember;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.refEq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import com.example.handoverbackend.domain.match.Match;
-import com.example.handoverbackend.dto.match.MatchEditRequestDto;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-
-import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.match.Category;
+import com.example.handoverbackend.domain.match.Match;
+import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.match.MatchCreateRequestDto;
+import com.example.handoverbackend.dto.match.MatchEditRequestDto;
 import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.service.match.MatchService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Optional;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +22,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Optional;
+
+import static com.example.handoverbackend.factory.AuthenticationMaker.createAuthentication;
+import static com.example.handoverbackend.factory.MatchMaker.createMatch;
+import static com.example.handoverbackend.factory.MemberMaker.createMember;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 public class MatchControllerTest {
@@ -213,7 +210,7 @@ public class MatchControllerTest {
         ).andExpect(status().isOk());
 
         //then
-        verify(matchService).getAllMatchesPostWithPagingBySearchingAddress(address, page);
+        verify(matchService).getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(address, page);
     }
 
     @DisplayName("매칭글 검색 테스트(이름)")
@@ -230,6 +227,6 @@ public class MatchControllerTest {
         ).andExpect(status().isOk());
 
         //then
-        verify(matchService).getAllMatchesPostWithPagingBySearchingMatchName(matchName, page);
+        verify(matchService).getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(matchName, page);
     }
 }

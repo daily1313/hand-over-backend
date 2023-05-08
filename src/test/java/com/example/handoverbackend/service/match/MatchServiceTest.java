@@ -1,26 +1,14 @@
 package com.example.handoverbackend.service.match;
 
-import static com.example.handoverbackend.factory.MatchMaker.createMatch;
-import static com.example.handoverbackend.factory.MemberMaker.createMember;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-
 import com.example.handoverbackend.domain.favorite.MatchFavorite;
+import com.example.handoverbackend.domain.match.Category;
 import com.example.handoverbackend.domain.match.Match;
 import com.example.handoverbackend.domain.member.Member;
-import com.example.handoverbackend.domain.match.Category;
 import com.example.handoverbackend.dto.match.MatchCreateRequestDto;
 import com.example.handoverbackend.dto.match.MatchFindAllWithPagingResponseDto;
 import com.example.handoverbackend.dto.match.MatchResponseDto;
 import com.example.handoverbackend.repository.match.MatchFavoriteRepository;
 import com.example.handoverbackend.repository.match.MatchRepository;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +19,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.example.handoverbackend.factory.MatchMaker.createMatch;
+import static com.example.handoverbackend.factory.MemberMaker.createMember;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MatchServiceTest {
@@ -50,8 +51,8 @@ class MatchServiceTest {
         //given
         Match match = createMatch();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        MatchCreateRequestDto req = new MatchCreateRequestDto(Category.노인돌봄 , "노인 돌보기", "경기 용인시 처인구",
-                LocalDateTime.parse("2023-04-12 12:00", formatter), LocalDateTime.parse("2023-04-12 12:00", formatter), "돌보기", 150000, "거동이 불편하니 조심하세요");
+        MatchCreateRequestDto req = new MatchCreateRequestDto(Category.노인돌봄, "노인 돌보기", "경기 용인시 처인구",
+            LocalDateTime.parse("2023-04-12 12:00", formatter), LocalDateTime.parse("2023-04-12 12:00", formatter), "돌보기", 150000, "거동이 불편하니 조심하세요");
         given(matchRepository.save(any())).willReturn(match);
 
         //when
@@ -82,7 +83,7 @@ class MatchServiceTest {
     void getAllMatchesPostWithPagingOrderByPriceAscTest() {
         //given
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        Match match = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter),LocalDateTime.parse("2023-04-15 11:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
+        Match match = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter), LocalDateTime.parse("2023-04-15 11:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("price").ascending());
         List<Match> matches = List.of(match, createMatch());
         given(matchRepository.findAllByOrderByPrice(pageRequest)).willReturn(new PageImpl<>(matches, pageRequest, matches.size()));
@@ -99,8 +100,8 @@ class MatchServiceTest {
     void getAllMatchesPostWithPagingOrderByPriceDescTest() {
         //given
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        Match match1 = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter),LocalDateTime.parse("2023-04-15 10:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
-        Match match2 = new Match(createMember(), Category.노인돌봄, "노인 책 읽어주기", "제주도", LocalDateTime.parse("2023-05-04 10:00", formatter), LocalDateTime.parse("2023-05-04 11:00", formatter), "노인 돌보미", 150000, "거동이 불편합니다",false);
+        Match match1 = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter), LocalDateTime.parse("2023-04-15 10:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
+        Match match2 = new Match(createMember(), Category.노인돌봄, "노인 책 읽어주기", "제주도", LocalDateTime.parse("2023-05-04 10:00", formatter), LocalDateTime.parse("2023-05-04 11:00", formatter), "노인 돌보미", 150000, "거동이 불편합니다", false);
         List<Match> matches = List.of(match1, match2);
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("price").descending());
         given(matchRepository.findAllByOrderByPriceDesc(pageRequest)).willReturn(new PageImpl<>(matches, pageRequest, matches.size()));
@@ -117,14 +118,14 @@ class MatchServiceTest {
     void getAllMatchesPostWithPagingBySearchingMatchNameTest() {
         String matchName = "러시안";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        Match match1 = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter),LocalDateTime.parse("2023-04-15 10:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
+        Match match1 = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter), LocalDateTime.parse("2023-04-15 10:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id").descending());
         List<Match> matches = List.of(match1);
-        given(matchRepository.findAllByMatchNameContaining(matchName, pageRequest)).willReturn(new PageImpl<>(
-                matches));
+        given(matchRepository.findAllByMatchNameContainingOrAddressContaining(matchName, "", pageRequest)).willReturn(new PageImpl<>(
+            matches));
 
         //when
-        MatchFindAllWithPagingResponseDto result = matchService.getAllMatchesPostWithPagingBySearchingMatchName(matchName, 0);
+        MatchFindAllWithPagingResponseDto result = matchService.getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(matchName, 0);
 
         //then
         assertThat(result.getMatches().size()).isEqualTo(1);
@@ -136,15 +137,15 @@ class MatchServiceTest {
     void getAllMatchesPostWithPagingBySearchingAddressTest() {
         String address = "시흥";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        Match match1 = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter),LocalDateTime.parse("2023-04-15 10:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
-        Match match2 = new Match(createMember(), Category.노인돌봄, "노인 책 읽어주기", "제주도", LocalDateTime.parse("2023-05-04 10:00", formatter), LocalDateTime.parse("2023-05-04 11:00", formatter), "노인 돌보미", 150000, "거동이 불편합니다",false);
+        Match match1 = new Match(createMember(), Category.반려동물, "러시안 블루 밥주기", "경기 시흥시", LocalDateTime.parse("2023-04-15 10:00", formatter), LocalDateTime.parse("2023-04-15 10:00", formatter), "동물 돌보미", 50000, "사나우니까 조심좀해주세요", false);
+        Match match2 = new Match(createMember(), Category.노인돌봄, "노인 책 읽어주기", "제주도", LocalDateTime.parse("2023-05-04 10:00", formatter), LocalDateTime.parse("2023-05-04 11:00", formatter), "노인 돌보미", 150000, "거동이 불편합니다", false);
         List<Match> matches = List.of(match1);
 
-        given(matchRepository.findAllByAddressContaining(address, PageRequest.of(0, 10, Sort.by("id").descending()))).willReturn(new PageImpl<>(
-                matches));
+        given(matchRepository.findAllByMatchNameContainingOrAddressContaining("", address, PageRequest.of(0, 10, Sort.by("id").descending()))).willReturn(new PageImpl<>(
+            matches));
 
         //when
-        MatchFindAllWithPagingResponseDto result = matchService.getAllMatchesPostWithPagingBySearchingAddress(address, 0);
+        MatchFindAllWithPagingResponseDto result = matchService.getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(address, 0);
 
         //then
         assertThat(result.getMatches().size()).isEqualTo(1);
