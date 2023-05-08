@@ -2,6 +2,14 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'war'
+}
+
+// war 패키징 추가
+bootWar {
+    archiveBaseName = 'david-3.0.6'
+    archiveFileName = 'david-3.0.6.war'
+    archiveVersion = '0.0.1'
 }
 
 group = 'com.example'
@@ -76,6 +84,11 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+//Querydsl 추가
+clean {
+    delete file('src/main/generated')
 }
 
 
