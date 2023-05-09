@@ -70,7 +70,7 @@ public class MessageServiceTest {
         List<Message> messages = List.of(MessageMaker.createMessage("제목","내용", sender, receiver), MessageMaker.createMessage("제목","내용", sender, receiver));
         Page<Message> messagesWithPaging = new PageImpl<>(messages);
         Page<MessageResponseDto> allMessages = messagesWithPaging.map(MessageResponseDto::toDto);
-        given(messageRepository.findSentMessages(sender.getUsername(), pageable)).willReturn(allMessages);
+        given(messageRepository.findAllBySenderUsername(sender.getUsername(), pageable)).willReturn(allMessages);
 
         //when
         Page<MessageResponseDto> result = messageService.findAllSentMessages(sender);
@@ -89,10 +89,10 @@ public class MessageServiceTest {
         List<Message> messages = List.of(MessageMaker.createMessage("제목","내용", sender, receiver), MessageMaker.createMessage("제목","내용", sender, receiver));
         Page<Message> messagesWithPaging = new PageImpl<>(messages);
         Page<MessageResponseDto> allMessages = messagesWithPaging.map(MessageResponseDto::toDto);
-        given(messageRepository.findSentMessages(receiver.getUsername(), pageable)).willReturn(allMessages);
+        given(messageRepository.findAllByReceiverUsername(receiver.getUsername(), pageable)).willReturn(allMessages);
 
         //when
-        Page<MessageResponseDto> result = messageService.findAllSentMessages(receiver);
+        Page<MessageResponseDto> result = messageService.findAllReceivedMessages(receiver);
 
         //then
         assertThat(result.getSize()).isEqualTo(2);
@@ -106,7 +106,7 @@ public class MessageServiceTest {
         Member sender = createMember();
         Member receiver = createMember2();
         Message message = createMessage("제목","내용", sender, receiver);
-        given(messageRepository.findByIdWithSender(sentMessageId, sender.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndSenderUsername(sentMessageId, sender.getUsername())).willReturn(Optional.of(message));
 
         //when
         MessageResponseDto result = messageService.findSentMessage(sentMessageId, sender);
@@ -124,7 +124,7 @@ public class MessageServiceTest {
         Member receiver = createMember2();
         Message message = createMessage("제목","내용", sender, receiver);
 
-        given(messageRepository.findByIdWithReceiver(receivedMessageId, receiver.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndReceiverUsername(receivedMessageId, receiver.getUsername())).willReturn(Optional.of(message));
 
         //when
         MessageResponseDto result = messageService.findReceivedMessage(receivedMessageId, receiver);
@@ -141,7 +141,7 @@ public class MessageServiceTest {
         Member sender = createMember();
         Member receiver = createMember2();
         Message message = createMessage("제목","내용", sender, receiver);
-        given(messageRepository.findByIdWithReceiver(receivedMessageId, receiver.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndReceiverUsername(receivedMessageId, receiver.getUsername())).willReturn(Optional.of(message));
 
         //when
         String result = messageService.deleteMessageByReceiver(receivedMessageId, receiver);
@@ -159,7 +159,7 @@ public class MessageServiceTest {
         Member sender = createMember();
         Member receiver = createMember2();
         Message message = createMessage("제목","내용", sender, receiver);
-        given(messageRepository.findByIdWithSender(sentMessageId, sender.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndSenderUsername(sentMessageId, sender.getUsername())).willReturn(Optional.of(message));
 
         //when
         String result = messageService.deleteMessageBySender(sentMessageId, sender);
@@ -177,8 +177,8 @@ public class MessageServiceTest {
         Member sender = createMember();
         Member receiver = createMember2();
         Message message = createMessage("제목","내용", sender, receiver);
-        given(messageRepository.findByIdWithSender(id, sender.getUsername())).willReturn(Optional.of(message));
-        given(messageRepository.findByIdWithReceiver(id, receiver.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndSenderUsername(id, sender.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndReceiverUsername(id, receiver.getUsername())).willReturn(Optional.of(message));
 
         //when
         String result1 = messageService.deleteMessageBySender(id, sender);

@@ -42,34 +42,34 @@ public class MessageService {
     @Transactional(readOnly = true)
     public Page<MessageResponseDto> findAllSentMessages(Member sender) {
         Pageable pageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, Sort.by("createdAt").descending());
-        Page<MessageResponseDto> findAllMessages = messageRepository.findSentMessages(sender.getUsername(), pageable);
+        Page<MessageResponseDto> findAllMessages = messageRepository.findAllBySenderUsername(sender.getUsername(), pageable);
         return findAllMessages;
     }
 
     @Transactional(readOnly = true)
     public Page<MessageResponseDto> findAllReceivedMessages(Member receiver) {
         Pageable pageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, Sort.by("createdAt").descending());
-        Page<MessageResponseDto> findAllMessages = messageRepository.findReceivedMessages(receiver.getUsername(), pageable);
+        Page<MessageResponseDto> findAllMessages = messageRepository.findAllByReceiverUsername(receiver.getUsername(), pageable);
         return findAllMessages;
     }
 
     @Transactional(readOnly = true)
     public MessageResponseDto findSentMessage(Long sentMessageId, Member sender) {
-        Message message = messageRepository.findByIdWithSender(sentMessageId, sender.getUsername())
+        Message message = messageRepository.findByIdAndSenderUsername(sentMessageId, sender.getUsername())
                 .orElseThrow(MessageNotFoundException::new);
         return MessageResponseDto.toDto(message);
     }
 
     @Transactional(readOnly = true)
     public MessageResponseDto findReceivedMessage(Long receivedMessageId, Member receiver) {
-        Message message = messageRepository.findByIdWithReceiver(receivedMessageId, receiver.getUsername())
+        Message message = messageRepository.findByIdAndReceiverUsername(receivedMessageId, receiver.getUsername())
                 .orElseThrow(MessageNotFoundException::new);
         return MessageResponseDto.toDto(message);
     }
 
     @Transactional
     public String deleteMessageByReceiver(Long id, Member receiver) {
-        Message message = messageRepository.findByIdWithReceiver(id, receiver.getUsername())
+        Message message = messageRepository.findByIdAndReceiverUsername(id, receiver.getUsername())
                 .orElseThrow(MessageNotFoundException::new);
         if(!message.getReceiver().equals(receiver)) {
             throw new MemberNotEqualsException();
@@ -84,7 +84,7 @@ public class MessageService {
 
     @Transactional
     public String deleteMessageBySender(Long id, Member sender) {
-        Message message = messageRepository.findByIdWithSender(id, sender.getUsername())
+        Message message = messageRepository.findByIdAndSenderUsername(id, sender.getUsername())
                 .orElseThrow(MessageNotFoundException::new);
         if(!message.getSender().equals(sender)) {
             throw new MemberNotEqualsException();

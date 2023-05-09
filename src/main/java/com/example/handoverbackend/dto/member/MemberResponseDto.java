@@ -2,7 +2,6 @@ package com.example.handoverbackend.dto.member;
 
 import com.example.handoverbackend.domain.member.Authority;
 import com.example.handoverbackend.domain.member.Member;
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +18,6 @@ public class MemberResponseDto {
         return new MemberResponseDto(member.getName(), member.getUsername(), member.getNickname(), member.getAuthority());
     }
 
-    @QueryProjection
     public MemberResponseDto(String name, String username, String nickname, Authority authority) {
         this.name = name;
         this.username = username;

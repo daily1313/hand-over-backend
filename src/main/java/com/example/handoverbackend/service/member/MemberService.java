@@ -3,7 +3,6 @@ package com.example.handoverbackend.service.member;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
 import com.example.handoverbackend.dto.member.MemberResponseDto;
-import com.example.handoverbackend.dto.member.MemberSearchCondition;
 import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.repository.MemberRepository;
 import java.util.Optional;
@@ -39,8 +38,8 @@ public class MemberService {
 
     // 회원 검색 조회(이름, 닉네임)
     @Transactional(readOnly = true)
-    public Page<MemberResponseDto> searchMembers(MemberSearchCondition condition, Pageable pageable) {
-        Page<MemberResponseDto> result = memberRepository.searchMember(condition, pageable);
+    public Page<MemberResponseDto> findAllByNameContainingOrNicknameContaining(String keyword, Pageable pageable) {
+        Page<MemberResponseDto> result = memberRepository.findAllByNameContainingOrNicknameContaining(keyword, keyword, pageable);
         return result;
     }
 
