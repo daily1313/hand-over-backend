@@ -1,20 +1,32 @@
 server:
   port: 8080
 
+cos:
+  key: cos1234
 spring:
-
   datasource:
+<<<<<<< Updated upstream
     url: ${SPRING_DATASOURCE_URL}
     username: ${MYSQL_DATABASE}
     password: ${MYSQL_ROOT_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+=======
+    url: jdbc:h2:tcp://localhost/~/handover
+    username: sa
+    password:
+    driver-class-name=org:
+      h2:
+        Driver:
+  profiles:
+    include: oauth
+>>>>>>> Stashed changes
   jpa:
     hibernate:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    database: mysql
+    database: h2
     properties:
       hibernate:
         show_sql: true
