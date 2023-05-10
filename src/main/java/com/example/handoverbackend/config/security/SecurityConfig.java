@@ -23,6 +23,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final TokenProvider tokenProvider;
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -33,12 +34,12 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring()
-//                .antMatchers( "/v3/api-docs", "/swagger-resources/**",
-//                        "/swagger-ui.html", "/webjars/**", "/swagger/**");
-//    }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers( "/v3/api-docs", "/swagger-resources/**",
+                        "/swagger-ui.html", "/webjars/**", "/swagger/**");
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -66,11 +67,78 @@ public class SecurityConfig {
                 // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/swagger-ui/**", "/v3/**").permitAll() // swagger
-                .requestMatchers("/api/auth/join", "/api/auth/login", "/api/auth/reissue").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll() // swagger
+                .requestMatchers("/api/auth/join", "/api/auth/join/email/mailConfirm", "/api/auth/join/email/check", "/api/auth/login", "/api/auth/reissue").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/members").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/members/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/member/{username}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/members/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/members").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/members").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/member/search").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
+                .requestMatchers(HttpMethod.POST, "/api/boards").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/boards/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/boards/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/boards/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/boards/{id}/favorites").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/boards/favorites").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/boards/search/{keyword}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/boards/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/boards/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/api/categories").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/categories").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/categories/{id}").hasAnyAuthority("ROLE_ADMIN")
+
+                .requestMatchers(HttpMethod.POST, "/api/messages").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/messages/sender").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/messages/receiver").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/messages/sender/{sentMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/messages/receiver/{receivedMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/messages/sender/{sentMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/messages/receiver/{receivedMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+
+
+                .requestMatchers(HttpMethod.GET, "/api/comments").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/comments").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/comments/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/comments/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+
+
+                .requestMatchers(HttpMethod.POST, "/api/matches").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/matches/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/matches/category").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/matches/{id}/edit/matchStatus").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/matches").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/matches/low-price").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/matches/high-price").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/matches/search").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/matches/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/matches/{id}/favorites").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/matches/favorites").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/api/admin").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/admin/members/{id}").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/admin/members/report/{id}").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/admin/members/{id}").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/admin/boards").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/admin/boards/{id}").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/admin/boards/report/{id}").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/admin/boards/{id}").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/admin/matches").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/admin/matches/{id}").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/admin/matches/report/{id}").hasAnyAuthority("ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/matches/{id}").hasAnyAuthority("ROLE_ADMIN")
+
+                .requestMatchers(HttpMethod.POST, "/api/reports/members").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/reports/matches").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/reports/boards").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
+                .requestMatchers(HttpMethod.GET, "/api/match/comments").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+
+
 
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 

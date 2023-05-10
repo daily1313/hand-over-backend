@@ -8,6 +8,7 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 @AllArgsConstructor
-public class Failure implements Result{
+public class Failure implements Result {
+
     private String msg;
 }

@@ -2,7 +2,9 @@ package com.example.handoverbackend.config.auth;
 
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.repository.MemberRepository;
+
 import java.util.Collections;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,8 +25,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return memberRepository.findByUsername(username)
-                .map(this::createUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+            .map(this::createUserDetails)
+            .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
     }
 
     // DB 에 User 값이 존재한다면 UserDetails 객체로 만들어서 리턴
@@ -33,9 +35,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new User(
 //                String.valueOf(member.getId()),
-                member.getUsername(),
-                member.getPassword(),
-                Collections.singleton(grantedAuthority)
+            member.getUsername(),
+            member.getPassword(),
+            Collections.singleton(grantedAuthority)
         );
     }
 }
