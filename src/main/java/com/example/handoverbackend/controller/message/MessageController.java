@@ -56,35 +56,35 @@ public class MessageController {
     }
 
     @ApiOperation(value = "발신함 쪽지 1개 확인", notes = "보낸 쪽지 1개를 확인하였습니다.")
-    @GetMapping("/messages/sender/{sentMessageId}")
+    @GetMapping("/messages/sender/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response findSentMessage(@PathVariable Long sentMessageId) {
+    public Response findSentMessage(@PathVariable Long id) {
         Member sender = getPrincipal();
-        return Response.success(messageService.findSentMessage(sentMessageId, sender));
+        return Response.success(messageService.findSentMessage(id, sender));
     }
 
     @ApiOperation(value = "수신함 쪽지 1개 확인", notes = "받은 쪽지 1개를 확인하였습니다.")
-    @GetMapping("/messages/receiver/{receivedMessageId}")
+    @GetMapping("/messages/receiver/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response findReceivedMessage(@PathVariable Long receivedMessageId) {
+    public Response findReceivedMessage(@PathVariable Long id) {
         Member receiver = getPrincipal();
-        return Response.success(messageService.findReceivedMessage(receivedMessageId, receiver));
+        return Response.success(messageService.findReceivedMessage(id, receiver));
     }
 
     @ApiOperation(value = "발신함 메세지 삭제", notes = "발신함 메세지를 삭제하였습니다.")
-    @DeleteMapping("/messages/sender/{sentMessageId}")
+    @DeleteMapping("/messages/sender/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response deleteMessageBySender(@PathVariable Long sentMessageId) {
+    public Response deleteMessageBySender(@PathVariable Long id) {
         Member sender = getPrincipal();
-        return Response.success(messageService.deleteMessageBySender(sentMessageId, sender));
+        return Response.success(messageService.deleteMessageBySender(id, sender));
     }
 
     @ApiOperation(value = "수신함 메세지 삭제", notes = "수신함 메세지를 삭제하였습니다.")
-    @DeleteMapping("/messages/receiver/{receivedMessageId}")
+    @DeleteMapping("/messages/receiver/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response deleteMessageByReceiver(@PathVariable Long receivedMessageId) {
+    public Response deleteMessageByReceiver(@PathVariable Long id) {
         Member receiver = getPrincipal();
-        return Response.success(messageService.deleteMessageByReceiver(receivedMessageId, receiver));
+        return Response.success(messageService.deleteMessageByReceiver(id, receiver));
     }
 
     // 유저 정보를 가져오는 getPrincipal 함수

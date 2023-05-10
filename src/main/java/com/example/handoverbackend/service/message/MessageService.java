@@ -54,15 +54,15 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public MessageResponseDto findSentMessage(Long sentMessageId, Member sender) {
-        Message message = messageRepository.findByIdAndSenderUsername(sentMessageId, sender.getUsername())
+    public MessageResponseDto findSentMessage(Long id, Member sender) {
+        Message message = messageRepository.findByIdAndSenderUsername(id, sender.getUsername())
                 .orElseThrow(MessageNotFoundException::new);
         return MessageResponseDto.toDto(message);
     }
 
     @Transactional(readOnly = true)
-    public MessageResponseDto findReceivedMessage(Long receivedMessageId, Member receiver) {
-        Message message = messageRepository.findByIdAndReceiverUsername(receivedMessageId, receiver.getUsername())
+    public MessageResponseDto findReceivedMessage(Long id, Member receiver) {
+        Message message = messageRepository.findByIdAndReceiverUsername(id, receiver.getUsername())
                 .orElseThrow(MessageNotFoundException::new);
         return MessageResponseDto.toDto(message);
     }

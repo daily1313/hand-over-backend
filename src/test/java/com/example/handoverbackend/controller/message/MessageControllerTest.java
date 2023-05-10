@@ -115,7 +115,7 @@ class MessageControllerTest {
     @DisplayName("수신함 메세지 단건 조회 테스트")
     void findReceivedMessageTest() throws Exception {
         //given
-        Long receivedMessageId = 1L;
+        Long id = 1L;
         Member member = createMember();
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), "",
                 Collections.emptyList());
@@ -124,18 +124,18 @@ class MessageControllerTest {
 
         //when
         mockMvc.perform(
-                get("/api/messages/receiver/{receivedMessageId}",receivedMessageId)
+                get("/api/messages/receiver/{id}",id)
         ).andExpect(status().isOk());
 
         //then
-        verify(messageService).findReceivedMessage(receivedMessageId, member);
+        verify(messageService).findReceivedMessage(id, member);
     }
 
     @Test
     @DisplayName("발신함 메세지 단건 조회 테스트")
     void findSentMessageTest() throws Exception {
         //given
-        Long sentMessageId = 1L;
+        Long id = 1L;
         Member member = createMember();
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), "",
                 Collections.emptyList());
@@ -144,18 +144,18 @@ class MessageControllerTest {
 
         //when
         mockMvc.perform(
-                get("/api/messages/sender/{sentMessageId}",sentMessageId)
+                get("/api/messages/sender/{id}",id)
         ).andExpect(status().isOk());
 
         //then
-        verify(messageService).findSentMessage(sentMessageId, member);
+        verify(messageService).findSentMessage(id, member);
     }
 
     @Test
     @DisplayName("발신함 메세지 삭제 테스트")
     void deleteMessageBySenderTest() throws Exception {
         //given
-        Long sentMessageId = 1L;
+        Long id = 1L;
         Member member = createMember();
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), "",
                 Collections.emptyList());
@@ -164,18 +164,18 @@ class MessageControllerTest {
 
         //when
         mockMvc.perform(
-                delete("/api/messages/sender/{sentMessageId}",sentMessageId)
+                delete("/api/messages/sender/{id}",id)
         ).andExpect(status().isOk());
 
         //then
-        verify(messageService).deleteMessageBySender(sentMessageId, member);
+        verify(messageService).deleteMessageBySender(id, member);
     }
 
     @Test
     @DisplayName("수신함 메세지 삭제 테스트")
     void deleteMessageByReceiverTest() throws Exception {
         //given
-        Long receivedMessageId = 1L;
+        Long id = 1L;
         Member member = createMember();
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), "",
                 Collections.emptyList());
@@ -184,10 +184,10 @@ class MessageControllerTest {
 
         //when
         mockMvc.perform(
-                delete("/api/messages/sender/{receivedMessageId}", receivedMessageId)
+                delete("/api/messages/sender/{id}", id)
         ).andExpect(status().isOk());
 
         //then
-        verify(messageService).deleteMessageBySender(receivedMessageId, member);
+        verify(messageService).deleteMessageBySender(id, member);
     }
 }

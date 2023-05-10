@@ -92,10 +92,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/messages").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/messages/sender").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/messages/receiver").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/messages/sender/{sentMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/messages/receiver/{receivedMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/messages/sender/{sentMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/messages/receiver/{receivedMessageId}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/messages/sender/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/messages/receiver/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/messages/sender/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/messages/receiver/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
 
 
                 .requestMatchers(HttpMethod.GET, "/api/comments").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
