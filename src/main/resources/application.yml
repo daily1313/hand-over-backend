@@ -4,9 +4,9 @@ server:
 spring:
 
   datasource:
-      url: jdbc:mysql://localhost:3306/capstone?serverTimezone=Asia/Seoul&useSSL=false
+      url: jdbc:mysql://localhost:3306/capstone?createDatabaseIfNotExist=true?serverTimezone=Asia/Seoul&useSSL=false
       username: root
-      password: Daily1313!
+      password: 1234
       driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
