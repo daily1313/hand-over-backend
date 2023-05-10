@@ -1,16 +1,22 @@
 package com.example.handoverbackend.dto.message;
 
 import com.example.handoverbackend.domain.message.Message;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @NoArgsConstructor
 public class MessageResponseDto {
 
+
     private String title;
     private String content;
+    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime sentAt;
     private String senderUsername;
     private String receiverUsername;
@@ -31,4 +37,5 @@ public class MessageResponseDto {
         this.senderUsername = senderUsername;
         this.receiverUsername = receiverUsername;
     }
+
 }

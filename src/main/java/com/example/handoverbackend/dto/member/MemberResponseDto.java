@@ -2,6 +2,9 @@ package com.example.handoverbackend.dto.member;
 
 import com.example.handoverbackend.domain.member.Authority;
 import com.example.handoverbackend.domain.member.Member;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
