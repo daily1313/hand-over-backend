@@ -46,6 +46,9 @@ dependencies {
 
     //email
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // Java 17 날짜/시간 유형을 직렬화 및 역직렬화
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2'
 }
 
 tasks.named('test') {
