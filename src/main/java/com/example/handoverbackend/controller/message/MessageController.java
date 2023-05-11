@@ -8,6 +8,7 @@ import com.example.handoverbackend.response.Response;
 import com.example.handoverbackend.service.message.MessageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class MessageController {
     private final MessageService messageService;
     private final MemberRepository memberRepository;
 
-    @ApiOperation(value = "쪽지 보내기", notes = "쪽지를 전송하였습니다.")
+    @Operation(summary = "쪽지 보내기", description = "쪽지를 전송하였습니다.")
     @PostMapping("/messages")
     @ResponseStatus(HttpStatus.CREATED)
     public Response writeMessage(@Valid @RequestBody MessageCreateRequestDto req) {
@@ -39,7 +40,7 @@ public class MessageController {
         return Response.success(messageService.writeMessage(sender, req));
     }
 
-    @ApiOperation(value = "발신함 확인", notes = "보낸 쪽지를 확인하였습니다.")
+    @Operation(summary = "발신함 확인", description = "보낸 쪽지를 확인하였습니다.")
     @GetMapping("/messages/sender")
     @ResponseStatus(HttpStatus.OK)
     public Response findAllSentMessages() {
@@ -47,7 +48,7 @@ public class MessageController {
         return Response.success(messageService.findAllSentMessages(sender));
     }
 
-    @ApiOperation(value = "수신함 확인", notes = "받은 쪽지를 확인하였습니다.")
+    @Operation(summary = "수신함 확인", description = "받은 쪽지를 확인하였습니다.")
     @GetMapping("/messages/receiver")
     @ResponseStatus(HttpStatus.OK)
     public Response findAllReceivedMessages() {
@@ -55,7 +56,7 @@ public class MessageController {
         return Response.success(messageService.findAllReceivedMessages(receiver));
     }
 
-    @ApiOperation(value = "발신함 쪽지 1개 확인", notes = "보낸 쪽지 1개를 확인하였습니다.")
+    @Operation(summary = "발신함 쪽지 1개 확인", description = "보낸 쪽지 1개를 확인하였습니다.")
     @GetMapping("/messages/sender/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response findSentMessage(@PathVariable Long id) {
@@ -63,7 +64,7 @@ public class MessageController {
         return Response.success(messageService.findSentMessage(id, sender));
     }
 
-    @ApiOperation(value = "수신함 쪽지 1개 확인", notes = "받은 쪽지 1개를 확인하였습니다.")
+    @Operation(summary = "수신함 쪽지 1개 확인", description = "받은 쪽지 1개를 확인하였습니다.")
     @GetMapping("/messages/receiver/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response findReceivedMessage(@PathVariable Long id) {
@@ -71,7 +72,7 @@ public class MessageController {
         return Response.success(messageService.findReceivedMessage(id, receiver));
     }
 
-    @ApiOperation(value = "발신함 메세지 삭제", notes = "발신함 메세지를 삭제하였습니다.")
+    @Operation(summary = "발신함 메세지 삭제", description = "발신함 메세지를 삭제하였습니다.")
     @DeleteMapping("/messages/sender/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response deleteMessageBySender(@PathVariable Long id) {
@@ -79,7 +80,7 @@ public class MessageController {
         return Response.success(messageService.deleteMessageBySender(id, sender));
     }
 
-    @ApiOperation(value = "수신함 메세지 삭제", notes = "수신함 메세지를 삭제하였습니다.")
+    @Operation(summary = "수신함 메세지 삭제", description = "수신함 메세지를 삭제하였습니다.")
     @DeleteMapping("/messages/receiver/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response deleteMessageByReceiver(@PathVariable Long id) {

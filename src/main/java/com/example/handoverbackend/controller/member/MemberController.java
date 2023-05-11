@@ -7,6 +7,7 @@ import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.response.Response;
 import com.example.handoverbackend.service.member.MemberService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,21 +34,21 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
-    @ApiOperation(value = "전체 회원 조회", notes = "전체 회원을 조회합니다.")
+    @Operation(summary = "전체 회원 조회", description = "전체 회원을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/members")
     public Response findAllMembers(@PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
         return Response.success(memberService.findAllMembers(pageable));
     }
 
-    @ApiOperation(value = "회원 단건 조회", notes = "회원 한 명을 조회합니다.")
+    @Operation(summary = "회원 단건 조회", description = "회원 한 명을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/members/{id}")
     public Response findMember(@PathVariable Long id) {
         return Response.success(memberService.findMember(id));
     }
 
-    @ApiOperation(value = "전체 회원 조회(검색)", notes = "검색한 전체 회원을 조회합니다.")
+    @Operation(summary = "전체 회원 조회(검색)", description = "검색한 전체 회원을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/members/search")
     public Response searchMembers(@RequestParam String keyword,
@@ -55,7 +56,7 @@ public class MemberController {
         return Response.success(memberService.findAllByNameContainingOrNicknameContaining(keyword, pageable));
     }
 
-    @ApiOperation(value = "회원 정보 수정", notes = "회원 정보를 수정합니다.")
+    @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정합니다.")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/members")
     public Response editMemberInfo(@RequestBody MemberEditRequestDto memberEditRequestDto) {
@@ -63,7 +64,7 @@ public class MemberController {
         return Response.success(memberService.editMemberInfo(memberInfo, memberEditRequestDto));
     }
 
-    @ApiOperation(value = "회원 탈퇴", notes = "회원을 탈퇴합니다.")
+    @Operation(summary = "회원 탈퇴", description = "회원을 탈퇴합니다.")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/members")
     public Response deleteMember() {

@@ -10,6 +10,7 @@ import com.example.handoverbackend.response.Response;
 import com.example.handoverbackend.service.report.ReportService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,21 +27,21 @@ public class ReportController {
     private final ReportService reportService;
     private final MemberRepository memberRepository;
 
-    @ApiOperation(value = "유저 신고", notes = "유저를 신고합니다.")
+    @Operation(summary = "유저 신고", description = "유저를 신고합니다.")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/reports/members")
     public Response reportMember(@Valid @RequestBody MemberReportRequestDto requestDto) {
         return Response.success(reportService.reportMember(requestDto, getPrincipal()));
     }
 
-    @ApiOperation(value = "게시글 신고", notes = "게시글을 신고합니다.")
+    @Operation(summary = "게시글 신고", description = "게시글을 신고합니다.")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/reports/boards")
     public Response reportBoard(@Valid @RequestBody BoardReportRequestDto requestDto) {
         return Response.success(reportService.reportBoard(requestDto, getPrincipal()));
     }
 
-    @ApiOperation(value = "매칭 신고", notes = "매칭을 신고합니다.")
+    @Operation(summary = "매칭 신고", description = "매칭을 신고합니다.")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/reports/matches")
     public Response reportMatch(@Valid @RequestBody MatchReportRequestDto requestDto) {

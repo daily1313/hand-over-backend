@@ -11,6 +11,7 @@ import com.example.handoverbackend.service.comment.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class CommentController {
     private final CommentService commentService;
     private final MemberRepository memberRepository;
 
-    @ApiOperation(value = "게시글의 댓글 조회", notes = "게시글의 댓글을 조회합니다.")
+    @Operation(summary = "게시글의 댓글 조회", description = "게시글의 댓글을 조회합니다.")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Response findComments(@Valid @RequestBody CommentWithBoardNumber requestDto
@@ -37,14 +38,14 @@ public class CommentController {
         return Response.success(commentService.findComments(requestDto, page));
     }
 
-    @ApiOperation(value = "댓글을 작성합니다.", notes = "댓글을 작성합니다.")
+    @Operation(summary = "댓글을 작성합니다.", description = "댓글을 작성합니다.")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Response createComment(@Valid @RequestBody CommentCreateRequestDto requestDto) {
         return Response.success(commentService.createComment(requestDto, getPrincipal()));
     }
 
-    @ApiOperation(value = "댓글을 수정합니다.", notes = "댓글을 수정합니다.")
+    @Operation(summary = "댓글을 수정합니다.", description = "댓글을 수정합니다.")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response editComment(@ApiParam(value = "댓글 id", readOnly = true) @PathVariable Long id

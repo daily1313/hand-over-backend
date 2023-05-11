@@ -9,6 +9,7 @@ import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.response.Response;
 import com.example.handoverbackend.service.match.MatchService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class MatchController {
     private final MatchService matchService;
     private final MemberRepository memberRepository;
 
-    @ApiOperation(value = "매칭글 작성", notes = "매칭글을 작성합니다.")
+    @Operation(summary = "매칭글 작성", description = "매칭글을 작성합니다.")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/matches")
     public Response writeMatchPost(@Valid @RequestBody MatchCreateRequestDto req) {
@@ -42,21 +43,21 @@ public class MatchController {
         return Response.success(matchService.writeMatchPost(seller, req));
     }
 
-    @ApiOperation(value = "매칭글 전체 조회", notes = "매칭글을 전체 조회합니다(최신순)")
+    @Operation(summary = "매칭글 전체 조회", description = "매칭글을 전체 조회합니다(최신순)")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/matches")
     public Response getAllMatchesPostsWithPaging(@RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(matchService.getAllMatchesPostsWithPaging(page));
     }
 
-    @ApiOperation(value = "카테고리별 매칭글 조회", notes = "카테고리에 해당하는 매칭글을 조회합니다(최신순)")
+    @Operation(summary = "카테고리별 매칭글 조회", description = "카테고리에 해당하는 매칭글을 조회합니다(최신순)")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/matches/category")
     public Response getAllMatchesPostsByCategoryWithPaging(@RequestParam(value = "category", defaultValue = "전체") Category category, @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(matchService.getAllMatchesPostsByCategoryWithPaging(category, page));
     }
 
-    @ApiOperation(value = "매칭글 검색 조회(매칭글 제목 및 주소로 검색)", notes = "매칭글을 전체 조회합니다(매칭글 제목 및 주소로 검색)")
+    @Operation(summary = "매칭글 검색 조회(매칭글 제목 및 주소로 검색)", description = "매칭글을 전체 조회합니다(매칭글 제목 및 주소로 검색)")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/matches/search")
     public Response getAllMatchesPostsWithPagingBySearchingMatchName(@RequestParam String keyword,
@@ -64,27 +65,27 @@ public class MatchController {
         return Response.success(matchService.getAllMatchesPostWithPagingBySearchingMatchNameOrAddress(keyword, page));
     }
 
-    @ApiOperation(value = "매칭글 전체 조회(가격 낮은 순)", notes = "매칭글을 전체 조회합니다(가격 낮은 순 조회)")
+    @Operation(summary = "매칭글 전체 조회(가격 낮은 순)", description = "매칭글을 전체 조회합니다(가격 낮은 순 조회)")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/matches/low-price")
     public Response getAllMatchPostsWithPagingOrderByPriceAsc(@RequestParam(name = "page", defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(matchService.getAllMatchesPostWithPagingOrderByPriceAsc(page));
     }
 
-    @ApiOperation(value = "매칭글 전체 조회(가격 높은 순)", notes = "매칭글을 전체 조회합니다(가격 높은 순 조회)")
+    @Operation(summary = "매칭글 전체 조회(가격 높은 순)", description = "매칭글을 전체 조회합니다(가격 높은 순 조회)")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/matches/high-price")
     public Response getAllMatchPostsWithPagingOrderByPriceDesc(@RequestParam(name = "page", defaultValue = DEFAULT_PAGE) Integer page) {
         return Response.success(matchService.getAllMatchesPostWithPagingOrderByPriceDesc(page));
     }
-    @ApiOperation(value = "매칭글 단건 조회", notes = "매칭글을 조회합니다.")
+    @Operation(summary = "매칭글 단건 조회", description = "매칭글을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/matches/{id}")
     public Response getMatchPost(@PathVariable Long id) {
         return Response.success(matchService.getMatchPost(id));
     }
 
-    @ApiOperation(value = "매칭 상태 변경(매칭 완료-> 매칭중, 매칭중 -> 매칭완료로 변경)", notes = "매칭글 상태를 매칭중, 매칭완료로 변경합니다.")
+    @Operation(summary = "매칭 상태 변경(매칭 완료-> 매칭중, 매칭중 -> 매칭완료로 변경)", description = "매칭글 상태를 매칭중, 매칭완료로 변경합니다.")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/matches/{id}/edit/matchStatus")
     public Response changeMatchStatus(@PathVariable Long id) {
@@ -92,7 +93,7 @@ public class MatchController {
         return Response.success(matchService.changeMatchStatus(seller, id));
     }
 
-    @ApiOperation(value = "매칭글 정보 수정", notes = "매칭글 정보를 수정합니다.")
+    @Operation(summary = "매칭글 정보 수정", description = "매칭글 정보를 수정합니다.")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/matches/{id}")
     public Response editMatchPost(@Valid @RequestBody MatchEditRequestDto req, @PathVariable Long id) {
@@ -100,7 +101,7 @@ public class MatchController {
         return Response.success(matchService.editMatchPost(seller, req, id));
     }
 
-    @ApiOperation(value = "매칭글 즐겨찾기", notes = "매칭글을 즐겨찾기 합니다.")
+    @Operation(summary = "매칭글 즐겨찾기", description = "매칭글을 즐겨찾기 합니다.")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/matches/{id}/favorites")
     public Response favoriteMatchPost(@PathVariable Long id) {
@@ -108,7 +109,7 @@ public class MatchController {
         return Response.success(matchService.updateMatchFavoritePost(id, member));
     }
 
-    @ApiOperation(value = "매칭글 즐겨찾기 목록 조회", notes = "즐겨찾기한 매칭글을 전체 조회합니다.")
+    @Operation(summary = "매칭글 즐겨찾기 목록 조회", description = "즐겨찾기한 매칭글을 전체 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/matches/favorites")
     public Response getFavoriteAllMatchPost(@RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
