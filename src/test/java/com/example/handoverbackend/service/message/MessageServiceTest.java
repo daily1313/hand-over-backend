@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.message.Message;
 import com.example.handoverbackend.dto.message.MessageCreateRequestDto;
+import com.example.handoverbackend.dto.message.MessageFindAllWithPagingResponseDto;
 import com.example.handoverbackend.dto.message.MessageResponseDto;
 import com.example.handoverbackend.factory.MessageMaker;
 import com.example.handoverbackend.repository.MemberRepository;
@@ -68,15 +69,14 @@ public class MessageServiceTest {
         Member receiver = createMember2();
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
         List<Message> messages = List.of(MessageMaker.createMessage("제목","내용", sender, receiver), MessageMaker.createMessage("제목","내용", sender, receiver));
-        Page<Message> messagesWithPaging = new PageImpl<>(messages);
-        Page<MessageResponseDto> allMessages = messagesWithPaging.map(MessageResponseDto::toDto);
+        Page<Message> allMessages = new PageImpl<>(messages);
         given(messageRepository.findAllBySenderUsername(sender.getUsername(), pageable)).willReturn(allMessages);
 
         //when
-        Page<MessageResponseDto> result = messageService.findAllSentMessages(sender);
+        MessageFindAllWithPagingResponseDto result = messageService.findAllSentMessages(sender);
 
         //then
-        assertThat(result.getSize()).isEqualTo(2);
+        assertThat(result.getMessages().size()).isEqualTo(2);
     }
 
     @Test
@@ -87,15 +87,14 @@ public class MessageServiceTest {
         Member receiver = createMember2();
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
         List<Message> messages = List.of(MessageMaker.createMessage("제목","내용", sender, receiver), MessageMaker.createMessage("제목","내용", sender, receiver));
-        Page<Message> messagesWithPaging = new PageImpl<>(messages);
-        Page<MessageResponseDto> allMessages = messagesWithPaging.map(MessageResponseDto::toDto);
+        Page<Message> allMessages = new PageImpl<>(messages);
         given(messageRepository.findAllByReceiverUsername(receiver.getUsername(), pageable)).willReturn(allMessages);
 
         //when
-        Page<MessageResponseDto> result = messageService.findAllReceivedMessages(receiver);
+        MessageFindAllWithPagingResponseDto result = messageService.findAllReceivedMessages(receiver);
 
         //then
-        assertThat(result.getSize()).isEqualTo(2);
+        assertThat(result.getMessages().size()).isEqualTo(2);
     }
 
     @Test

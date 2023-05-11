@@ -19,5 +19,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByEmail(String email);
 
-    Page<MemberResponseDto> findAllByNameContainingOrNicknameContaining(String name, String nickname,  Pageable pageable);
+    Page<Member> findAllByNameContainingOrNicknameContaining(String name, String nickname,  Pageable pageable);
 }
