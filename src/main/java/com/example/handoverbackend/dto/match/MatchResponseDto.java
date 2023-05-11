@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MatchResponseDto {
 
+    private Long id;
     private Category category;
     private String ticketName;
     private String sellerNickname;
@@ -28,6 +29,7 @@ public class MatchResponseDto {
 
     public static MatchResponseDto toDto(Match match) {
         return new MatchResponseDto(
+                match.getId(),
                 match.getCategory(),
                 match.getMatchName(),
                 match.getSeller().getNickname(),

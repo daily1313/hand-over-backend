@@ -5,15 +5,17 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class MessageResponseDto {
 
-
+    private Long id;
     private String title;
     private String content;
     @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
@@ -23,6 +25,7 @@ public class MessageResponseDto {
 
     public static MessageResponseDto toDto(Message message) {
         return new MessageResponseDto(
+                message.getId(),
                 message.getTitle(),
                 message.getContent(),
                 message.getSender().getUsername(),
@@ -30,7 +33,8 @@ public class MessageResponseDto {
         );
     }
 
-    public MessageResponseDto(String title, String content, String senderUsername, String receiverUsername) {
+    public MessageResponseDto(Long id, String title, String content, String senderUsername, String receiverUsername) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.sentAt = LocalDateTime.now();
