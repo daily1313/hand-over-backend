@@ -67,6 +67,7 @@ public class SecurityConfig {
                 // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeHttpRequests()
+                .requestMatchers("").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll() // swagger
                 .requestMatchers("/api/auth/join", "/api/auth/join/email/mailConfirm", "/api/auth/join/email/check", "/api/auth/login", "/api/auth/reissue").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/members").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
@@ -137,8 +138,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.PATCH, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-
-
 
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
