@@ -52,9 +52,8 @@ public class SwaggerConfig {
     }
 
     private HttpAuthenticationScheme bearerAuthSecurityScheme() {
-        return HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("Authorization").build(); }
-
-
+        return HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("Authorization").build();
+    }
 
     private SecurityContext securityContext() {
         return SecurityContext.builder().securityReferences(defaultAuth()).build();

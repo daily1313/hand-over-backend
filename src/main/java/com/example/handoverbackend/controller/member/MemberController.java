@@ -72,7 +72,6 @@ public class MemberController {
         return Response.success(memberService.deleteMember(memberInfo));
     }
 
-
     // 유저 정보를 가져오는 getPrincipal 함수
     private Member getPrincipal() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

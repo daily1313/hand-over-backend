@@ -20,5 +20,4 @@ public class MemberResponseDto {
     public static MemberResponseDto toDto(Member member) {
         return new MemberResponseDto(member.getId(), member.getName(), member.getUsername(), member.getNickname(), member.getAuthority());
     }
-
 }

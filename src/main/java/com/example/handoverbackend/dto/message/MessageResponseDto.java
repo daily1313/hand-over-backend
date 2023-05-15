@@ -41,5 +41,4 @@ public class MessageResponseDto {
         this.senderUsername = senderUsername;
         this.receiverUsername = receiverUsername;
     }
-
 }
