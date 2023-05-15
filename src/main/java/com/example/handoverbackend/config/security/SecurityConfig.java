@@ -5,6 +5,7 @@ import com.example.handoverbackend.config.jwt.JwtAccessDeniedHandler;
 import com.example.handoverbackend.config.jwt.JwtAuthenticationEntryPoint;
 import com.example.handoverbackend.config.jwt.JwtSecurityConfig;
 import com.example.handoverbackend.config.jwt.TokenProvider;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
@@ -44,19 +47,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // CSRF 설정 Disable
-        http.csrf().disable()
+        http.csrf().disable();
 
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+        // CORS
+        http.cors().configurationSource(request -> {
+            var cors = new CorsConfiguration();
+            cors.setAllowedOrigins(List.of("http://127.0.0.1:5173"));
+            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+            cors.setAllowedHeaders(List.of("*"));
+            return cors;
+        });
 
+        http
+                .authorizeHttpRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+        http
                 // exception handling 할 때 우리가 만든 클래스를 추가
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
-
-                .and()
-                .headers()
-                .frameOptions()
-                .sameOrigin()
 
                 // 시큐리티는 기본적으로 세션을 사용
                 // 여기서는 세션을 사용하지 않기 때문에 세션 설정을 Stateless 로 설정
