@@ -7,6 +7,7 @@ import com.example.handoverbackend.repository.MemberRepository;
 import com.example.handoverbackend.response.Response;
 import com.example.handoverbackend.service.member.MemberService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -31,14 +32,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberController {
 
+    private static final String DEFAULT_PAGE = "0";
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
     @Operation(summary = "전체 회원 조회", description = "전체 회원을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/members")
-    public Response findAllMembers(@PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        return Response.success(memberService.findAllMembers(pageable));
+    public Response findAllMembers(@RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
+        return Response.success(memberService.findAllMembers(page));
     }
 
     @Operation(summary = "회원 단건 조회", description = "회원 한 명을 조회합니다.")
@@ -51,9 +53,8 @@ public class MemberController {
     @Operation(summary = "전체 회원 조회(검색)", description = "검색한 전체 회원을 조회합니다.")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/members/search")
-    public Response searchMembers(@RequestParam String keyword,
-                                  @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        return Response.success(memberService.findAllByNameContainingOrNicknameContaining(keyword, pageable));
+    public Response searchMembers(@RequestParam String keyword, @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
+        return Response.success(memberService.findAllByNameContainingOrNicknameContaining(keyword, page));
     }
 
     @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정합니다.")

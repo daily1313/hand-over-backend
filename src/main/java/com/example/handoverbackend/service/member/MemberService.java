@@ -12,7 +12,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +23,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private static final String SUCCESS_DELETE_MESSAGE = "회원탈퇴에 성공하였습니다.";
+    private static final String DEFAULT_PAGE_SORT = "name";
+    private static final int DEFAULT_PAGE_SIZE = 10;
 
     private final MemberRepository memberRepository;
 
     // 회원 전체 조회
     @Transactional(readOnly = true)
-    public MemberFindAllWithPagingResponseDto findAllMembers(Pageable pageable) {
+    public MemberFindAllWithPagingResponseDto findAllMembers(int page) {
+        PageRequest pageable = getPageRequest(page);
         Page<Member> members = memberRepository.findAll(pageable);
         List<MemberResponseDto> allMembers = members.stream()
                 .map(MemberResponseDto::toDto)
@@ -43,7 +48,8 @@ public class MemberService {
 
     // 회원 검색 조회(이름, 닉네임)
     @Transactional(readOnly = true)
-    public MemberFindAllWithPagingResponseDto findAllByNameContainingOrNicknameContaining(String keyword, Pageable pageable) {
+    public MemberFindAllWithPagingResponseDto findAllByNameContainingOrNicknameContaining(String keyword, int page) {
+        Pageable pageable = getPageRequest(page);
         Page<Member> members = memberRepository.findAllByNameContainingOrNicknameContaining(keyword, keyword, pageable);
         List<MemberResponseDto> allMembers = members.stream()
                 .map(MemberResponseDto::toDto)
@@ -64,5 +70,9 @@ public class MemberService {
     public String deleteMember(Member member) {
         memberRepository.delete(member);
         return SUCCESS_DELETE_MESSAGE;
+    }
+
+    private PageRequest getPageRequest(Integer page) {
+        return PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by(DEFAULT_PAGE_SORT).descending());
     }
 }

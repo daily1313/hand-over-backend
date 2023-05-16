@@ -52,20 +52,20 @@ public class MemberControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(memberController).build();
     }
 
-//    @Test
-//    @DisplayName("회원 전체 조회 테스트")
-//    public void findAllMembersTest() throws Exception {
-//        //given
-//        Pageable pageable = PageRequest.of(0 , 10, Sort.by("username"));
-//
-//        //when
-//        mockMvc.perform(
-//                get("/api/members"))
-//        .andExpect(status().isOk());
-//
-//        //then
-//        verify(memberService).findAllMembers(pageable);
-//    }
+    @Test
+    @DisplayName("회원 전체 조회 테스트")
+    public void findAllMembersTest() throws Exception {
+        //given
+        Pageable pageable = PageRequest.of(0 , 10, Sort.by("name"));
+
+        //when
+        mockMvc.perform(
+                get("/api/members"))
+        .andExpect(status().isOk());
+
+        //then
+        verify(memberService).findAllMembers(0);
+    }
 
 
     @Test

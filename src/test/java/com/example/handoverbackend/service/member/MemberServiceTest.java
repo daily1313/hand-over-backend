@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
+import com.example.handoverbackend.dto.member.MemberFindAllWithPagingResponseDto;
 import com.example.handoverbackend.dto.member.MemberResponseDto;
 import com.example.handoverbackend.repository.MemberRepository;
 import java.util.ArrayList;
@@ -49,13 +50,14 @@ class MemberServiceTest {
         memberList.add(member1);
         memberList.add(member2);
         Page<Member> members = new PageImpl<>(memberList);
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("username").descending());
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("name").descending());
+        given(memberRepository.findAll(pageable)).willReturn(members);
 
         //when
-        Page<MemberResponseDto> allMembers = members.map(MemberResponseDto::toDto);
+        MemberFindAllWithPagingResponseDto result = memberService.findAllMembers(0);
 
         //then
-        assertThat(allMembers.getSize()).isEqualTo(2);
+        assertThat(result.getMembers().size()).isEqualTo(2);
     }
 
     @Test
