@@ -33,8 +33,8 @@ public class CommentService {
     private final BoardRepository boardRepository;
 
     @Transactional(readOnly = true)
-    public CommentFindAllWithPagingResponseDto findComments(CommentWithBoardNumber number, Integer page) {
-        Board board = findBoard(number.getBoardId());
+    public CommentFindAllWithPagingResponseDto findComments(Long boardId, Integer page) {
+        Board board = findBoard(boardId);
         PageRequest pageRequest = getPageRequest(page);
         Page<Comment> comments = commentRepository.findAllByBoard(board, pageRequest);
         List<CommentResponseDto> commentsWithDto = comments.stream()
