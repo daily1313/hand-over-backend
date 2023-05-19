@@ -50,6 +50,14 @@ public class MatchController {
         return Response.success(matchService.getAllMatchesPostsWithPaging(page));
     }
 
+    @Operation(summary = "사용자가 작성한 매칭글 전체 조회", description = "사용자가 작성한 매칭글 전체 조회(최신순)")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/matches/posts")
+    public Response getAllMatchesPostByMemberWithPaging(@RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
+        Member seller = getPrincipal();
+        return Response.success(matchService.findAllMatchesPostsByMember(seller, page));
+    }
+
     @Operation(summary = "카테고리별 매칭글 조회", description = "카테고리에 해당하는 매칭글을 조회합니다(최신순)")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/matches/category")

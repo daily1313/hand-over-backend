@@ -7,6 +7,8 @@ import com.example.handoverbackend.domain.favorite.MatchFavorite;
 import com.example.handoverbackend.domain.match.Category;
 import com.example.handoverbackend.domain.match.Match;
 import com.example.handoverbackend.domain.member.Member;
+import com.example.handoverbackend.dto.match.MatchByMemberResponseDto;
+import com.example.handoverbackend.dto.match.MatchFindAllByMemberWithPagingResponseDto;
 import com.example.handoverbackend.dto.page.PageInfoDto;
 import com.example.handoverbackend.dto.match.MatchCreateRequestDto;
 import com.example.handoverbackend.dto.match.MatchEditRequestDto;
@@ -61,24 +63,34 @@ public class MatchService {
         return MatchResponseDto.toDto(match);
     }
 
+    @Transactional
+    public MatchFindAllByMemberWithPagingResponseDto findAllMatchesPostsByMember(Member member, int page) {
+        PageRequest pageRequest = getPageRequest(page);
+        Page<Match> matches = matchRepository.findAllBySeller(member, pageRequest);
+        List<MatchByMemberResponseDto> allMatches = matches.stream()
+                .map(MatchByMemberResponseDto::toDto)
+                .collect(Collectors.toList());
+        return MatchFindAllByMemberWithPagingResponseDto.toDto(allMatches, new PageInfoDto(matches));
+    }
+
     @Transactional(readOnly = true)
     public MatchFindAllWithPagingResponseDto getAllMatchesPostsWithPaging(int page) {
         PageRequest pageRequest = getPageRequest(page);
         Page<Match> matches = matchRepository.findAll(pageRequest);
-        List<MatchResponseDto> allTickets = matches.stream()
+        List<MatchResponseDto> allMatches = matches.stream()
                 .map(MatchResponseDto::toDto)
                 .collect(Collectors.toList());
-        return MatchFindAllWithPagingResponseDto.toDto(allTickets, new PageInfoDto(matches));
+        return MatchFindAllWithPagingResponseDto.toDto(allMatches, new PageInfoDto(matches));
     }
 
     @Transactional(readOnly = true)
     public MatchFindAllWithPagingResponseDto getAllMatchesPostsByCategoryWithPaging(Category category, int page) {
         PageRequest pageRequest = getPageRequest(page);
         Page<Match> matches = matchRepository.findAllByCategory(category, pageRequest);
-        List<MatchResponseDto> matchingTickets = matches.stream()
+        List<MatchResponseDto> allMatches = matches.stream()
                 .map(MatchResponseDto::toDto)
                 .collect(Collectors.toList());
-        return MatchFindAllWithPagingResponseDto.toDto(matchingTickets, new PageInfoDto(matches));
+        return MatchFindAllWithPagingResponseDto.toDto(allMatches, new PageInfoDto(matches));
     }
 
     @Transactional(readOnly = true)
