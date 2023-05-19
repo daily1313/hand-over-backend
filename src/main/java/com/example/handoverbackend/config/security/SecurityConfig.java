@@ -52,7 +52,7 @@ public class SecurityConfig {
         // CORS
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("http://127.0.0.1:5173"));
+            cors.setAllowedOrigins(List.of("http://127.0.0.1:5173", "http://localhost:5173정"));
             cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
             cors.setAllowedHeaders(List.of("*"));
             return cors;
