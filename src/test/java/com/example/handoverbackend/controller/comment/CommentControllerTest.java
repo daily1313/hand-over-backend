@@ -51,18 +51,18 @@ public class CommentControllerTest {
     @Test
     void findComments() throws Exception {
         //given
-        CommentWithBoardNumber request = new CommentWithBoardNumber(0L);
+        Long boardId = 1L;
         Integer page = 0;
 
         //when
         mockMvc.perform(
                 get("/api/comments")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
+                    .param("boardId",String.valueOf(boardId))
+                    .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
         //then
-        verify(commentService).findComments(refEq(request), refEq(page));
+        verify(commentService).findComments(refEq(boardId), refEq(page));
     }
 
     @DisplayName("댓글을 작성합니다.")

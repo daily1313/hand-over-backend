@@ -52,7 +52,7 @@ public class CommentServiceTest {
     @Test
     void findComments() {
         //given
-        CommentWithBoardNumber number = new CommentWithBoardNumber(1L);
+        Long number = 1L;
         Integer page = 0;
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         Board board = createBoard();
@@ -60,7 +60,7 @@ public class CommentServiceTest {
         List<Comment> comments = List.of(CommentMaker.createComment(board, member));
         Page<Comment> commentsWithPaging = new PageImpl<>(comments);
         given(commentRepository.findAllByBoard(board, pageRequest)).willReturn(commentsWithPaging);
-        given(boardRepository.findById(number.getBoardId())).willReturn(Optional.of(board));
+        given(boardRepository.findById(number)).willReturn(Optional.of(board));
 
         //when
         CommentFindAllWithPagingResponseDto result = commentService.findComments(number, page);
@@ -114,7 +114,7 @@ public class CommentServiceTest {
         given(commentRepository.findById(commentId)).willReturn(Optional.of(comment));
 
         //when
-        String result = commentService.deleteComment( member, commentId);
+        String result = commentService.deleteComment(member, commentId);
 
         //then
         assertThat(result).isEqualTo(SUCCESS_DELETE_COMMENT);
