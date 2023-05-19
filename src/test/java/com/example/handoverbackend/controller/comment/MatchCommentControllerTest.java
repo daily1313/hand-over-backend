@@ -52,15 +52,15 @@ public class MatchCommentControllerTest {
     @Test
     void findComments() throws Exception {
         //given
-        MatchCommentWithMatchNumber request = new MatchCommentWithMatchNumber(0L);
+        Long request = 0L;
         Integer page = 0;
 
         //when
         mockMvc.perform(
-                get("/api/match/comments")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isOk());
+            get("/api/match/comments")
+                .param("matchId", String.valueOf(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
 
         //then
         verify(matchCommentService).findMatchComments(refEq(request), refEq(page));

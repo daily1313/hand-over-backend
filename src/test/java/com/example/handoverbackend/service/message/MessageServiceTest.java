@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.message.Message;
 import com.example.handoverbackend.dto.message.MessageCreateRequestDto;
+import com.example.handoverbackend.dto.message.MessageFindAllWithPagingResponseDto;
 import com.example.handoverbackend.dto.message.MessageResponseDto;
 import com.example.handoverbackend.factory.MessageMaker;
 import com.example.handoverbackend.repository.MemberRepository;
@@ -68,15 +69,14 @@ public class MessageServiceTest {
         Member receiver = createMember2();
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
         List<Message> messages = List.of(MessageMaker.createMessage("제목","내용", sender, receiver), MessageMaker.createMessage("제목","내용", sender, receiver));
-        Page<Message> messagesWithPaging = new PageImpl<>(messages);
-        Page<MessageResponseDto> allMessages = messagesWithPaging.map(MessageResponseDto::toDto);
+        Page<Message> allMessages = new PageImpl<>(messages);
         given(messageRepository.findAllBySenderUsername(sender.getUsername(), pageable)).willReturn(allMessages);
 
         //when
-        Page<MessageResponseDto> result = messageService.findAllSentMessages(sender);
+        MessageFindAllWithPagingResponseDto result = messageService.findAllSentMessages(sender);
 
         //then
-        assertThat(result.getSize()).isEqualTo(2);
+        assertThat(result.getMessages().size()).isEqualTo(2);
     }
 
     @Test
@@ -87,29 +87,28 @@ public class MessageServiceTest {
         Member receiver = createMember2();
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
         List<Message> messages = List.of(MessageMaker.createMessage("제목","내용", sender, receiver), MessageMaker.createMessage("제목","내용", sender, receiver));
-        Page<Message> messagesWithPaging = new PageImpl<>(messages);
-        Page<MessageResponseDto> allMessages = messagesWithPaging.map(MessageResponseDto::toDto);
+        Page<Message> allMessages = new PageImpl<>(messages);
         given(messageRepository.findAllByReceiverUsername(receiver.getUsername(), pageable)).willReturn(allMessages);
 
         //when
-        Page<MessageResponseDto> result = messageService.findAllReceivedMessages(receiver);
+        MessageFindAllWithPagingResponseDto result = messageService.findAllReceivedMessages(receiver);
 
         //then
-        assertThat(result.getSize()).isEqualTo(2);
+        assertThat(result.getMessages().size()).isEqualTo(2);
     }
 
     @Test
     @DisplayName("발신함 단건 조회 테스트")
     void findSentMessageTest() {
         //given
-        Long sentMessageId = 1L;
+        Long id = 1L;
         Member sender = createMember();
         Member receiver = createMember2();
         Message message = createMessage("제목","내용", sender, receiver);
-        given(messageRepository.findByIdAndSenderUsername(sentMessageId, sender.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndSenderUsername(id, sender.getUsername())).willReturn(Optional.of(message));
 
         //when
-        MessageResponseDto result = messageService.findSentMessage(sentMessageId, sender);
+        MessageResponseDto result = messageService.findSentMessage(id, sender);
 
         //then
         assertThat(result.getContent()).isEqualTo("내용");
@@ -119,15 +118,15 @@ public class MessageServiceTest {
     @DisplayName("수신함 단건 조회 테스트")
     void findReceivedMessageTest() {
         //given
-        Long receivedMessageId = 1L;
+        Long id = 1L;
         Member sender = createMember();
         Member receiver = createMember2();
         Message message = createMessage("제목","내용", sender, receiver);
 
-        given(messageRepository.findByIdAndReceiverUsername(receivedMessageId, receiver.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndReceiverUsername(id, receiver.getUsername())).willReturn(Optional.of(message));
 
         //when
-        MessageResponseDto result = messageService.findReceivedMessage(receivedMessageId, receiver);
+        MessageResponseDto result = messageService.findReceivedMessage(id, receiver);
 
         //then
         assertThat(result.getContent()).isEqualTo("내용");
@@ -137,14 +136,14 @@ public class MessageServiceTest {
     @DisplayName("쪽지 삭제 테스트(수신함)")
     void deleteMessageByReceiverTest() {
         //given
-        Long receivedMessageId = 1L;
+        Long id = 1L;
         Member sender = createMember();
         Member receiver = createMember2();
         Message message = createMessage("제목","내용", sender, receiver);
-        given(messageRepository.findByIdAndReceiverUsername(receivedMessageId, receiver.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndReceiverUsername(id, receiver.getUsername())).willReturn(Optional.of(message));
 
         //when
-        String result = messageService.deleteMessageByReceiver(receivedMessageId, receiver);
+        String result = messageService.deleteMessageByReceiver(id, receiver);
 
         //then
         assertThat(result).isEqualTo("받은 쪽지를 삭제하였습니다.");
@@ -155,14 +154,14 @@ public class MessageServiceTest {
     @DisplayName("쪽지 삭제 테스트(발신함)")
     void deleteMessageBySenderTest() {
         //given
-        Long sentMessageId = 1L;
+        Long id = 1L;
         Member sender = createMember();
         Member receiver = createMember2();
         Message message = createMessage("제목","내용", sender, receiver);
-        given(messageRepository.findByIdAndSenderUsername(sentMessageId, sender.getUsername())).willReturn(Optional.of(message));
+        given(messageRepository.findByIdAndSenderUsername(id, sender.getUsername())).willReturn(Optional.of(message));
 
         //when
-        String result = messageService.deleteMessageBySender(sentMessageId, sender);
+        String result = messageService.deleteMessageBySender(id, sender);
 
         //then
         assertThat(result).isEqualTo("보낸 쪽지를 삭제하였습니다.");

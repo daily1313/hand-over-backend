@@ -11,6 +11,7 @@ import com.example.handoverbackend.service.comment.MatchCommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,22 +30,22 @@ public class MatchCommentController {
     private final MatchCommentService matchCommentService;
     private final MemberRepository memberRepository;
 
-    @ApiOperation(value = "매칭의 댓글 조회", notes = "매칭의 댓글을 조회합니다.")
+    @Operation(summary = "매칭의 댓글 조회", description = "매칭의 댓글을 조회합니다.")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Response findMatchComments(@Valid @RequestBody MatchCommentWithMatchNumber requestDto
+    public Response findMatchComments(@RequestParam Long matchId
         , @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
-        return Response.success(matchCommentService.findMatchComments(requestDto, page));
+        return Response.success(matchCommentService.findMatchComments(matchId, page));
     }
 
-    @ApiOperation(value = "댓글을 작성합니다.", notes = "댓글을 작성합니다.")
+    @Operation(summary = "댓글을 작성합니다.", description = "댓글을 작성합니다.")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Response createMatchComment(@Valid @RequestBody MatchCommentCreateRequestDto requestDto) {
         return Response.success(matchCommentService.createMatchComment(requestDto, getPrincipal()));
     }
 
-    @ApiOperation(value = "댓글을 수정합니다.", notes = "댓글을 수정합니다.")
+    @Operation(summary = "댓글을 수정합니다.", description = "댓글을 수정합니다.")
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response editComment(@ApiParam(value = "댓글 id", readOnly = true) @PathVariable Long id
@@ -52,7 +53,7 @@ public class MatchCommentController {
         return Response.success(matchCommentService.editMatchComment(requestDto, getPrincipal(), id));
     }
 
-    @ApiOperation(value = "댓글을 삭제합니다.", notes = "댓글을 삭제합니다.")
+    @Operation(summary = "댓글을 삭제합니다.", description = "댓글을 삭제합니다.")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Response deleteComment(@ApiParam(value = "댓글 id", readOnly = true) @PathVariable Long id) {

@@ -53,7 +53,7 @@ public class MatchCommentServiceTest {
     @Test
     void findMatchComments() {
         //given
-        MatchCommentWithMatchNumber number = new MatchCommentWithMatchNumber(1L);
+        Long number = 0L;
         Integer page = 0;
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending());
         Match match = createMatch();
@@ -61,7 +61,7 @@ public class MatchCommentServiceTest {
         List<MatchComment> matchComments = List.of(MatchCommentMaker.createComment(match, member));
         Page<MatchComment> commentsWithPaging = new PageImpl<>(matchComments);
         given(matchCommentRepository.findAllByMatch(match, pageRequest)).willReturn(commentsWithPaging);
-        given(matchRepository.findById(number.getMatchId())).willReturn(Optional.of(match));
+        given(matchRepository.findById(number)).willReturn(Optional.of(match));
 
         //when
         MatchCommentFindAllWithPagingResponseDto result = matchCommentService.findMatchComments(number, page);

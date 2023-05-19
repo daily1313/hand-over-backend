@@ -33,8 +33,8 @@ public class MatchCommentService {
     private final MatchRepository matchRepository;
 
     @Transactional(readOnly = true)
-    public MatchCommentFindAllWithPagingResponseDto findMatchComments(MatchCommentWithMatchNumber number, Integer page) {
-        Match match = findMatch(number.getMatchId());
+    public MatchCommentFindAllWithPagingResponseDto findMatchComments(Long number, Integer page) {
+        Match match = findMatch(number);
         PageRequest pageRequest = getPageRequest(page);
         Page<MatchComment> matchComments = matchCommentRepository.findAllByMatch(match, pageRequest);
         List<MatchCommentResponseDto> commentsWithDto = matchComments.stream()

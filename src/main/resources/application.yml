@@ -2,16 +2,14 @@ server:
   port: 8080
 
 spring:
-
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${MYSQL_DATABASE}
-    password: ${MYSQL_ROOT_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
+      url: jdbc:mysql://localhost:3306/capstone?serverTimezone=Asia/Seoul&useSSL=false
+      username: root
+      password: Daily1313!
+      driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database: mysql
@@ -20,13 +18,16 @@ spring:
         show_sql: true
         format_sql: true
         #use_sql_comments: true
+    defer-datasource-initialization: true
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher # about swagger
-
   servlet.multipart.max-file-size: 10MB
   servlet.multipart.max-request-size: 10MB
 
+  sql :
+    init:
+      mode: always
 
 upload:
   image:
