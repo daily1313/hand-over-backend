@@ -33,9 +33,9 @@ public class MatchCommentController {
     @Operation(summary = "매칭의 댓글 조회", description = "매칭의 댓글을 조회합니다.")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Response findMatchComments(@Valid @RequestBody MatchCommentWithMatchNumber requestDto
+    public Response findMatchComments(@RequestParam Long matchId
         , @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
-        return Response.success(matchCommentService.findMatchComments(requestDto, page));
+        return Response.success(matchCommentService.findMatchComments(matchId, page));
     }
 
     @Operation(summary = "댓글을 작성합니다.", description = "댓글을 작성합니다.")

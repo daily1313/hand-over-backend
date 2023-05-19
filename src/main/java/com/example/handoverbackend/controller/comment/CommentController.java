@@ -33,9 +33,9 @@ public class CommentController {
     @Operation(summary = "게시글의 댓글 조회", description = "게시글의 댓글을 조회합니다.")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Response findComments(@Valid @RequestBody CommentWithBoardNumber requestDto
+    public Response findComments(@RequestParam Long boardId
         , @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
-        return Response.success(commentService.findComments(requestDto, page));
+        return Response.success(commentService.findComments(boardId, page));
     }
 
     @Operation(summary = "댓글을 작성합니다.", description = "댓글을 작성합니다.")
