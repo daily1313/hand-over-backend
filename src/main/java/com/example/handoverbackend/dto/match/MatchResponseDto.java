@@ -26,6 +26,7 @@ public class MatchResponseDto {
     private String detailsContent;
     private int price;
     private String precaution;
+    private boolean isMatched;
 
     public static MatchResponseDto toDto(Match match) {
         return new MatchResponseDto(
@@ -38,7 +39,8 @@ public class MatchResponseDto {
                 match.getEndDate(),
                 match.getDetailsContent(),
                 match.getPrice(),
-                match.getPrecaution()
+                match.getPrecaution(),
+                match.isMatched()
         );
     }
 }
