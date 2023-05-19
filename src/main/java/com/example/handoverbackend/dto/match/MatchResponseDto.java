@@ -16,7 +16,7 @@ public class MatchResponseDto {
 
     private Long id;
     private Category category;
-    private String ticketName;
+    private String matchName;
     private String sellerNickname;
     private String address;
     @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
