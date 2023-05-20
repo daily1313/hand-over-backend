@@ -80,7 +80,7 @@ public class AuthService {
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
         RefreshToken refreshToken = buildRefreshToken(authentication, tokenDto);
         refreshTokenRepository.save(refreshToken);
-        return new TokenResponseDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
+        return new TokenResponseDto(member.getUsername(), tokenDto.getAccessToken(), tokenDto.getRefreshToken());
     }
 
     private RefreshToken buildRefreshToken(Authentication authentication, TokenDto tokenDto) {
@@ -107,7 +107,7 @@ public class AuthService {
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
         RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
         refreshTokenRepository.save(newRefreshToken);
-        TokenResponseDto tokenResponseDto = new TokenResponseDto(tokenDto.getAccessToken(), tokenDto.getRefreshToken());
+        TokenResponseDto tokenResponseDto = new TokenResponseDto(authentication.getName(), tokenDto.getAccessToken(), tokenDto.getRefreshToken());
         return tokenResponseDto;
     }
 
