@@ -73,7 +73,7 @@ public class MemberControllerTest {
     void editMemberInfoTest() throws Exception {
         //given
         Member member = createMember();
-        MemberEditRequestDto req = new MemberEditRequestDto("username1","password1","nickname1");
+        MemberEditRequestDto req = new MemberEditRequestDto("username1","password1");
         Authentication authentication = createAuthentication(member);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         given(memberRepository.findByUsername(authentication.getName())).willReturn(Optional.of(member));

@@ -65,7 +65,7 @@ class MemberServiceTest {
     void editMemberInfoTest() {
         //given
         Member member = createMember();
-        MemberEditRequestDto req = new MemberEditRequestDto("username1","password1","nickname1");
+        MemberEditRequestDto req = new MemberEditRequestDto("username1","password1");
 
         //when
         memberService.editMemberInfo(member, req);
@@ -79,6 +79,7 @@ class MemberServiceTest {
     void deleteMemberTest() {
         //given
         Member member = createMember();
+
 
         //when
         memberService.deleteMember(member);

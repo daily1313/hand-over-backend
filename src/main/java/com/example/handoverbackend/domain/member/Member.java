@@ -1,6 +1,7 @@
 package com.example.handoverbackend.domain.member;
 
 import com.example.handoverbackend.domain.common.BaseEntity;
+import com.example.handoverbackend.dto.jwt.TokenResponseDto;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -59,7 +60,6 @@ public class Member extends BaseEntity {
     public void editMember(MemberEditRequestDto req) {
         username = req.getUsername();
         password = req.getPassword();
-        nickname = req.getNickname();
     }
 
     public void suspend() {
