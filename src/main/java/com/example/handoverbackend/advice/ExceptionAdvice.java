@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class ExceptionAdvice {
 
+    //403 권한 정보 없음
+    @ExceptionHandler(MemberAccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Response memberAccessDeniedException() {
+        return Response.failure(403, "회원을 탈퇴할 권한이 없습니다.");
+    }
+
     //404 회원 정보 없음
     @ExceptionHandler(MemberNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
