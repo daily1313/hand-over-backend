@@ -95,7 +95,7 @@ public class MatchController {
 
     @Operation(summary = "매칭 상태 변경(매칭 완료-> 매칭중, 매칭중 -> 매칭완료로 변경)", description = "매칭글 상태를 매칭중, 매칭완료로 변경합니다.")
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/matches/{id}/edit/matchStatus")
+    @PostMapping("/matches/{id}/edit/matchStatus")
     public Response changeMatchStatus(@PathVariable Long id) {
         Member seller = getPrincipal();
         return Response.success(matchService.changeMatchStatus(seller, id));
