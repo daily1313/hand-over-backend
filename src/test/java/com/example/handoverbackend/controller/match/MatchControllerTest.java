@@ -124,7 +124,7 @@ public class MatchControllerTest {
 
         //when
         mockMvc.perform(
-                post("/api/matches/{id}/edit/matchStatus", id)
+                patch("/api/matches/{id}/edit/matchStatus", id)
         ).andExpect(status().isOk());
 
         //then
