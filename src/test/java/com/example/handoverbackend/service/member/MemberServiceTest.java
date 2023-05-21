@@ -65,13 +65,13 @@ class MemberServiceTest {
     void editMemberInfoTest() {
         //given
         Member member = createMember();
-        MemberEditRequestDto req = new MemberEditRequestDto("username1","password1");
+        MemberEditRequestDto req = new MemberEditRequestDto("nickname1","password1");
 
         //when
         memberService.editMemberInfo(member, req);
 
         //then
-        assertThat(member.getUsername()).isEqualTo("username1");
+        assertThat(member.getNickname()).isEqualTo("nickname1");
     }
 
     @Test

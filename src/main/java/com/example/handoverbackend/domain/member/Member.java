@@ -58,7 +58,7 @@ public class Member extends BaseEntity {
     }
 
     public void editMember(MemberEditRequestDto req) {
-        username = req.getUsername();
+        nickname = req.getNickname();
         password = req.getPassword();
     }
 
