@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class MessageController {
+
+    private static final String DEFAULT_PAGE = "0";
 
     private final MessageService messageService;
     private final MemberRepository memberRepository;
@@ -42,25 +45,25 @@ public class MessageController {
 
     @Operation(summary = "특정 회원의 전체 메세지함 조회", description = "전체 쪽지를 확인하였습니다.(수신함 + 발신함)")
     @GetMapping("/messages")
-    public Response findAllMessages() {
+    public Response findAllMessages(@RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         Member member = getPrincipal();
-        return Response.success(messageService.findAllMessagesByMember(member));
+        return Response.success(messageService.findAllMessagesByMember(member, page));
     }
 
     @Operation(summary = "발신함 확인", description = "보낸 쪽지를 확인하였습니다.")
     @GetMapping("/messages/sender")
     @ResponseStatus(HttpStatus.OK)
-    public Response findAllSentMessages() {
+    public Response findAllSentMessages(@RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         Member sender = getPrincipal();
-        return Response.success(messageService.findAllSentMessages(sender));
+        return Response.success(messageService.findAllSentMessages(sender, page));
     }
 
     @Operation(summary = "수신함 확인", description = "받은 쪽지를 확인하였습니다.")
     @GetMapping("/messages/receiver")
     @ResponseStatus(HttpStatus.OK)
-    public Response findAllReceivedMessages() {
+    public Response findAllReceivedMessages(@RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
         Member receiver = getPrincipal();
-        return Response.success(messageService.findAllReceivedMessages(receiver));
+        return Response.success(messageService.findAllReceivedMessages(receiver, page));
     }
 
     @Operation(summary = "발신함 쪽지 1개 확인", description = "보낸 쪽지 1개를 확인하였습니다.")

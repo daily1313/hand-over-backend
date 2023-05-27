@@ -65,6 +65,7 @@ public class MessageServiceTest {
     @DisplayName("발신함 전체 조회 테스트")
     void findAllSentMessagesTest() {
         //given
+        int page = 0;
         Member sender = createMember();
         Member receiver = createMember2();
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
@@ -73,7 +74,7 @@ public class MessageServiceTest {
         given(messageRepository.findAllBySenderUsername(sender.getUsername(), pageable)).willReturn(allMessages);
 
         //when
-        MessageFindAllWithPagingResponseDto result = messageService.findAllSentMessages(sender);
+        MessageFindAllWithPagingResponseDto result = messageService.findAllSentMessages(sender, page);
 
         //then
         assertThat(result.getMessages().size()).isEqualTo(2);
@@ -83,6 +84,7 @@ public class MessageServiceTest {
     @DisplayName("수신함 전체 조회 테스트")
     void findAllReceivedMessagesTest() {
         //given
+        int page = 0;
         Member sender = createMember();
         Member receiver = createMember2();
         Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
@@ -91,7 +93,7 @@ public class MessageServiceTest {
         given(messageRepository.findAllByReceiverUsername(receiver.getUsername(), pageable)).willReturn(allMessages);
 
         //when
-        MessageFindAllWithPagingResponseDto result = messageService.findAllReceivedMessages(receiver);
+        MessageFindAllWithPagingResponseDto result = messageService.findAllReceivedMessages(receiver, page);
 
         //then
         assertThat(result.getMessages().size()).isEqualTo(2);

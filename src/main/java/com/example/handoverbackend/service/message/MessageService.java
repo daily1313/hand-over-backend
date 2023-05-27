@@ -43,8 +43,8 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public MessageFindAllWithPagingResponseDto findAllMessagesByMember(Member member) {
-        PageRequest pageRequest = getPageRequest();
+    public MessageFindAllWithPagingResponseDto findAllMessagesByMember(Member member, int page) {
+        PageRequest pageRequest = getPageRequest(page);
         Page<Message> messages = messageRepository.findAllBySenderUsernameOrReceiverUsername(member.getUsername(), member.getUsername(), pageRequest);
         List<MessageResponseDto> allMessages = messages.stream()
                 .map(MessageResponseDto::toDto)
@@ -53,8 +53,8 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public MessageFindAllWithPagingResponseDto findAllSentMessages(Member sender) {
-        PageRequest pageRequest = getPageRequest();
+    public MessageFindAllWithPagingResponseDto findAllSentMessages(Member sender, int page) {
+        PageRequest pageRequest = getPageRequest(page);
         Page<Message> messages = messageRepository.findAllBySenderUsername(sender.getUsername(), pageRequest);
         List<MessageResponseDto> allMessages = messages.stream()
                 .map(MessageResponseDto::toDto)
@@ -63,8 +63,8 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public MessageFindAllWithPagingResponseDto findAllReceivedMessages(Member receiver) {
-        PageRequest pageRequest = getPageRequest();
+    public MessageFindAllWithPagingResponseDto findAllReceivedMessages(Member receiver, int page) {
+        PageRequest pageRequest = getPageRequest(page);
         Page<Message> messages = messageRepository.findAllByReceiverUsername(receiver.getUsername(), pageRequest);
         List<MessageResponseDto> allMessages = messages.stream()
                 .map(MessageResponseDto::toDto)
@@ -116,8 +116,8 @@ public class MessageService {
         return DELETE_SUCCESS_SENT_MESSAGE;
     }
 
-    private static PageRequest getPageRequest() {
-        PageRequest pageRequest = PageRequest.of(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, Sort.by("createdAt").descending());
+    private static PageRequest getPageRequest(Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, DEFAULT_PAGE_SIZE, Sort.by("createdAt").descending());
         return pageRequest;
     }
 

@@ -77,6 +77,7 @@ class MessageControllerTest {
     @DisplayName("수신함 메세지 전체 조회 테스트")
     void findAllReceivedMessagesTest() throws Exception {
         //given
+        int page = 0;
         Member member = createMember();
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), "",
                 Collections.emptyList());
@@ -89,13 +90,14 @@ class MessageControllerTest {
         ).andExpect(status().isOk());
 
         //then
-        verify(messageService).findAllReceivedMessages(member);
+        verify(messageService).findAllReceivedMessages(member, page);
     }
 
     @Test
     @DisplayName("발신함 메세지 전체 조회 테스트")
     void findAllSentMessagesTest() throws Exception {
         //given
+        int page = 0;
         Member member = createMember();
         Authentication authentication = new UsernamePasswordAuthenticationToken(member.getId(), "",
                 Collections.emptyList());
@@ -108,7 +110,7 @@ class MessageControllerTest {
         ).andExpect(status().isOk());
 
         //then
-        verify(messageService).findAllSentMessages(member);
+        verify(messageService).findAllSentMessages(member, page);
     }
 
     @Test
