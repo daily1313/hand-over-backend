@@ -12,12 +12,11 @@ import lombok.NoArgsConstructor;
 public class MemberResponseDto {
 
     private Long id;
-    private String name;
     private String username;
     private String nickname;
     private Authority authority;
 
     public static MemberResponseDto toDto(Member member) {
-        return new MemberResponseDto(member.getId(), member.getName(), member.getUsername(), member.getNickname(), member.getAuthority());
+        return new MemberResponseDto(member.getId(), member.getUsername(), member.getNickname(), member.getAuthority());
     }
 }

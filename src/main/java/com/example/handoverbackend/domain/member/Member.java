@@ -1,7 +1,6 @@
 package com.example.handoverbackend.domain.member;
 
 import com.example.handoverbackend.domain.common.BaseEntity;
-import com.example.handoverbackend.dto.jwt.TokenResponseDto;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -28,9 +27,6 @@ public class Member extends BaseEntity {
     @JsonIgnore
     private String password;
 
-    @Column(nullable = false)
-    private String name;
-
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -43,18 +39,17 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private boolean reportedStatus;
 
-    public Member(String username, String password, String name, String email, String nickname, Authority authority) {
+    public Member(String username, String password, String email, String nickname, Authority authority) {
         this.username = username;
         this.password = password;
-        this.name = name;
         this.email = email;
         this.nickname = nickname;
         this.authority = authority;
         reportedStatus = false;
     }
 
-    public static Member createMember(String username, String password, String name, String email, String nickname, Authority authority) {
-        return new Member(username, password, name, email, nickname, authority);
+    public static Member createMember(String username, String password, String email, String nickname, Authority authority) {
+        return new Member(username, password, email, nickname, authority);
     }
 
     public void editMember(MemberEditRequestDto req) {

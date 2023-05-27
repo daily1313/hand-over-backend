@@ -26,11 +26,6 @@ public class SignUpRequestDto {
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$", message = "비밀번호는 최소 8자리이면서 1개 이상의 알파벳, 숫자, 특수문자를 포함해야합니다.")
     private String password;
 
-    @ApiModelProperty(value = "사용자 이름", notes = "사용자 이름은 한글 또는 알파벳으로 입력해주세요.", required = true, example = "김승범")
-    @NotBlank(message = "사용자 이름을 입력해주세요.")
-    @Size(min = 2, message = "사용자 이름이 너무 짧습니다.")
-    private String name;
-
     @ApiModelProperty(value = "이메일", notes = "이메일 형식에 맞춰주세요.", required = true, example = "kimsb7218@naver.com")
     @Email(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "유효한 이메일 주소를 입력하세요.")
     private String email;

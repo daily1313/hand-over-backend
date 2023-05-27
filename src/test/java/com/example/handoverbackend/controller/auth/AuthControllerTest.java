@@ -47,7 +47,7 @@ class AuthControllerTest {
     @DisplayName("회원가입 테스트")
     void joinTest() throws Exception {
         // given
-        SignUpRequestDto req = new SignUpRequestDto("user", "user31123!", "김승범", "kimsb7218@naver.com", "안녕안녕", "dddda123");
+        SignUpRequestDto req = new SignUpRequestDto("user", "user31123!", "kimsb7218@naver.com", "안녕안녕", "dddda123");
 
         // when
         mockMvc.perform(

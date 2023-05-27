@@ -50,7 +50,7 @@ class AuthServiceTest {
     void joinTest() {
         //given
         String ePw = "j8GI7RHe";
-        SignUpRequestDto req = new SignUpRequestDto("kimsb7218", "dsadsasda111!", "김승범", "kimsb7218@naver.com", "김밥천국", ePw);
+        SignUpRequestDto req = new SignUpRequestDto("kimsb7218", "dsadsasda111!", "kimsb7218@naver.com", "김밥천국", ePw);
         EmailAuth emailAuth = new EmailAuth(ePw, "kimsb7218");
         given(emailAuthRepository.findEmailAuthByEmail(req.getEmail())).willReturn(Optional.of(emailAuth));
 
@@ -81,7 +81,7 @@ class AuthServiceTest {
     @DisplayName("이메일 중복 테스트")
     void emailAlreadyExistExceptionTest() {
         //given
-        SignUpRequestDto req = new SignUpRequestDto("kimsb7218", "dsadsasda111!", "김승범", "kimsb7218@naver.com", "김밥천국", "12345678");
+        SignUpRequestDto req = new SignUpRequestDto("kimsb7218", "dsadsasda111!", "kimsb7218@naver.com", "김밥천국", "12345678");
         given(memberRepository.existsByEmail(anyString())).willReturn(true);
 
         //when, then
@@ -93,7 +93,7 @@ class AuthServiceTest {
     @DisplayName("닉네임 중복 테스트")
     public void nicknameAlreadyExistExceptionTest() {
         //given
-        SignUpRequestDto req = new SignUpRequestDto("kimsb7218", "dsadsasda111!", "김승범", "kimsb7218@naver.com", "김밥천국", "12345678");
+        SignUpRequestDto req = new SignUpRequestDto("kimsb7218", "dsadsasda111!", "kimsb7218@naver.com", "김밥천국", "12345678");
         given(memberRepository.existsByNickname(anyString())).willReturn(true);
 
         //when, then
@@ -105,7 +105,7 @@ class AuthServiceTest {
     @DisplayName("아이디 중복 테스트")
     void usernameAlreadyExistExceptionTest() {
         //given
-        SignUpRequestDto req = new SignUpRequestDto("kimsb7218", "dsadsasda111!", "김승범", "kimsb7218@naver.com", "김밥천국", "12345678");
+        SignUpRequestDto req = new SignUpRequestDto("kimsb7218", "dsadsasda111!", "kimsb7218@naver.com", "김밥천국", "12345678");
         given(memberRepository.existsByUsername(anyString())).willReturn(true);
 
         //when, then
