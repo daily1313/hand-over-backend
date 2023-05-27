@@ -1,15 +1,15 @@
-INSERT INTO Member (member_id, username, password, name, email, nickname, authority, reportedStatus, createdAt, modifiedAt)
+INSERT INTO Member (member_id, username, password, email, nickname, authority, reportedStatus, createdAt, modifiedAt)
 VALUES
-(1, 'kimsb7218', 'daily1313!' , '김승범' , 'kimsb7219@naver.com', '고릴라', 'ROLE_USER' , false, now(), now()),
-(2, 'kimsb7219', 'daily1314!' , '오정환' , 'kimsb7220@naver.com', '이쁜이', 'ROLE_USER' , false, now(), now()),
-(3, 'kimsb7220', 'daily1315!' , '김태수' , 'kimsb7221@naver.com', '비실이', 'ROLE_USER' , false, now(), now()),
-(4, 'kimsb7221', 'daily1316!' , '박은지' , 'kimsb7222@naver.com', '은지렁이', 'ROLE_USER' , false, now(), now()),
-(5, 'kimsb7222', 'daily1318!' , '김태수' , 'kimsb7223@naver.com', '삼다수', 'ROLE_USER' , false, now(), now()),
-(6, 'kimsb7223', 'daily1319!' , '노진구' , 'kimsb7224@naver.com', '삼다수1', 'ROLE_USER' , false, now(), now()),
-(7, 'kimsb7224', 'daily1320!' , '이진아' , 'kimsb7225@naver.com', '삼다수2', 'ROLE_ADMIN' , false, now(), now()),
-(8, 'kimsb7225', 'daily1321!' , '이발소' , 'kimsb7226@naver.com', '삼다수3', 'ROLE_USER' , false, now(), now()),
-(9, 'kimsb7226', 'daily1322!' , '삼다수' , 'kimsb7227@naver.com', '삼다수4', 'ROLE_USER' , false, now(), now()),
-(10, 'kimsb7227', 'daily1323!' , '김태희' , 'kimsb7228@naver.com', '삼다수5', 'ROLE_USER' , false, now(), now());
+(1, 'kimsb7218', 'daily1313!' , 'kimsb7219@naver.com', '고릴라', 'ROLE_USER' , false, now(), now()),
+(2, 'kimsb7219', 'daily1314!' , 'kimsb7220@naver.com', '이쁜이', 'ROLE_USER' , false, now(), now()),
+(3, 'kimsb7220', 'daily1315!' , 'kimsb7221@naver.com', '비실이', 'ROLE_USER' , false, now(), now()),
+(4, 'kimsb7221', 'daily1316!' , 'kimsb7222@naver.com', '은지렁이', 'ROLE_USER' , false, now(), now()),
+(5, 'kimsb7222', 'daily1318!' , 'kimsb7223@naver.com', '삼다수', 'ROLE_USER' , false, now(), now()),
+(6, 'kimsb7223', 'daily1319!' , 'kimsb7224@naver.com', '삼다수1', 'ROLE_USER' , false, now(), now()),
+(7, 'kimsb7224', 'daily1320!' , 'kimsb7225@naver.com', '삼다수2', 'ROLE_ADMIN' , false, now(), now()),
+(8, 'kimsb7225', 'daily1321!' , 'kimsb7226@naver.com', '삼다수3', 'ROLE_USER' , false, now(), now()),
+(9, 'kimsb7226', 'daily1322!' , 'kimsb7227@naver.com', '삼다수4', 'ROLE_USER' , false, now(), now()),
+(10, 'kimsb7227', 'daily1323!' , 'kimsb7228@naver.com', '삼다수5', 'ROLE_USER' , false, now(), now());
 
 
 INSERT INTO match_table (member_id, category, matchName, address, start_date, end_date, detailsContent, price, precaution, isMatched, reportedStatus, createdAt, modifiedAt)
