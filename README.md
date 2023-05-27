@@ -23,7 +23,8 @@
 - Mysql 8.0.32
 - Swagger 
 - Junit5
-- AWS Lightsail
+- AWS Lightsail, EC2
+- AWS Route 53 
 # 팀원
 
 ## Backend
@@ -39,7 +40,25 @@
 
 <hr>
 
-# Git Convention
+## DB ERD 
+MySQLWorkbench tool을 이용하여 ERD 추출
+
+<img width="500" alt="스크린샷 2023-05-28 오전 1 58 06" src="https://github.com/daily1313/hand-over-backend/assets/88074556/4c54ebf8-c3f1-429f-8dcf-896d12f7566c">
+
+
+
+## Deploy 
+
+```text
+1. EC2 서버 접속 (ssh -i (pem location) ubuntu@(public ip Address))
+2. git clone https://github.com/daily1313/hand-over-backend.git (배포할 프로젝트 복제)
+3. cd hand-over-backend (해당 디렉토리로 이동)
+4. ./gradlew build (재빌드시 ./gradlew clean build)
+5. nohup java -jar build/libs/[jar파일명].jar & (백그라운드 배포) 
+  
+```
+
+## Git Convention
 
 ```text
 feat : 기능추가
@@ -49,6 +68,11 @@ style : formatting, 세미콜론 추가 / 코드 변경은 없음
 chore : 라이브러리 설치, 빌드 작업 업데이트
 docs : 주석 추가 삭제, 문서 변경
 ```
+<hr>
+
+
+
+
 
 
 
