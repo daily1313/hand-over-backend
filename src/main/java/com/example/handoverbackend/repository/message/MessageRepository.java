@@ -1,5 +1,6 @@
-package com.example.handoverbackend.repository;
+package com.example.handoverbackend.repository.message;
 
+import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.message.Message;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
+
+    Page<Message> findAllBySenderUsernameOrReceiverUsername(String senderUsername, String receiverUsername, Pageable pageable);
 
     Page<Message> findAllBySenderUsername(String senderUsername, Pageable pageable);
 

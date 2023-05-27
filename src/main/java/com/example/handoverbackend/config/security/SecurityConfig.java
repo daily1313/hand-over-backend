@@ -100,6 +100,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/categories/{id}").hasAnyAuthority("ROLE_ADMIN")
 
                 .requestMatchers(HttpMethod.POST, "/api/messages").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/messages").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/messages/sender").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/messages/receiver").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/messages/sender/{id}").hasAnyAuthority( "ROLE_USER", "ROLE_ADMIN")

@@ -11,13 +11,12 @@ import com.example.handoverbackend.exception.MemberNotEqualsException;
 import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.exception.MessageNotFoundException;
 import com.example.handoverbackend.repository.MemberRepository;
-import com.example.handoverbackend.repository.MessageRepository;
+import com.example.handoverbackend.repository.message.MessageRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,9 +43,19 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
+    public MessageFindAllWithPagingResponseDto findAllMessagesByMember(Member member) {
+        PageRequest pageRequest = getPageRequest();
+        Page<Message> messages = messageRepository.findAllBySenderUsernameOrReceiverUsername(member.getUsername(), member.getUsername(), pageRequest);
+        List<MessageResponseDto> allMessages = messages.stream()
+                .map(MessageResponseDto::toDto)
+                .collect(Collectors.toList());
+        return new MessageFindAllWithPagingResponseDto(allMessages, new PageInfoDto(messages));
+    }
+
+    @Transactional(readOnly = true)
     public MessageFindAllWithPagingResponseDto findAllSentMessages(Member sender) {
-        Pageable pageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, Sort.by("createdAt").descending());
-        Page<Message> messages = messageRepository.findAllBySenderUsername(sender.getUsername(), pageable);
+        PageRequest pageRequest = getPageRequest();
+        Page<Message> messages = messageRepository.findAllBySenderUsername(sender.getUsername(), pageRequest);
         List<MessageResponseDto> allMessages = messages.stream()
                 .map(MessageResponseDto::toDto)
                 .collect(Collectors.toList());
@@ -55,8 +64,8 @@ public class MessageService {
 
     @Transactional(readOnly = true)
     public MessageFindAllWithPagingResponseDto findAllReceivedMessages(Member receiver) {
-        Pageable pageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, Sort.by("createdAt").descending());
-        Page<Message> messages = messageRepository.findAllByReceiverUsername(receiver.getUsername(), pageable);
+        PageRequest pageRequest = getPageRequest();
+        Page<Message> messages = messageRepository.findAllByReceiverUsername(receiver.getUsername(), pageRequest);
         List<MessageResponseDto> allMessages = messages.stream()
                 .map(MessageResponseDto::toDto)
                 .collect(Collectors.toList());
@@ -105,6 +114,11 @@ public class MessageService {
             return DELETE_SUCCESS_SENT_MESSAGE;
         }
         return DELETE_SUCCESS_SENT_MESSAGE;
+    }
+
+    private static PageRequest getPageRequest() {
+        PageRequest pageRequest = PageRequest.of(DEFAULT_PAGE, DEFAULT_PAGE_SIZE, Sort.by("createdAt").descending());
+        return pageRequest;
     }
 
     private boolean isDeletedBySenderAndReceiver(Message message) {

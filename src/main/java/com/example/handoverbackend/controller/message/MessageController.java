@@ -40,6 +40,13 @@ public class MessageController {
         return Response.success(messageService.writeMessage(sender, req));
     }
 
+    @Operation(summary = "특정 회원의 전체 메세지함 조회", description = "전체 쪽지를 확인하였습니다.(수신함 + 발신함)")
+    @GetMapping("/messages")
+    public Response findAllMessages() {
+        Member member = getPrincipal();
+        return Response.success(messageService.findAllMessagesByMember(member));
+    }
+
     @Operation(summary = "발신함 확인", description = "보낸 쪽지를 확인하였습니다.")
     @GetMapping("/messages/sender")
     @ResponseStatus(HttpStatus.OK)
