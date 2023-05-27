@@ -42,8 +42,7 @@
 
 ## DB ERD 
 MySQLWorkbench tool을 이용하여 ERD 추출
-
-<img width="500" alt="스크린샷 2023-05-28 오전 1 58 06" src="https://github.com/daily1313/hand-over-backend/assets/88074556/4c54ebf8-c3f1-429f-8dcf-896d12f7566c">
+<img width="500" alt="스크린샷 2023-05-28 오전 3 54 47" src="https://github.com/daily1313/hand-over-backend/assets/88074556/78391744-7893-45b6-97a8-36403599f4a0">
 
 
 
