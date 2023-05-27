@@ -46,11 +46,11 @@ public class MemberService {
         return MemberResponseDto.toDto(member);
     }
 
-    // 회원 검색 조회(이름, 닉네임)
+    // 회원 검색 조회(닉네임으로 검색)
     @Transactional(readOnly = true)
-    public MemberFindAllWithPagingResponseDto findAllByNameContainingOrNicknameContaining(String keyword, int page) {
+    public MemberFindAllWithPagingResponseDto findAllByNicknameContaining(String keyword, int page) {
         Pageable pageable = getPageRequest(page);
-        Page<Member> members = memberRepository.findAllByNameContainingOrNicknameContaining(keyword, keyword, pageable);
+        Page<Member> members = memberRepository.findAllByNicknameContaining(keyword, pageable);
         List<MemberResponseDto> allMembers = members.stream()
                 .map(MemberResponseDto::toDto)
                 .collect(Collectors.toList());

@@ -54,7 +54,7 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/members/search")
     public Response searchMembers(@RequestParam String keyword, @RequestParam(defaultValue = DEFAULT_PAGE) Integer page) {
-        return Response.success(memberService.findAllByNameContainingOrNicknameContaining(keyword, page));
+        return Response.success(memberService.findAllByNicknameContaining(keyword, page));
     }
 
     @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정합니다.")
