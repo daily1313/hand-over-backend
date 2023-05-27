@@ -1,6 +1,5 @@
 package com.example.handoverbackend.repository.message;
 
-import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.domain.message.Message;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
