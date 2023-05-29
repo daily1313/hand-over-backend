@@ -17,7 +17,7 @@ public class MatchResponseDto {
     private Long id;
     private Category category;
     private String matchName;
-    private String sellerNickname;
+    private String sellerId;
     private String address;
     @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime startDate;
@@ -33,7 +33,7 @@ public class MatchResponseDto {
                 match.getId(),
                 match.getCategory(),
                 match.getMatchName(),
-                match.getSeller().getNickname(),
+                match.getSeller().getUsername(),
                 match.getAddress(),
                 match.getStartDate(),
                 match.getEndDate(),
