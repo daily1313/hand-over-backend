@@ -52,12 +52,15 @@ public class SecurityConfig {
         // CORS
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("http://localhost:5173","https://hand-over.vercel.app"));
+            cors.setAllowedOrigins(List.of("http://localhost:5173","https://hand-over-platform.vercel.app"));
             cors.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE"));
             cors.setAllowedHeaders(List.of("*"));
             return cors;
         });
 
+        http
+                .authorizeHttpRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
         http
                 // exception handling 할 때 우리가 만든 클래스를 추가
                 .exceptionHandling()

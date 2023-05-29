@@ -17,7 +17,7 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://127.0.0.1:5173");
         config.addAllowedOrigin("http://localhost:5173");
-        config.addAllowedOrigin("^https?:\\/\\/https://hand-over.vercel.app/$");
+        config.addAllowedOrigin("^https?:\\/\\/https://hand-over-platform.vercel.app/$");
         config.addAllowedHeader(CorsConfiguration.ALL);
         config.addAllowedMethod(HttpMethod.GET);
         config.addAllowedMethod(HttpMethod.POST);
