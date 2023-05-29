@@ -59,9 +59,6 @@ public class SecurityConfig {
         });
 
         http
-                .authorizeHttpRequests()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
-        http
                 // exception handling 할 때 우리가 만든 클래스를 추가
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
