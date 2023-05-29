@@ -19,7 +19,7 @@ public class MatchCommentResponseDto {
     private LocalDateTime modifiedAt;
 
     public static MatchCommentResponseDto toDto(MatchComment comment) {
-        return new MatchCommentResponseDto(comment.getId(), comment.getWriter().getNickname(),
+        return new MatchCommentResponseDto(comment.getId(), comment.getWriter().getUsername(),
             comment.getContent(), comment.getCreatedAt(), comment.getModifiedAt());
     }
 }
