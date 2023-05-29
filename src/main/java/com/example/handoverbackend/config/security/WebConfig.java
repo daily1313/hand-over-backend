@@ -40,8 +40,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:5173")
-                .allowedOrigins("http://localhost:5173")
-                .allowedOrigins("https://hand-over.vercel.app");
+                .allowedOriginPatterns("*")
+                .allowedMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .exposedHeaders("Authentication"); // 노출할 헤더 설정
     }
 }
