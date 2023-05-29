@@ -52,7 +52,7 @@ public class SecurityConfig {
         // CORS
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("http://localhost:5173"));
+            cors.setAllowedOrigins(List.of("http://localhost:5173","https://hand-over.vercel.app"));
             cors.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE"));
             cors.setAllowedHeaders(List.of("*"));
             return cors;
@@ -149,9 +149,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PATCH, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/match/comments/{id}").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 
-//                .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
+               .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
+              //  .anyRequest().permitAll()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
 
