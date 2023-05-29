@@ -1,5 +1,6 @@
 package com.example.handoverbackend.dto.message;
 
+import com.example.handoverbackend.domain.common.BaseEntity;
 import com.example.handoverbackend.domain.message.Message;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
@@ -19,7 +20,7 @@ public class MessageResponseDto {
     private String title;
     private String content;
     @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime sentAt;
+    private LocalDateTime createAt;
     private String senderUsername;
     private String receiverUsername;
 
@@ -28,17 +29,9 @@ public class MessageResponseDto {
                 message.getId(),
                 message.getTitle(),
                 message.getContent(),
+                message.getCreatedAt(),
                 message.getSender().getUsername(),
                 message.getReceiver().getUsername()
         );
-    }
-
-    public MessageResponseDto(Long id, String title, String content, String senderUsername, String receiverUsername) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.sentAt = LocalDateTime.now();
-        this.senderUsername = senderUsername;
-        this.receiverUsername = receiverUsername;
     }
 }
