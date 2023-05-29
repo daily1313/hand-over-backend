@@ -8,6 +8,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMessage.RecipientType;
 import java.io.UnsupportedEncodingException;
+import java.util.Optional;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
@@ -26,7 +27,7 @@ public class EmailService {
     private static final int ASCII_OFFSET_UPPER_A = 65;
     private static final int NUM_DIGITS = 10;
 
-    private String ePw = createKey();
+    private String ePw;
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender emailSender;
 
@@ -41,7 +42,7 @@ public class EmailService {
         // 아래에서 메일의 subtype 을 html 로 지정해주었기 때문인지 html 문법을 사용가능하다
         String msgg = "";
         msgg += "<div style='margin:100px;'>";
-        msgg += "<h1> 안녕하세요. 숙박, 공연 티켓 양도 플랫폼 Hand-Over 입니다.</h1>";
+        msgg += "<h1> 안녕하세요. 케어 서비스를 제공해주는 매칭 플랫폼 Hand-Over 입니다.</h1>";
         msgg += "<h1 style='color:green;'>인증번호 안내 메일입니다.</h1>";
         msgg += "<br>";
         msgg += "<p>" + to + "님 Hand-Over 플랫폼의 회원가입을 환영합니다.<p>";
@@ -93,15 +94,12 @@ public class EmailService {
     public String sendSimpleMessage(String to) throws Exception {
 
         MimeMessage message = createMessage(to);
-
-        try {// 예외처리
-
-            if(emailAuthRepository.findEmailAuthByEmail(to).isPresent()) {
-                ePw = createKey();
-                emailAuthRepository.deleteEmailAuthByEmail(to);
+        ePw = createKey();
+        try {
+            Optional<EmailAuth> existingAuth = emailAuthRepository.findEmailAuthByEmail(to);
+            if (existingAuth.isPresent()) {
+                emailAuthRepository.delete(existingAuth.get());
             }
-            // 한 사람이 인증코드 여러 번 날릴 시에 인증코드 갱신
-
             emailSender.send(message); // 메일 발송
         } catch (MailException errorMessage) {
             errorMessage.printStackTrace(); // 에러의 발생근원지를 찾아서 에러 출력
