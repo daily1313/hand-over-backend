@@ -26,7 +26,7 @@ public class EmailService {
     private static final int ASCII_OFFSET_UPPER_A = 65;
     private static final int NUM_DIGITS = 10;
 
-    private String ePw = createKey();
+    private static String ePw;
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender emailSender;
 
@@ -62,7 +62,7 @@ public class EmailService {
         return message;
     }
 
-    public String createKey() {
+    public static String createKey() {
 
         StringBuffer key = new StringBuffer();
         Random random = new Random();
@@ -93,10 +93,12 @@ public class EmailService {
     public String sendSimpleMessage(String to) throws Exception {
 
         MimeMessage message = createMessage(to);
+        ePw = createKey();
 
         try {
             if(emailAuthRepository.existsByEmail(to)) {
                 emailAuthRepository.deleteByEmail(to);
+                ePw = createKey();
             }
             emailSender.send(message); // 메일 발송
         } catch (MailException errorMessage) {

@@ -62,8 +62,8 @@ public class AuthService {
     }
 
     @Transactional(readOnly = true)
-    public String confirmEmailCertificationCode(String code) {
-        if (emailAuthRepository.existsByKey(code)) {
+    public String confirmEmailCertificationCode(String key) {
+        if (emailAuthRepository.existsByKey(key)) {
             return CERTIFICATION_NUMBER_SUCCESS_MESSAGE;
         }
         throw new EmailAuthNotEqualsException();

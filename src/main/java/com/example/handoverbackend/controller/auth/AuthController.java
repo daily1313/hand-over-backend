@@ -51,8 +51,8 @@ public class AuthController {
     @Operation(summary = "유저 회원가입시 이메일 인증 코드확인", description = "유저 회원가입시 이메일 인증 코드확인")
     @PostMapping("/join/email/check")
     @ResponseStatus(HttpStatus.OK)
-    public Response confirmEmailCertificationCode(@RequestParam("code") String code) {
-        return Response.success(authService.confirmEmailCertificationCode(code));
+    public Response confirmEmailCertificationCode(@RequestParam("key") String key) {
+        return Response.success(authService.confirmEmailCertificationCode(key));
     }
 
     @Operation(summary = "토큰 재발급", description = "토큰 재발급 요청")
