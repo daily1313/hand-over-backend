@@ -27,7 +27,7 @@ public class EmailService {
     private static final int ASCII_OFFSET_UPPER_A = 65;
     private static final int NUM_DIGITS = 10;
 
-    private String ePw;
+    private String ePw = createKey();
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender emailSender;
 
@@ -94,11 +94,10 @@ public class EmailService {
     public String sendSimpleMessage(String to) throws Exception {
 
         MimeMessage message = createMessage(to);
-        ePw = createKey();
+
         try {
-            Optional<EmailAuth> existingAuth = emailAuthRepository.findEmailAuthByEmail(to);
-            if (existingAuth.isPresent()) {
-                emailAuthRepository.delete(existingAuth.get());
+            if(emailAuthRepository.existsByEmail(to)) {
+                emailAuthRepository.deleteByEmail(to);
             }
             emailSender.send(message); // 메일 발송
         } catch (MailException errorMessage) {

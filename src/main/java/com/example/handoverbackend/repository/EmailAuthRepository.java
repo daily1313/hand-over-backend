@@ -12,4 +12,8 @@ public interface EmailAuthRepository extends JpaRepository<EmailAuth, Long> {
     Optional<EmailAuth> findEmailAuthByEmail(String email);
 
     boolean existsByKey(String code);
+
+    boolean existsByEmail(String email);
+
+    void deleteByEmail(String email);
 }
