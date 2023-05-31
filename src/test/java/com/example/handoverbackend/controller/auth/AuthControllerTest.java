@@ -98,15 +98,15 @@ class AuthControllerTest {
     @DisplayName("이메일 인증번호 확인 테스트")
     void confirmEmailCertificationCodeTest() throws Exception {
         //given
-        String code = "dasda";
+        String key = "dasda";
 
         //when
         mockMvc.perform(
                 post("/api/auth/join/email/check")
-                        .param("code", code)
+                        .param("key", key)
         ).andExpect(status().isOk());
 
         //then
-        verify(authService).confirmEmailCertificationCode(code);
+        verify(authService).confirmEmailCertificationCode(key);
     }
 }
