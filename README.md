@@ -40,14 +40,22 @@
 
 <hr>
 
-## DB ERD 
+## Architecture 
+
+<img width="500" alt="스크린샷 2023-05-31 오후 1 38 35" src="https://github.com/daily1313/hand-over-backend/assets/88074556/764f9317-21aa-46f6-b3f5-b92eef195ca0">
+
+## DB Erd
 MySQLWorkbench tool을 이용하여 ERD 추출
+
 <img width="500" alt="스크린샷 2023-05-28 오전 3 54 47" src="https://github.com/daily1313/hand-over-backend/assets/88074556/78391744-7893-45b6-97a8-36403599f4a0">
 
 
 
 ## Deploy 
 
+Frontend : https://hand-over-platform.vercel.app/
+
+Backend 
 ```text
 1. EC2 서버 접속 (ssh -i (pem location) ubuntu@(public ip Address))
 2. git clone https://github.com/daily1313/hand-over-backend.git (배포할 프로젝트 복제)
