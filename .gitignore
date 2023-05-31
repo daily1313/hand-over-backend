@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 mail.properties
+.env
 
 ### STS ###
 .apt_generated
