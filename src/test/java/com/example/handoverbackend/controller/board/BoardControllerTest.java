@@ -4,7 +4,7 @@ package com.example.handoverbackend.controller.board;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.board.BoardCreateRequestDto;
 import com.example.handoverbackend.dto.board.BoardUpdateRequestDto;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.service.board.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

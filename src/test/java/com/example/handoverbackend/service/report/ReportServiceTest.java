@@ -13,7 +13,7 @@ import com.example.handoverbackend.exception.BoardNotFoundException;
 import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.exception.NotSelfReportException;
 import com.example.handoverbackend.factory.BoardMaker;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.repository.board.BoardRepository;
 import com.example.handoverbackend.repository.match.MatchRepository;
 import com.example.handoverbackend.repository.report.BoardReportRepository;

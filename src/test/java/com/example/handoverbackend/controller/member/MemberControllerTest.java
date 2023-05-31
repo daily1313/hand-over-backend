@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.member.MemberEditRequestDto;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.service.member.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;

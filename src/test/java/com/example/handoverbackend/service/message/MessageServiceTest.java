@@ -15,7 +15,7 @@ import com.example.handoverbackend.dto.message.MessageCreateRequestDto;
 import com.example.handoverbackend.dto.message.MessageFindAllWithPagingResponseDto;
 import com.example.handoverbackend.dto.message.MessageResponseDto;
 import com.example.handoverbackend.factory.MessageMaker;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.repository.message.MessageRepository;
 import java.util.List;
 import java.util.Optional;

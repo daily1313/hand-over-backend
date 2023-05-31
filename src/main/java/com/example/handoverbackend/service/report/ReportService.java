@@ -10,7 +10,7 @@ import com.example.handoverbackend.dto.report.BoardReportRequestDto;
 import com.example.handoverbackend.dto.report.MatchReportRequestDto;
 import com.example.handoverbackend.dto.report.MemberReportRequestDto;
 import com.example.handoverbackend.exception.*;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.repository.board.BoardRepository;
 import com.example.handoverbackend.repository.match.MatchRepository;
 import com.example.handoverbackend.repository.report.BoardReportRepository;

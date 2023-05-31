@@ -9,7 +9,7 @@ import com.example.handoverbackend.dto.admin.ReportedMemberFindAllResponseDto;
 import com.example.handoverbackend.exception.AlreadyReportException;
 import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.exception.NotReportedException;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.repository.board.BoardRepository;
 import com.example.handoverbackend.repository.match.MatchRepository;
 import com.example.handoverbackend.repository.report.BoardReportRepository;

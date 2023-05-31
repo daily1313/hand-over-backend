@@ -1,4 +1,4 @@
-package com.example.handoverbackend.repository;
+package com.example.handoverbackend.repository.member;
 
 import com.example.handoverbackend.domain.member.RefreshToken;
 

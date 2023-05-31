@@ -1,4 +1,4 @@
-package com.example.handoverbackend.repository;
+package com.example.handoverbackend.repository.email;
 
 import com.example.handoverbackend.domain.member.EmailAuth;
 

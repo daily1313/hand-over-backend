@@ -5,7 +5,7 @@ import com.example.handoverbackend.domain.match.Match;
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.match.MatchCreateRequestDto;
 import com.example.handoverbackend.dto.match.MatchEditRequestDto;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.service.match.MatchService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

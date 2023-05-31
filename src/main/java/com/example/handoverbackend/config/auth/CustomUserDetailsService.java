@@ -1,7 +1,7 @@
 package com.example.handoverbackend.config.auth;
 
 import com.example.handoverbackend.domain.member.Member;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 
 import java.util.Collections;
 

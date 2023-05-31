@@ -6,9 +6,8 @@ import com.example.handoverbackend.dto.member.MemberFindAllWithPagingResponseDto
 import com.example.handoverbackend.dto.member.MemberResponseDto;
 import com.example.handoverbackend.dto.page.PageInfoDto;
 import com.example.handoverbackend.exception.MemberNotFoundException;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

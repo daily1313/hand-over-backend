@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.handoverbackend.domain.member.Member;
 import com.example.handoverbackend.dto.message.MessageCreateRequestDto;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.service.message.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;

@@ -7,7 +7,7 @@ import com.example.handoverbackend.dto.admin.ReportedBoardFindAllResponseDto;
 import com.example.handoverbackend.dto.admin.ReportedMatchFindAllResponseDto;
 import com.example.handoverbackend.dto.admin.ReportedMemberFindAllResponseDto;
 import com.example.handoverbackend.exception.*;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.repository.board.BoardRepository;
 import com.example.handoverbackend.repository.match.MatchRepository;
 import com.example.handoverbackend.repository.report.BoardReportRepository;

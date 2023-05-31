@@ -10,7 +10,7 @@ import com.example.handoverbackend.dto.page.PageInfoDto;
 import com.example.handoverbackend.exception.MemberNotEqualsException;
 import com.example.handoverbackend.exception.MemberNotFoundException;
 import com.example.handoverbackend.exception.MessageNotFoundException;
-import com.example.handoverbackend.repository.MemberRepository;
+import com.example.handoverbackend.repository.member.MemberRepository;
 import com.example.handoverbackend.repository.message.MessageRepository;
 import java.util.List;
 import java.util.stream.Collectors;
