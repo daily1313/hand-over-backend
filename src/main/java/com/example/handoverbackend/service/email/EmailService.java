@@ -95,9 +95,6 @@ public class EmailService {
         MimeMessage message = createMessage(to);
 
         try {
-            if(emailAuthRepository.existsByEmail(to)) {
-                emailAuthRepository.deleteByEmail(to);
-            }
             emailSender.send(message); // 메일 발송
         } catch (MailException errorMessage) {
             errorMessage.printStackTrace(); // 에러의 발생근원지를 찾아서 에러 출력
