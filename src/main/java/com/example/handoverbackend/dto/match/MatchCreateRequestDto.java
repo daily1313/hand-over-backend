@@ -28,11 +28,11 @@ public class MatchCreateRequestDto {
     private String address;
 
     @ApiModelProperty(value = "시작 날짜와 시간 입력", notes = "시작 날짜를 입력", required = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime startDate;
 
     @ApiModelProperty(value = "마지막 날짜와 시간 입력", notes = "마지막 날짜를 입력", required = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endDate;
 
     @ApiModelProperty(value = "상세 정보 입력", notes = "상세 정보를 입력", required = true)
