@@ -26,7 +26,7 @@ public class EmailService {
     private static final int ASCII_OFFSET_UPPER_A = 65;
     private static final int NUM_DIGITS = 10;
 
-    private static String ePw = createKey();
+    private String ePw;
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender emailSender;
 
@@ -51,7 +51,7 @@ public class EmailService {
         msgg += "<p>하단 인증번호를 '이메일 인증번호' 칸에 입력하여 가입을 완료해주세요.<p>";
         msgg += "<br>";
         msgg += "<div align='center' style='border:1px solid black; font-family:verdana';>";
-        msgg += "<h3 style='color:green;'>회원가입 인증 코드입니다.</h3>";
+        msgg += "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
         msgg += "<div style='font-size:130%'>";
         msgg += "CODE : <strong>";
         msgg += ePw + "</strong><div><br/> "; // 인증번호 넣기
@@ -62,7 +62,7 @@ public class EmailService {
         return message;
     }
 
-    public static String createKey() {
+    public String createKey() {
 
         StringBuffer key = new StringBuffer();
         Random random = new Random();
@@ -91,19 +91,19 @@ public class EmailService {
 
     @Transactional
     public String sendSimpleMessage(String to) throws Exception {
-
+        ePw = createKey();
         MimeMessage message = createMessage(to);
-
         try {
+            if(emailAuthRepository.existsByEmail(to)) {
+                emailAuthRepository.deleteByEmail(to);
+            }
             emailSender.send(message); // 메일 발송
         } catch (MailException errorMessage) {
             errorMessage.printStackTrace(); // 에러의 발생근원지를 찾아서 에러 출력
             throw new IllegalArgumentException();
         }
-
         EmailAuth emailAuth = new EmailAuth(ePw, to);
         emailAuthRepository.save(emailAuth);
-
         return ePw; // 메일로 보냈던 인증 코드를 서버로 반환
     }
 }
