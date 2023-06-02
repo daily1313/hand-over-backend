@@ -52,7 +52,7 @@ public class SecurityConfig {
         // CORS
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("http://localhost:5173","https://hand-over-platform.vercel.app"));
+            cors.setAllowedOrigins(List.of("http://localhost:5173","http://127.0.0.1:5173","https://hand-over-platform.vercel.app"));
             cors.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE"));
             cors.setAllowedHeaders(List.of("*"));
             return cors;
